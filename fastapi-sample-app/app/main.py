@@ -1,14 +1,22 @@
 import datetime
+import os
 
 from fastapi import FastAPI
 from fastapi.responses import HTMLResponse
 
 app = FastAPI()
 
+ENV_MESSAGE = os.getenv("MESSAGE", "Default message from FastAPI")
+
 
 @app.get("/")
 def read_root():
     return {"message": "Hello, FastAPI!", "timecode": datetime.datetime.now()}
+
+
+@app.get("/env")
+def read_env():
+    return {"message": ENV_MESSAGE, "timecode": datetime.datetime.now()}
 
 
 @app.get("/web", response_class=HTMLResponse)

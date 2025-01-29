@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fastapi-sample-app
+spec:
+  replicas: 1
+  revisionHistoryLimit: 1
+  selector:
+    matchLabels:
+      app: fastapi-sample-app
+  template:
+    metadata:
+      labels:
+        app: fastapi-sample-app
+    spec:
+      containers:
+      - image: prakahe/fastapi-sample-app:latest
+        name: fastapi-sample-app
+        ports:
+        - containerPort: 80
+        env:
+        - name: MESSAGE
+          value: "Hello from Kubernetes!"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: fastapi-sample-app
+spec:
+  ports:
+  - port: 80
+    targetPort: 80
+  selector:
+    app: fastapi-sample-app
+  type: LoadBalancer
