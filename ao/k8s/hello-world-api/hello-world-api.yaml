@@ -20,7 +20,7 @@ spec:
         - containerPort: 3000
         env:
         - name: MESSAGE
-          value: "Heeeest Hest!"
+          value: "Hello Hest!"
 
 ---
 apiVersion: v1
