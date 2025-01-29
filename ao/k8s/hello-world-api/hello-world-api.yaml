@@ -18,6 +18,9 @@ spec:
         name: hello-world-api
         ports:
         - containerPort: 3000
+        env:
+        - name: MESSAGE
+          value: "Heeeest Hest!"
 
 ---
 apiVersion: v1
