@@ -14,7 +14,7 @@ spec:
         app: fastapi-sample-app
     spec:
       containers:
-      - image: prakahe/fastapi-sample-app:1xvxz4wTDCdMv
+      - image: prakahe/fastapi-sample-app:38wQ200sr4tew
         imagePullPolicy: Always
         name: fastapi-sample-app
         ports:
@@ -41,7 +41,7 @@ spec:
           failureThreshold: 3
         readinessProbe:
           httpGet:
-            path: /r
+            path: /h
             port: 8000
           initialDelaySeconds: 3
           periodSeconds: 3
