@@ -78,9 +78,9 @@ def crash_on_n_call(amt: int):
 
 def check_crash():
     global crash_on_call
-    if crash_on_call == 1:
-        raise RuntimeError("Intentional crash!")
     crash_on_call = crash_on_call - 1
+    if crash_on_call == 0:
+        raise RuntimeError("Intentional crash!")
 
 
 def info_object():
