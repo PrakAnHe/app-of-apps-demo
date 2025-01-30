@@ -1,6 +1,7 @@
 import datetime
 import os
 import subprocess
+from pathlib import Path
 
 from fastapi import Depends, FastAPI
 from fastapi.responses import FileResponse, HTMLResponse
@@ -30,7 +31,8 @@ def read_env():
 
 @app.get("/web", response_class=FileResponse)
 def web_page():
-    return FileResponse("./static/index.html")
+    file_path = Path(__file__).parent / "static" / "index.html"
+    return FileResponse(file_path)
 
 
 # @app.get("/web", response_class=HTMLResponse)
