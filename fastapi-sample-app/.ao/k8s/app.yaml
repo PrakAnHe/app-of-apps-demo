@@ -20,7 +20,7 @@ spec:
         - containerPort: 8000
         env:
         - name: MESSAGE
-          value: "Horse hest from Kubernetes!"
+          value: "Horse hest horses from Kubernetes!"
 
 ---
 apiVersion: v1
