@@ -15,6 +15,7 @@ spec:
     spec:
       containers:
       - image: prakahe/fastapi-sample-app:latest
+        imagePullPolicy: Always
         name: fastapi-sample-app
         ports:
         - containerPort: 8000
