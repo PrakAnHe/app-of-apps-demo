@@ -10,8 +10,7 @@ DB_USER = os.getenv("POSTGRES_USER", "anon")
 DB_PASSWORD = os.getenv("POSTGRES_PASSWORD", "anon")
 DB_NAME = os.getenv("POSTGRES_DB", "anon")
 DB_HOST = os.getenv("POSTGRES_HOST", "anon")
-DB_PORT = os.getenv("POSTGRES_PORT", "anon")
-DB_PORT = "5432"
+DB_PORT = os.getenv("POSTGRES_PORT", 8080)
 
 # SQLAlchemy Database URL
 DATABASE_URL = f"postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
