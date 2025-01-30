@@ -3,7 +3,7 @@ import os
 import subprocess
 from pathlib import Path
 
-from fastapi import Depends, FastAPI, Form
+from fastapi import Depends, FastAPI, Form, Response
 from fastapi.responses import FileResponse
 from sqlalchemy.orm import Session
 
@@ -16,6 +16,12 @@ ENV_MESSAGE = os.getenv("MESSAGE", "Default message from FastAPI")
 crash_on_call = -1
 
 
+if __name__ == "__main__":
+    import uvicorn
+
+    uvicorn.run(app, host="0.0.0.0", port=8000)
+
+
 @app.on_event("startup")
 def startup():
     init_db()
@@ -26,6 +32,11 @@ def web_page():
     check_crash()
     file_path = Path(__file__).parent / "static" / "index.html"
     return FileResponse(file_path)
+
+
+@app.get("/h")
+def healthcheck():
+    return Response(status_code=200)
 
 
 @app.get("/env")
@@ -63,12 +74,6 @@ def crash_on_n_call(amt: int):
     global crash_on_call
     crash_on_call = amt
     return {"message": f"Container will crash during request number {amt} after this."}
-
-
-if __name__ == "__main__":
-    import uvicorn
-
-    uvicorn.run(app, host="0.0.0.0", port=8000)
 
 
 def check_crash():
