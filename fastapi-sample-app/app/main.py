@@ -12,7 +12,7 @@ ENV_MESSAGE = os.getenv("MESSAGE", "Default message from FastAPI")
 
 @app.get("/")
 def read_root():
-    return {info_object()}
+    return {"info": info_object()}
 
 
 @app.get("/env")
