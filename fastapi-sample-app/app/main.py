@@ -30,7 +30,7 @@ def read_env():
 
 @app.get("/web", response_class=FileResponse)
 def web_page():
-    return FileResponse("static/index.html")
+    return FileResponse("./static/index.html")
 
 
 # @app.get("/web", response_class=HTMLResponse)
