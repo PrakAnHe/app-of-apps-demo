@@ -36,15 +36,9 @@ spec:
           httpGet:
             path: /h
             port: 8000
-          initialDelaySeconds: 3
+          initialDelaySeconds: 6
           periodSeconds: 3
           failureThreshold: 3
-        readinessProbe:
-          httpGet:
-            path: /h
-            port: 8000
-          initialDelaySeconds: 3
-          periodSeconds: 3
 
 ---
 apiVersion: v1
