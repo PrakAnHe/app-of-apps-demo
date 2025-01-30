@@ -3,7 +3,7 @@ import os
 import subprocess
 
 from fastapi import Depends, FastAPI
-from fastapi.responses import HTMLResponse
+from fastapi.responses import FileResponse, HTMLResponse
 from sqlalchemy.orm import Session
 
 from app.db import Message, get_db, init_db
@@ -28,9 +28,14 @@ def read_env():
     return {"message": ENV_MESSAGE, "info": info_object()}
 
 
-@app.get("/web", response_class=HTMLResponse)
+@app.get("/web", response_class=FileResponse)
 def web_page():
-    return "<h1>Welcome to FastAPI</h1><p>This is a simple web page.</p><p>Hest!</p>"
+    return FileResponse("static/index.html")
+
+
+# @app.get("/web", response_class=HTMLResponse)
+# def web_page():
+#     return "<h1>Welcome to FastAPI</h1><p>This is a simple web page.</p><p>Hest!</p>"
 
 
 @app.post("/save/")
