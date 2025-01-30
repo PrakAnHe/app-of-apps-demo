@@ -24,7 +24,7 @@
       messagesContainer.innerHTML = "";
       messages.forEach(msg => {
         const messageElement = document.createElement("p");
-        messageElement.textContent = msg.text;
+        messageElement.textContent = msg.timestamp + " - " + msg.text;
         messagesContainer.appendChild(messageElement);
       });
     }
