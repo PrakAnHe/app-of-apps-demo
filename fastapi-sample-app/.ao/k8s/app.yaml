@@ -21,6 +21,16 @@ spec:
         env:
         - name: MESSAGE
           value: "Horse hest horses from Kubernetes!"
+        - name: POSTGRES_HOST
+          value: "postgres-service"
+        - name: POSTGRES_PORT
+          value: 5432
+        - name: POSTGRES_DB
+          value: "fastapi_db"
+        - name: POSTGRES_USER
+          value: "admin"
+        - name: POSTGRES_PASSWORD
+          value: "password"
 
 ---
 apiVersion: v1
