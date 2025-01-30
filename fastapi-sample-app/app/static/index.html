@@ -45,8 +45,52 @@
 
 <body>
   <h1>fastapi-sample-app</h1>
-  <p>This is a simple web page.</p>
+  <p>This is a sample web page.</p>
   <p>Hest!</p>
+  <p></p>
+  <table>
+    <tr>
+      <td>POST : "@/"</td>
+      <td>Web page</td>
+    </tr>
+    <tr>
+      <td>POST : "@/h"</td>
+      <td>Health check</td>
+    </tr>
+    <tr>
+      <td>POST : "@/env"</td>
+      <td>Environment info</td>
+    </tr>
+    <tr>
+      <td>GET  : "@/message"</td>
+      <td>Get all messages from database</td>
+    </tr>
+    <tr>
+      <td>POST : "@/message"</td>
+      <td>Post message to database</td>
+    </tr>
+    <tr>
+      <td>POST : "@/code/{code: int}"</td>
+      <td>Returns the specified error code</td>
+    </tr>
+    <tr>
+      <td>POST : "@/crash"</td>
+      <td>Crashes the container</td>
+    </tr>
+    <tr>
+      <td>POST : "@/crash/{N: int}"</td>
+      <td>Crashes the container during the N'th request after this one</td>
+    </tr>
+    <tr>
+      <td>POST : "@/error"</td>
+      <td>Raises a RuntimeError in the container</td>
+    </tr>
+    <tr>
+      <td>POST : "@/error/{N: int}"</td>
+      <td>Raises a RuntimeError in the container during the N'th request after this one</td>
+    </tr>
+  </table>
+  <p></p>
   <form action="http://51.158.131.127/message/" method="post" onsubmit="handleSubmit(event)">
     <label for="message">Message:</label>
     <input type="text" id="message" name="text" required>
