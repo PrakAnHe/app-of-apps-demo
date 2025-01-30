@@ -14,7 +14,7 @@ spec:
         app: fastapi-sample-app
     spec:
       containers:
-      - image: prakahe/fastapi-sample-app:MAM64FtVAsZpx
+      - image: prakahe/fastapi-sample-app:1xvxz4wTDCdMv
         imagePullPolicy: Always
         name: fastapi-sample-app
         ports:
@@ -32,6 +32,19 @@ spec:
           value: "admin"
         - name: POSTGRES_PASSWORD
           value: "password"
+        livenessProbe:
+          httpGet:
+            path: /h
+            port: 8000
+          initialDelaySeconds: 3
+          periodSeconds: 3
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /r
+            port: 8000
+          initialDelaySeconds: 3
+          periodSeconds: 3
 
 ---
 apiVersion: v1
