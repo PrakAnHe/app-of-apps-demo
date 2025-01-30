@@ -23,13 +23,17 @@
     async function loadMessages() {
       const response = await fetch("http://51.158.131.127/message/");
       const messages = await response.json();
+      messages.reverse();
+
       const messagesContainer = document.getElementById("messages");
       messagesContainer.innerHTML = "";
-      messages.reverse().forEach(msg => {
+
+      for (let i = 0; i < 10 && i < messages.length; i++) {
+        const msg = messages[i];
         const messageElement = document.createElement("p");
-        messageElement.textContent = msg.timestamp + " - " + msg.text;
+        messageElement.textContent = msg.id + "  -  " + msg.timestamp + "  -  " + msg.text;
         messagesContainer.appendChild(messageElement);
-      });
+      }
     }
 
     window.onload = function () {
