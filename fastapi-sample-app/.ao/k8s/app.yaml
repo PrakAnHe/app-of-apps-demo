@@ -14,7 +14,7 @@ spec:
         app: fastapi-sample-app
     spec:
       containers:
-      - image: prakahe/fastapi-sample-app:ZBoWAqkLnsHn2
+      - image: prakahe/fastapi-sample-app:bXoVXJaet9zLP
         imagePullPolicy: Always
         name: fastapi-sample-app
         ports:
