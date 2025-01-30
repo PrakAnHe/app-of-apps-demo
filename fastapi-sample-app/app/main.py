@@ -13,36 +13,31 @@ app = FastAPI()
 
 ENV_MESSAGE = os.getenv("MESSAGE", "Default message from FastAPI")
 
+crash_on_call = -1
+
 
 @app.on_event("startup")
 def startup():
     init_db()
 
 
-@app.get("/")
-def read_root():
-    return {"info": info_object()}
-
-
-@app.get("/env")
-def read_env():
-    return {"message": ENV_MESSAGE, "info": info_object()}
-
-
-@app.get("/web", response_class=FileResponse)
+@app.get("/", response_class=FileResponse)
 def web_page():
+    check_crash()
     file_path = Path(__file__).parent / "static" / "index.html"
     return FileResponse(file_path)
 
 
-# @app.get("/web", response_class=HTMLResponse)
-# def web_page():
-#     return "<h1>Welcome to FastAPI</h1><p>This is a simple web page.</p><p>Hest!</p>"
+@app.get("/env")
+def read_env():
+    check_crash()
+    return {"message": ENV_MESSAGE, "info": info_object()}
 
 
-@app.post("/save/")
+@app.post("/message/")
 def save_message(text: str = Form(...), db: Session = Depends(get_db)):
     """Save a message to the database."""
+    check_crash()
     new_message = Message(text=text)
     db.add(new_message)
     db.commit()
@@ -50,17 +45,37 @@ def save_message(text: str = Form(...), db: Session = Depends(get_db)):
     return {"id": new_message.id, "text": new_message.text}
 
 
-@app.get("/messages/")
+@app.get("/message/")
 def get_messages(db: Session = Depends(get_db)):
     """Retrieve all messages from the database."""
+    check_crash()
     messages = db.query(Message).all()
     return [{"id": m.id, "text": m.text, "timestamp": m.timestamp} for m in messages]
+
+
+@app.get("/crash/")
+def crash_now():
+    raise RuntimeError("Intentional crash!")
+
+
+@app.get("/crash/{amt}")
+def crash_on_n_call(amt: int):
+    global crash_on_call
+    crash_on_call = amt
+    return {"message": f"Container will crash during request number {amt} after this."}
 
 
 if __name__ == "__main__":
     import uvicorn
 
     uvicorn.run(app, host="0.0.0.0", port=8000)
+
+
+def check_crash():
+    global crash_on_call
+    if crash_on_call == 1:
+        raise RuntimeError("Intentional crash!")
+    crash_on_call = crash_on_call - 1
 
 
 def info_object():

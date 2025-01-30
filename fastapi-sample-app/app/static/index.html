@@ -15,14 +15,17 @@
         body: formData
       });
       const result = await response.json();
+      console.log(result);
+      loadMessages();
+      form.reset();
     }
 
     async function loadMessages() {
-      const response = await fetch("http://51.158.131.127/messages/");
+      const response = await fetch("http://51.158.131.127/message/");
       const messages = await response.json();
       const messagesContainer = document.getElementById("messages");
       messagesContainer.innerHTML = "";
-      messages.forEach(msg => {
+      messages.reverse().forEach(msg => {
         const messageElement = document.createElement("p");
         messageElement.textContent = msg.timestamp + " - " + msg.text;
         messagesContainer.appendChild(messageElement);
@@ -40,7 +43,7 @@
   <h1>fastapi-sample-app</h1>
   <p>This is a simple web page.</p>
   <p>Hest!</p>
-  <form action="http://51.158.131.127/save/" method="post" onsubmit="handleSubmit(event)">
+  <form action="http://51.158.131.127/message/" method="post" onsubmit="handleSubmit(event)">
     <label for="message">Message:</label>
     <input type="text" id="message" name="text" required>
     <button type="submit">Submit</button>
