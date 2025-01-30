@@ -3,8 +3,8 @@ import os
 import subprocess
 from pathlib import Path
 
-from fastapi import Depends, FastAPI
-from fastapi.responses import FileResponse, HTMLResponse
+from fastapi import Depends, FastAPI, Form
+from fastapi.responses import FileResponse
 from sqlalchemy.orm import Session
 
 from app.db import Message, get_db, init_db
@@ -41,7 +41,7 @@ def web_page():
 
 
 @app.post("/save/")
-def save_message(text: str, db: Session = Depends(get_db)):
+def save_message(text: str = Form(...), db: Session = Depends(get_db)):
     """Save a message to the database."""
     new_message = Message(text=text)
     db.add(new_message)

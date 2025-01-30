@@ -3,3 +3,4 @@ fastapi
 sqlalchemy
 psycopg2
 pathlib
+python-multipart
