@@ -1,0 +1,24 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: fastapi-sample-app
+
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: fastapi-sample-app
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: 'https://github.com/PrakAnHe/app-of-apps-demo.git'
+    targetRevision: HEAD
+    path: 'fastapi-sample-app/.ao/k8s'
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: fastapi-sample-app
+  syncPolicy:
+    automated:
+      prune: false
+      selfHeal: false
