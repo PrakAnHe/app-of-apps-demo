@@ -12,10 +12,11 @@ spec:
       value: "guestbook"
   templates:
   - name: sync-app
-    container:
+    script:
       image: argoproj/argocd:latest
-      command: ["argocd", "app", "sync", "--insecure"]
-      env:
-      - name: ARGOCD_SERVER
-        value: "argocd-server.argocd.svc.cluster.local"
-      args: ["{{workflow.parameters.app-name}}"]
+      command: [sh]
+      source: |
+        echo "Logging in to Argo CD..."
+        argocd login argocd-server.argocd.svc.cluster.local --username admin --password admin
+        echo "Syncing application {{workflow.parameters.app-name}}..."
+        argocd app sync {{workflow.parameters.app-name}}
