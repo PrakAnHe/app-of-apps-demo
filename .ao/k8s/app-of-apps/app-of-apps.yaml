@@ -18,7 +18,3 @@ spec:
   destination:
     server: 'https://kubernetes.default.svc'
     namespace: argocd-aoa
-  syncPolicy:
-    automated:
-      prune: false
-      selfHeal: true
