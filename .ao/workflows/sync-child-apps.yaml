@@ -4,6 +4,17 @@ metadata:
   name: sync-child-apps
 spec:
   entrypoint: sync-loop
+  arguments:
+    parameters:
+    - name: app-list
+      value: |
+        [
+          "fastapi-sample-app",
+          "guestbook",
+          "guestbook2",
+          "hello-world-api",
+          "workflows-app",
+        ]
   templates:
   - name: sync-loop
     steps:
@@ -15,7 +26,8 @@ spec:
           parameters:
           - name: app-name
             value: "{{item}}"
-        withParam: "{{steps.fetch-apps.outputs.result}}"
+        withParam: "{{inputs.parameters.os-list}}"
+        # withParam: "{{steps.fetch-apps.outputs.result}}"
   - name: get-child-apps
     script:
       image: argoproj/argocd:latest
