@@ -18,6 +18,9 @@ spec:
         ]
   templates:
   - name: hello-loop
+    inputs:
+      parameters:
+      - name: string-list
     steps:
     - - name: hello
         template: print-message
