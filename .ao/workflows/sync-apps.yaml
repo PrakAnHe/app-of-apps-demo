@@ -18,9 +18,6 @@ spec:
         ]
   templates:
   - name: sync-apps
-    inputs:
-      parameters:
-      - name: app-names
     parallelism: 2
     steps:
     - - name: sync-app
@@ -29,7 +26,7 @@ spec:
           parameters:
           - name: "app-name"
             value: "{{item}}"
-        withParam: "{{inputs.paramenters.app-names}}"
+        withParam: "{{workflow.parameters.app-names}}"
 
   - name: sync-app
     inputs:
