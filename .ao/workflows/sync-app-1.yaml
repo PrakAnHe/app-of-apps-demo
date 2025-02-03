@@ -17,6 +17,6 @@ spec:
       command: [sh]
       source: |
         echo "Logging in to Argo CD..."
-        argocd login argocd-server.argocd.svc.cluster.local --insecure --username admin --password admin
+        argocd login argocd-server.argocd.svc.cluster.local --insecure --username admin --password adminpass
         echo "Syncing application {{workflow.parameters.app-name}}..."
         argocd app sync {{workflow.parameters.app-name}}
