@@ -16,7 +16,7 @@ spec:
         arguments:
           parameters:
           - name: message
-            value: "hello1"
+            value: "hello1 hest"
     - - name: hello2a           # double dash => run after previous step
         template: print-message
         arguments:
