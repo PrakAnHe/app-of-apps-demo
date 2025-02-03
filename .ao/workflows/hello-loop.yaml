@@ -1,12 +1,12 @@
 apiVersion: argoproj.io/v1alpha1
 kind: WorkflowTemplate
 metadata:
-  name: hello-step
+  name: hello-loop
   annotations:
-    workflows.argoproj.io/description: This is a basic hello world workflow that prints hello.
+    workflows.argoproj.io/description: This is a basic hello world workflow that prints hello messages in a loop.
     workflows.argoproj.io/maintainer: andreas
 spec:
-  entrypoint: hello
+  entrypoint: hello-loop
   arguments:
     parameters:
     - name: string-list
@@ -17,7 +17,7 @@ spec:
           "3 Heeeeeststst",
         ]
   templates:
-  - name: hello
+  - name: hello-loop
     steps:
     - - name: hello
         template: print-message
