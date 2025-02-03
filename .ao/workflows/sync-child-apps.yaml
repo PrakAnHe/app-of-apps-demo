@@ -11,6 +11,10 @@ spec:
         template: get-child-apps
     - - name: sync-apps
         template: sync-app
+        arguments:
+          parameters:
+          - name: app-name
+            value: "{{item}}"
         withParam: "{{steps.fetch-apps.outputs.result}}"
   - name: get-child-apps
     script:
