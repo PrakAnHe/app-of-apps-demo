@@ -12,9 +12,9 @@ spec:
     - name: string-list
       value: |
         [
-          "1 Hello 1!!!",
-          "2 Hej! :D",
-          "3 Heeeeeststst",
+          {"message": "1 Hello 1!!!"},
+          {"message": "2 Hej! :D"},
+          {"message": "3 Heeeeeststst"},
         ]
   templates:
   - name: hello-loop
@@ -24,7 +24,7 @@ spec:
         arguments:
           parameters:
           - name: message
-            value: "{{item}}"
+            value: "{{item.message}}"
         withParam: "{{inputs.parameters.string-list}}"
 
   - name: print-message
