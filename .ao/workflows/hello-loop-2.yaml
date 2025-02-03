@@ -17,7 +17,7 @@ spec:
         ]
   templates:
   - name: hello-sequense-loop
-    parallelism: 1
+    parallelism: 2
     steps:
     - - name: hello-sequense-loop
         template: hello-loop
