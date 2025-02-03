@@ -15,4 +15,7 @@ spec:
     container:
       image: argoproj/argocd:latest
       command: ["argocd", "app", "sync"]
+      env:
+      - name: ARGOCD_SERVER
+        value: "argocd-server.argocd.svc.cluster.local"
       args: ["{{workflow.parameters.app-name}}"]
