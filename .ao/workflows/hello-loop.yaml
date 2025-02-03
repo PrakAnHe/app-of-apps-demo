@@ -21,6 +21,8 @@ spec:
     inputs:
       parameters:
       - name: string-list
+    withSequence:
+      count: "5"
     steps:
     - - name: hello
         template: print-message
