@@ -16,11 +16,11 @@ spec:
           "fastapi-sample-app",
           "hello-world-api"
         ]
-    - name: parralel-syncs
+    - name: max-parralel-syncs
       value: 2
+  parallelism: "{{workflow.parameters.max-parralel-syncs}}"
   templates:
   - name: sync-apps
-    parallelism: 2
     steps:
     - - name: sync-app
         template: sync-app
