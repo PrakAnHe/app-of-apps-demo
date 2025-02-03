@@ -3,7 +3,7 @@ kind: WorkflowTemplate
 metadata:
   name: hello-loop-3
   annotations:
-    workflows.argoproj.io/description: This is a basic hello world workflow that prints hello messages in a loop.
+    workflows.argoproj.io/description: This is a basic hello world workflow that prints hello messages in a loop with limited parallelism.
     workflows.argoproj.io/maintainer: andreas
 spec:
   entrypoint: hello-loop
