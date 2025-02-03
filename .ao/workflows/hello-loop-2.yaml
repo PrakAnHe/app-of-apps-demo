@@ -1,0 +1,53 @@
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: hello-loop
+  annotations:
+    workflows.argoproj.io/description: This is a basic hello world workflow that prints hello messages in a loop.
+    workflows.argoproj.io/maintainer: andreas
+spec:
+  entrypoint: hello-sequense-loop
+  arguments:
+    parameters:
+    - name: string-list
+      value: |
+        [
+          "1 Hello 1!!!",
+          "2 Hej! :D",
+          "3 Heeeeeststst"
+        ]
+  templates:
+  - name: hello-sequense-loop
+    steps:
+    - - name: hello-sequense-loop
+        template: hello-loop
+        arguments:
+          parameters:
+          - name: string-list
+            value: "{{workflow.parameters.string-list}}"
+        withSequence:
+          count: "3"
+
+  - name: hello-loop
+    inputs:
+      parameters:
+      - name: string-list
+    withSequence:
+      count: "5"
+    steps:
+    - - name: hello
+        template: print-message
+        arguments:
+          parameters:
+          - name: message
+            value: "{{item}}"
+        withParam: "{{inputs.parameters.string-list}}"
+
+  - name: print-message
+    inputs:
+      parameters:
+      - name: message
+    container:
+      image: busybox
+      command: [echo]
+      args: ["{{inputs.parameters.message}}"]
