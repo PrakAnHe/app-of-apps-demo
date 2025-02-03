@@ -14,7 +14,6 @@ spec:
         [
           "1 Hello 1!!!",
           "2 Hej! :D",
-          "3 Heeeeeststst"
         ]
   templates:
   - name: hello-sequense-loop
@@ -27,7 +26,7 @@ spec:
           - name: string-list
             value: "{{workflow.parameters.string-list}}"
         withSequence:
-          count: "3"
+          count: "5"
           start: "1"
 
   - name: hello-loop
