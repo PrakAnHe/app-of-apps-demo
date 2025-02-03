@@ -1,3 +1,9 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: argocd-aoa
+
+---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
@@ -11,7 +17,7 @@ spec:
     path: .ao/k8s/apps
   destination:
     server: 'https://kubernetes.default.svc'
-    namespace: argocd
+    namespace: argocd-aoa
   syncPolicy:
     automated:
       prune: false
