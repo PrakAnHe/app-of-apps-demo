@@ -17,5 +17,5 @@ spec:
       command: ["argocd", "app", "sync"]
       env:
       - name: ARGOCD_SERVER
-        value: "argocd-server.argocd.svc.cluster.local"
+        value: "argocd-server.argocd.svc.cluster.local:80"
       args: ["{{workflow.parameters.app-name}}"]
