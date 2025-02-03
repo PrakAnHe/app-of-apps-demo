@@ -1,0 +1,45 @@
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: sync-apps
+  annotations:
+    workflows.argoproj.io/maintainer: andreas
+spec:
+  entrypoint: sync-apps
+  arguments:
+    parameters:
+    - name: app-names
+      value: |
+        [
+          "guestbook",
+          "guestbook2",
+          "fastapi-sample-app",
+          "hello-world-api"
+        ]
+  templates:
+  - name: sync-apps
+    inputs:
+      parameters:
+      - name: app-names
+    parallelism: 2
+    steps:
+    - - name: sync-app
+        template: sync-app
+        arguments:
+          parameters:
+          - name: "app-name"
+            value: "{{item}}"
+        withParam: "{{inputs.paramenters.app-names}}"
+
+  - name: sync-app
+    inputs:
+      parameters:
+      - name: app-name
+    script:
+      image: argoproj/argocd:latest
+      command: [sh]
+      source: |
+        echo "Logging in to Argo CD..."
+        argocd login argocd-server.argocd.svc.cluster.local --insecure --username admin --password adminpass
+        echo "Syncing application {{inputs.parameters.app-name}}..."
+        argocd app sync {{inputs.parameters.app-name}}
