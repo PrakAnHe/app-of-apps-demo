@@ -20,7 +20,7 @@ spec:
       value: 2
   templates:
   - name: sync-apps
-    parallelism: "{{workflow.parameters.parralel-syncs}}"
+    parallelism: 2
     steps:
     - - name: sync-app
         template: sync-app
