@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: sync-app-1
+  annotations:
+    workflows.argoproj.io/maintainer: andreas
+spec:
+  entrypoint: sync-app
+  arguments:
+    parameters:
+    - name: app-name
+      value: "guestbook"
+  templates:
+  - name: sync-app
+    container:
+      image: argoproj/argocd:latest
+      command: ["argocd", "app", "sync"]
+      args: ["{{workflow.parameters.app-name}}"]
