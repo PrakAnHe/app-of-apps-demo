@@ -18,7 +18,3 @@ spec:
   destination:
     server: 'https://kubernetes.default.svc'
     namespace: fastapi-sample-app
-  syncPolicy:
-    automated:
-      prune: false
-      selfHeal: true

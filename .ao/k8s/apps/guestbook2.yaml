@@ -18,7 +18,3 @@ spec:
   destination:
     server: 'https://kubernetes.default.svc'
     namespace: guestbook2
-  syncPolicy:
-    automated:
-      prune: false
-      selfHeal: false
