@@ -18,7 +18,3 @@ spec:
   destination:
     server: 'https://kubernetes.default.svc'
     namespace: hello-world-api
-  syncPolicy:
-    automated:
-      prune: false
-      selfHeal: false
