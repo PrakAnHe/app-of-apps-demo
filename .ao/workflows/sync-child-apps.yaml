@@ -1,0 +1,29 @@
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: sync-child-apps
+spec:
+  entrypoint: sync-loop
+  templates:
+  - name: sync-loop
+    steps:
+    - - name: fetch-apps
+        template: get-child-apps
+    - - name: sync-apps
+        template: sync-app
+        withParam: "{{steps.fetch-apps.outputs.result}}"
+  - name: get-child-apps
+    script:
+      image: argoproj/argocd:latest
+      command: [sh]
+      source: |
+        argocd app get app-of-apps -o json | jq -r '.status.resources[] | select(.kind == "Application") | .name' > /tmp/apps.txt
+        cat /tmp/apps.txt
+  - name: sync-app
+    inputs:
+      parameters:
+      - name: app-name
+    container:
+      image: argoproj/argocd:latest
+      command: ["argocd", "app", "sync"]
+      args: ["{{inputs.parameters.app-name}}"]
