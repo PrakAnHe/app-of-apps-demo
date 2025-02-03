@@ -1,7 +1,10 @@
 apiVersion: argoproj.io/v1alpha1
 kind: WorkflowTemplate
 metadata:
-  name: steps
+  name: hello-steps
+  annotations:
+    workflows.argoproj.io/description: This is a basic hello world workflow that prints hello in 3 steps.
+    workflows.argoproj.io/maintainer: andreas
 spec:
   entrypoint: hello-hello-hello
 
