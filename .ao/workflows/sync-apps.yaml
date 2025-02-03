@@ -18,7 +18,7 @@ spec:
         ]
     - name: max-parralel-syncs
       value: 2
-  parallelism: "{{workflow.parameters.max-parralel-syncs}}"
+  parallelism: {{workflow.parameters.max-parralel-syncs}}
   templates:
   - name: sync-apps
     steps:
