@@ -3,6 +3,7 @@ kind: WorkflowTemplate
 metadata:
   name: sync-apps-2
   annotations:
+    workflows.argoproj.io/description: Don't use this, it doesn't work without having configured artifact storage.
     workflows.argoproj.io/maintainer: andreas
 spec:
   entrypoint: sync-apps
@@ -14,52 +15,6 @@ spec:
   templates:
   - name: sync-apps
     steps:
-    # - - name: get-parent-app
-    #     script:
-    #       image: argoproj/argocd:latest
-    #       command: [sh]
-    #       source: |
-    #         argocd app get app-of-apps -o json > /tmp/parent-app.json
-    #       outputs:
-    #         artifacts:
-    #         - name: parent-app
-    #           path: /tmp/parent-app.json
-    # - - name: get-child-apps
-    #     script:
-    #       image: stedolan/jq:latest
-    #       command: [sh]
-    #       source: |
-    #         # Read the parent app JSON from the previous step
-    #         parent_app=$(cat /tmp/parent-app.json)
-            
-    #         # Extract child applications
-    #         X=$(echo "$parent_app" | jq -r '.status.resources[] | select(.kind == "Application") | .name')
-            
-    #         # Reformat into JSON array
-    #         printf '%s\n' "${X[@]}" | jq -R . | jq -s . > /tmp/output.json
-
-    #         cat /tmp/output.json
-    #       inputs:
-    #         artifacts:
-    #         - name: parent-app
-    #           path: /tmp/parent-app.json
-    #       outputs:
-    #         result:
-    #           path: /tmp/output.json
-    # - - name: get-child-apps
-    #     template: get-child-apps
-    #     arguments:
-    #       parameters:
-    #       - name: "app-name"
-    #         value: "{{workflow.parameters.app-name}}"
-    # - - name: sync-app
-    #     template: sync-app
-    #     arguments:
-    #       parameters:
-    #       - name: "app-name"
-    #         value: "{{item}}"
-    #     withParam: "{{steps.get-child-apps.outputs.results}}"
-
   - name: get-child-apps
     script:
       image: argoproj/argocd:latest
