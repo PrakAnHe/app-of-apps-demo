@@ -36,7 +36,7 @@ spec:
       command: [sh]
       source: |
         argocd login argocd-server.argocd.svc.cluster.local --insecure --username admin --password adminpass > /dev/null &&
-        argocd app get {{inputs.parameters.parent-app-name}} -o json > /tmp/parent-app.json
+        argocd app get {{inputs.parameters.parent-app-name}} -o json | tee /tmp/parent-app.json
     outputs:
       artifacts:
       - name: parent-app
