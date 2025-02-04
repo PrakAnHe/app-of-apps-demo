@@ -60,6 +60,7 @@ spec:
       source: |
         names=$(echo "{{inputs.parameters.parent-app}}" | base64 -d | jq -r '.status.resources[] | select(.kind == "Application") | .name')
         echo "$names" | jq -R . | jq -s . > /tmp/output.json
+        echo "Json array of child apps:"
         cat /tmp/output.json
     outputs:
       parameters:
