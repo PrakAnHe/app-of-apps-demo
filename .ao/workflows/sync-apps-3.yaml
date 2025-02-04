@@ -29,6 +29,7 @@ spec:
       image: argoproj/argocd:latest
       command: [sh]
       source: |
+        argocd login argocd-server.argocd.svc.cluster.local --insecure --username admin --password adminpass
         argocd app get {{inputs.parameters.parent-app-name}} -o json
 
   - name: get-child-apps
