@@ -21,7 +21,7 @@ spec:
         arguments:
           parameters:
           - name: "apps"
-            value: "{{steps.get-parent-app.outputs.parameters.apps}}"
+            value: "{{steps.get-apps.outputs.parameters.apps}}"
     # - - name: sync-app
     #     template: sync-app
     #     arguments:
