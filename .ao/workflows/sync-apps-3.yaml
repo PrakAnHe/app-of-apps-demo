@@ -1,0 +1,67 @@
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: sync-apps-3
+  annotations:
+    workflows.argoproj.io/maintainer: andreas
+spec:
+  entrypoint: sync-apps
+  arguments:
+    parameters:
+    - name: app-name
+      value: "app-of-apps"
+  parallelism: 2
+  templates:
+  - name: sync-apps
+    steps:
+    - - name: get-parent-app
+        template: get-parent-app
+        arguments:
+          parameters:
+          - name: "app-name"
+            value: "{{workflow.parameters.app-name}}"
+
+  - name: get-parent-app
+    inputs:
+      parameters:
+      - name: parent-app
+    script:
+      image: argoproj/argocd:latest
+      command: [sh]
+      source: |
+        argocd app get {{inputs.parameters.parent-app}} -o json
+
+  - name: get-child-apps
+    script:
+      image: argoproj/argocd:latest
+      command: [sh]
+      source: |
+        apt-get install -y jq
+
+        # Get the app-of-apps application     | Get its managed resources  | Select Applications            | Get their names
+        X=`argocd app get app-of-apps -o json | jq -r '.status.resources[] | select(.kind == "Application") | .name'`
+        
+        # Reformat into json array
+        printf '%s\n' "${X[@]}" | jq -R . | jq -s . > /tmp/output.json
+
+        cat /tmp/output.json
+      inputs:
+        artifacts:
+        - name: parent-app
+          path: /tmp/parent-app.json
+      outputs:
+        result:
+          path: /tmp/output.json
+
+  - name: sync-app
+    inputs:
+      parameters:
+      - name: app-name
+    script:
+      image: argoproj/argocd:latest
+      command: [sh]
+      source: |
+        echo "Logging in to Argo CD..."
+        argocd login argocd-server.argocd.svc.cluster.local --insecure --username admin --password adminpass
+        echo "Syncing application {{inputs.parameters.app-name}}..."
+        argocd app sync {{inputs.parameters.app-name}}
