@@ -22,13 +22,13 @@ spec:
           parameters:
           - name: "apps"
             value: "{{steps.get-apps.outputs.parameters.apps}}"
-    # - - name: sync-app
-    #     template: sync-app
-    #     arguments:
-    #       parameters:
-    #       - name: "app-name"
-    #         value: "{{item}}"
-    #     withParam: "{{steps.json-convert.outputs.parameters.apps}}"
+    - - name: sync-app
+        template: sync-app
+        arguments:
+          parameters:
+          - name: "app-name"
+            value: "{{item}}"
+        withParam: "{{steps.json-convert.outputs.parameters.apps}}"
 
   - name: get-apps
     script:
