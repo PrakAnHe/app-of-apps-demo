@@ -10,7 +10,7 @@ spec:
     parameters:
     - name: app-name
       value: "app-of-apps"
-  parallelism: 2
+  parallelism: 4
   templates:
   - name: sync-child-apps
     steps:
