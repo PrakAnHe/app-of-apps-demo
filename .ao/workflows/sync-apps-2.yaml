@@ -20,13 +20,13 @@ spec:
           parameters:
           - name: "app-name"
             value: "{{workflow.parameters.app-name}}"
-    - - name: sync-app
-        template: sync-app
-        arguments:
-          parameters:
-          - name: "app-name"
-            value: "{{item}}"
-        withParam: "{{steps.get-child-apps.outputs.results}}"
+    # - - name: sync-app
+    #     template: sync-app
+    #     arguments:
+    #       parameters:
+    #       - name: "app-name"
+    #         value: "{{item}}"
+    #     withParam: "{{steps.get-child-apps.outputs.results}}"
 
   - name: get-child-apps
     script:
