@@ -39,7 +39,7 @@ spec:
         X=`argocd app get app-of-apps -o json | jq -r '.status.resources[] | select(.kind == "Application") | .name'`
         
         # Reformat into json array
-        printf '%s\n' "${X[@]}" | jq -R . | jq -s .
+        printf '%s\n' "${X[@]}" | jq -R . | jq -s . >$1
 
   - name: sync-app
     inputs:
