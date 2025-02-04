@@ -24,8 +24,8 @@ spec:
         template: get-child-apps
         arguments:
           parameters:
-          - name: "message"
-            value: "Heeeeeeeeeeest"
+          - name: "parent-app"
+            value: "{{steps.get-parent-app.outputs.result}}"
 
   - name: get-parent-app
     inputs:
@@ -38,15 +38,18 @@ spec:
         argocd login argocd-server.argocd.svc.cluster.local --insecure --username admin --password adminpass > /dev/null &&
         argocd app get {{inputs.parameters.parent-app-name}} -o json
     
+
   - name: get-child-apps
     inputs:
       parameters:
-      - name: message
+      - name: parent-app
     script:
       image: stedolan/jq:latest
       command: [sh]
       source: |
-        echo {{inputs.parameters.message}}
+        # X=`echo {{inputs.parameters.parent-app}} | jq -r '.status.resources[] | select(.kind == "Application") | .name'`
+        # printf '%s\n' "${X[@]}" | jq -R . | jq -s . > /tmp/output.json
+        # cat /tmp/output.json
 
   - name: sync-app
     inputs:
