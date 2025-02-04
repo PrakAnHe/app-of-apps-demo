@@ -23,9 +23,9 @@ spec:
     - - name: get-child-apps
         template: get-child-apps
         arguments:
-          parameters:
-          - name: "parent-app"
-            value: "{{steps.get-parent-app.outputs.result}}"
+          artifacts:
+          - name: parent-app
+            from: "{{steps.get-parent-app.outputs.artifacts.parent-app}}"
 
   - name: get-parent-app
     inputs:
@@ -36,19 +36,25 @@ spec:
       command: [sh]
       source: |
         argocd login argocd-server.argocd.svc.cluster.local --insecure --username admin --password adminpass > /dev/null &&
-        argocd app get {{inputs.parameters.parent-app-name}} -o json
+        argocd app get {{inputs.parameters.parent-app-name}} -o json > /tmp/parent-app.json
+    outputs:
+      artifacts:
+      - name: parent-app
+        path: /tmp/parent-app.json
 
   - name: get-child-apps
     script:
       image: stedolan/jq:latest
       command: [sh]
-      inputs:
-        parameters:
-        - name: parent-app
+    inputs:
+      artifacts:
+      - name: parent-app
+        path: /tmp/parent-app.json
       source: |
-        X=`echo {{inputs.parameters.parent-app}} | jq -r '.status.resources[] | select(.kind == "Application") | .name'`
-        printf '%s\n' "${X[@]}" | jq -R . | jq -s . > /tmp/output.json
-        cat /tmp/output.json
+        cat /tmp/parent-app.json
+        # X=`echo {{inputs.parameters.parent-app}} | jq -r '.status.resources[] | select(.kind == "Application") | .name'`
+        # printf '%s\n' "${X[@]}" | jq -R . | jq -s . > /tmp/output.json
+        # cat /tmp/output.json
 
   - name: sync-app
     inputs:
