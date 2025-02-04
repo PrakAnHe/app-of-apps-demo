@@ -33,7 +33,7 @@ spec:
       image: argoproj/argocd:latest
       command: [sh]
       source: |
-        apt update && apt install -y jq
+        apt-get install -y jq
 
         # Get the app-of-apps application     | Get its managed resources  | Select Applications            | Get their names
         X=`argocd app get app-of-apps -o json | jq -r '.status.resources[] | select(.kind == "Application") | .name'`
