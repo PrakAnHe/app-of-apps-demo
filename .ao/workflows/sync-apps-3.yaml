@@ -47,9 +47,10 @@ spec:
         parameters:
         - name: parent-app
       source: |
-        X=`echo {{inputs.parameters.parent-app}} | jq -r '.status.resources[] | select(.kind == "Application") | .name'`
-        printf '%s\n' "${X[@]}" | jq -R . | jq -s . > /tmp/output.json
-        cat /tmp/output.json
+        echo hest
+        # X=`echo {{inputs.parameters.parent-app}} | jq -r '.status.resources[] | select(.kind == "Application") | .name'`
+        # printf '%s\n' "${X[@]}" | jq -R . | jq -s . > /tmp/output.json
+        # cat /tmp/output.json
 
   - name: sync-app
     inputs:
