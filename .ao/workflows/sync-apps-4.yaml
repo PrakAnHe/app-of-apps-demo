@@ -1,0 +1,74 @@
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: sync-apps-3
+  annotations:
+    workflows.argoproj.io/maintainer: andreas
+spec:
+  entrypoint: sync-child-apps
+  arguments:
+    parameters:
+    - name: app-name
+      value: "app-of-apps"
+  parallelism: 4
+  templates:
+  - name: sync-child-apps
+    steps:
+    - - name: get-apps
+        template: get-apps
+    - - name: json-convert
+        template: json-convert
+        arguments:
+          parameters:
+          - name: "apps"
+            value: "{{steps.get-parent-app.outputs.parameters.apps}}"
+    # - - name: sync-app
+    #     template: sync-app
+    #     arguments:
+    #       parameters:
+    #       - name: "app-name"
+    #         value: "{{item}}"
+    #     withParam: "{{steps.get-child-apps.outputs.parameters.child-apps}}"
+
+  - name: get-apps
+    script:
+      image: argoproj/argocd:latest
+      command: [sh]
+      source: |
+        argocd login argocd-server.argocd.svc.cluster.local --insecure --username admin --password adminpass > /dev/null &&
+        argocd app list -o name > /tmp/apps.txt
+        cat /tmp/apps.txt
+    outputs:
+      parameters:
+      - name: apps
+        valueFrom:
+          path: /tmp/apps.txt
+
+  - name: json-convert
+    inputs:
+      parameters:
+      - name: apps
+    script:
+      image: stedolan/jq:latest
+      command: [sh]
+      source: |
+        printf '%s\n' "${apps[@]}" | jq -R . | jq -R . | jq -s . > /tmp/output.json
+        cat /tmp/output.json
+    outputs:
+      parameters:
+      - name: apps
+        valueFrom:
+          path: /tmp/output.json
+
+  - name: sync-app
+    inputs:
+      parameters:
+      - name: app-name
+    script:
+      image: argoproj/argocd:latest
+      command: [sh]
+      source: |
+        echo "Logging in to Argo CD..."
+        argocd login argocd-server.argocd.svc.cluster.local --insecure --username admin --password adminpass
+        echo "Syncing application {{inputs.parameters.app-name}}..."
+        argocd app sync {{inputs.parameters.app-name}}
