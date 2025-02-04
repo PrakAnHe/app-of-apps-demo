@@ -36,7 +36,7 @@ spec:
       command: [sh]
       source: |
         argocd login argocd-server.argocd.svc.cluster.local --insecure --username admin --password adminpass > /dev/null &&
-        argocd app get {{inputs.parameters.parent-app-name}} -o json > /tmp/parent-app.txt
+        argocd app get {{inputs.parameters.parent-app-name}} -o json | base64 -w 0 > /tmp/parent-app.txt
     outputs:
       parameters:
       - name: parent-app
@@ -52,7 +52,10 @@ spec:
       image: stedolan/jq:latest
       command: [sh]
       source: |
-        echo heeeeeest
+        echo {{inputs.parameters.parent-app}}
+        # X=`echo {{inputs.parameters.parent-app}} | jq -r '.status.resources[] | select(.kind == "Application") | .name'`
+        # printf '%s\n' "${X[@]}" | jq -R . | jq -s . > /tmp/output.json
+        # cat /tmp/output.json
 
   - name: sync-app
     inputs:
