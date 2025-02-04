@@ -25,7 +25,7 @@ spec:
         arguments:
           parameters:
           - name: "parent-app"
-            value: "{{steps.get-parent-app.outputs.result}}"
+            value: "Heeeeeeeeeeest"
 
   - name: get-parent-app
     inputs:
