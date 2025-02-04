@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: WorkflowTemplate
 metadata:
-  name: sync-apps-3
+  name: sync-apps-4
   annotations:
     workflows.argoproj.io/maintainer: andreas
 spec:
