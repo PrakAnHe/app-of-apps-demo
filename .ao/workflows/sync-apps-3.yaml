@@ -20,6 +20,12 @@ spec:
           parameters:
           - name: "parent-app-name"
             value: "{{workflow.parameters.app-name}}"
+    - - name: get-child-apps
+        template: get-child-apps
+        arguments:
+          parameters:
+          - name: "parent-app"
+            value: "{{steps.get-parent-app.outputs.result}}"
 
   - name: get-parent-app
     inputs:
@@ -29,30 +35,20 @@ spec:
       image: argoproj/argocd:latest
       command: [sh]
       source: |
-        argocd login argocd-server.argocd.svc.cluster.local --insecure --username admin --password adminpass
+        argocd login argocd-server.argocd.svc.cluster.local --insecure --username admin --password adminpass > /dev/null &&
         argocd app get {{inputs.parameters.parent-app-name}} -o json
 
   - name: get-child-apps
     script:
-      image: argoproj/argocd:latest
+      image: stedolan/jq:latest
       command: [sh]
-      source: |
-        apt-get install -y jq
-
-        # Get the app-of-apps application     | Get its managed resources  | Select Applications            | Get their names
-        X=`argocd app get app-of-apps -o json | jq -r '.status.resources[] | select(.kind == "Application") | .name'`
-        
-        # Reformat into json array
-        printf '%s\n' "${X[@]}" | jq -R . | jq -s . > /tmp/output.json
-
-        cat /tmp/output.json
       inputs:
-        artifacts:
+        parameters:
         - name: parent-app
-          path: /tmp/parent-app.json
-      outputs:
-        result:
-          path: /tmp/output.json
+      source: |
+        X=`echo {{inputs.parameters.parent-app}} | jq -r '.status.resources[] | select(.kind == "Application") | .name'`
+        printf '%s\n' "${X[@]}" | jq -R . | jq -s . > /tmp/output.json
+        cat /tmp/output.json
 
   - name: sync-app
     inputs:
