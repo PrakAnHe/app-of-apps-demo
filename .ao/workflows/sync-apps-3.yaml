@@ -47,9 +47,9 @@ spec:
       image: stedolan/jq:latest
       command: [sh]
       source: |
-        # X=`echo {{inputs.parameters.parent-app}} | jq -r '.status.resources[] | select(.kind == "Application") | .name'`
-        # printf '%s\n' "${X[@]}" | jq -R . | jq -s . > /tmp/output.json
-        # cat /tmp/output.json
+        X=`echo {{inputs.parameters.parent-app}} | jq -r '.status.resources[] | select(.kind == "Application") | .name'`
+        printf '%s\n' "${X[@]}" | jq -R . | jq -s . > /tmp/output.json
+        cat /tmp/output.json
 
   - name: sync-app
     inputs:
