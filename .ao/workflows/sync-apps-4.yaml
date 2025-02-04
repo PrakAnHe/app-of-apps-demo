@@ -52,7 +52,7 @@ spec:
       image: stedolan/jq:latest
       command: [sh]
       source: |
-        printf '%s\n' "${apps[@]}" | jq -R . | jq -R . | jq -s . > /tmp/output.json
+        echo "$names" | jq -R . | jq -R . | jq -s . > /tmp/output.json
         cat /tmp/output.json
     outputs:
       parameters:
