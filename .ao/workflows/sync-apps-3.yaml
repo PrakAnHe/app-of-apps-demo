@@ -42,7 +42,6 @@ spec:
       - name: parent-app
         valueFrom:
           path: /tmp/parent-app.txt
-    
 
   - name: get-child-apps
     inputs:
@@ -53,7 +52,7 @@ spec:
       command: [sh]
       source: |
         names=$(echo "{{inputs.parameters.parent-app}}" | base64 -d | jq -r '.status.resources[] | select(.kind == "Application") | .name')
-        printf '%s\n' "${names[@]}" | jq -R . | jq -s . > /tmp/output.json
+        echo "$names" | jq -R . | jq -s . > /tmp/output.json
         cat /tmp/output.json
 
   - name: sync-app
