@@ -5,14 +5,14 @@ metadata:
   annotations:
     workflows.argoproj.io/maintainer: andreas
 spec:
-  entrypoint: sync-apps
+  entrypoint: sync-child-apps
   arguments:
     parameters:
     - name: app-name
       value: "app-of-apps"
   parallelism: 2
   templates:
-  - name: sync-apps
+  - name: sync-child-apps
     steps:
     - - name: get-parent-app
         template: get-parent-app
@@ -26,6 +26,13 @@ spec:
           parameters:
           - name: "parent-app"
             value: "{{steps.get-parent-app.outputs.parameters.parent-app}}"
+    - - name: sync-app
+        template: sync-app
+        arguments:
+          parameters:
+          - name: "app-name"
+            value: "{{item}}"
+        withParam: "{{steps.get-child-apps.outputs.parameters.child-apps}}"
 
   - name: get-parent-app
     inputs:
@@ -54,6 +61,11 @@ spec:
         names=$(echo "{{inputs.parameters.parent-app}}" | base64 -d | jq -r '.status.resources[] | select(.kind == "Application") | .name')
         echo "$names" | jq -R . | jq -s . > /tmp/output.json
         cat /tmp/output.json
+    outputs:
+      parameters:
+      - name: child-apps
+        valueFrom:
+          path: /tmp/output.json
 
   - name: sync-app
     inputs:
