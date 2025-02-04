@@ -18,18 +18,18 @@ spec:
         template: get-parent-app
         arguments:
           parameters:
-          - name: "app-name"
+          - name: "parent-app-name"
             value: "{{workflow.parameters.app-name}}"
 
   - name: get-parent-app
     inputs:
       parameters:
-      - name: parent-app
+      - name: parent-app-name
     script:
       image: argoproj/argocd:latest
       command: [sh]
       source: |
-        argocd app get {{inputs.parameters.parent-app}} -o json
+        argocd app get {{inputs.parameters.parent-app-name}} -o json
 
   - name: get-child-apps
     script:
