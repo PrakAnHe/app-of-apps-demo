@@ -24,7 +24,7 @@ spec:
         template: get-child-apps
         arguments:
           parameters:
-          - name: "parent-app"
+          - name: "message"
             value: "Heeeeeeeeeeest"
 
   - name: get-parent-app
@@ -45,9 +45,9 @@ spec:
       command: [sh]
       inputs:
         parameters:
-        - name: parent-app
+        - name: message
       source: |
-        echo hest
+        echo {{inputs.parameters.message}}
 
   - name: sync-app
     inputs:
