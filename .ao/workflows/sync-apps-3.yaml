@@ -38,14 +38,13 @@ spec:
         argocd login argocd-server.argocd.svc.cluster.local --insecure --username admin --password adminpass > /dev/null &&
         argocd app get {{inputs.parameters.parent-app-name}} -o json
     
-
   - name: get-child-apps
+    inputs:
+      parameters:
+      - name: message
     script:
       image: stedolan/jq:latest
       command: [sh]
-      inputs:
-        parameters:
-        - name: message
       source: |
         echo {{inputs.parameters.message}}
 
