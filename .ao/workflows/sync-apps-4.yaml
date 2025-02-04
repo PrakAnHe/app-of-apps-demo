@@ -36,7 +36,7 @@ spec:
       command: [sh]
       source: |
         argocd login argocd-server.argocd.svc.cluster.local --insecure --username admin --password adminpass > /dev/null &&
-        argocd app list -o name > /tmp/apps.txt
+        argocd app list -o name | base64 -w 0 > /tmp/apps.txt
         cat /tmp/apps.txt
     outputs:
       parameters:
@@ -52,7 +52,7 @@ spec:
       image: stedolan/jq:latest
       command: [sh]
       source: |
-        echo {{inputs.parameters.apps}} | jq -R . | jq -s . > /tmp/output.json
+        echo {{inputs.parameters.apps}} | base64 -d | jq -R . | jq -s . > /tmp/output.json
         cat /tmp/output.json
     outputs:
       parameters:
