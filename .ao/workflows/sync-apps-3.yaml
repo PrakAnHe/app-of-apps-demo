@@ -25,7 +25,7 @@ spec:
         arguments:
           parameters:
           - name: "parent-app"
-            value: "{{steps.get-parent-app.outputs.result}}"
+            value: "{{steps.get-parent-app.outputs.parameters.parent-app}}"
 
   - name: get-parent-app
     inputs:
@@ -36,8 +36,12 @@ spec:
       command: [sh]
       source: |
         argocd login argocd-server.argocd.svc.cluster.local --insecure --username admin --password adminpass > /dev/null &&
-        argocd app get {{inputs.parameters.parent-app-name}} -o json > /dev/null
-        echo Heeeeeeest
+        argocd app get {{inputs.parameters.parent-app-name}} -o json > /tmp/parent-app.txt
+    outputs:
+      parameters:
+      - name: parent-app
+        valueFrom:
+          path: /tmp/parent-app.txt
     
 
   - name: get-child-apps
