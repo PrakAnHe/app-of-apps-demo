@@ -14,12 +14,44 @@ spec:
   templates:
   - name: sync-apps
     steps:
+    - - name: get-parent-app
+        script:
+          image: argoproj/argocd:latest
+          command: [sh]
+          source: |
+            argocd app get app-of-apps -o json > /tmp/parent-app.json
+          outputs:
+            artifacts:
+            - name: parent-app
+              path: /tmp/parent-app.json
     - - name: get-child-apps
-        template: get-child-apps
-        arguments:
-          parameters:
-          - name: "app-name"
-            value: "{{workflow.parameters.app-name}}"
+        script:
+          image: stedolan/jq:latest
+          command: [sh]
+          source: |
+            # Read the parent app JSON from the previous step
+            parent_app=$(cat /tmp/parent-app.json)
+            
+            # Extract child applications
+            X=$(echo "$parent_app" | jq -r '.status.resources[] | select(.kind == "Application") | .name')
+            
+            # Reformat into JSON array
+            printf '%s\n' "${X[@]}" | jq -R . | jq -s . > /tmp/output.json
+
+            cat /tmp/output.json
+          inputs:
+            artifacts:
+            - name: parent-app
+              path: /tmp/parent-app.json
+          outputs:
+            result:
+              path: /tmp/output.json
+    # - - name: get-child-apps
+    #     template: get-child-apps
+    #     arguments:
+    #       parameters:
+    #       - name: "app-name"
+    #         value: "{{workflow.parameters.app-name}}"
     # - - name: sync-app
     #     template: sync-app
     #     arguments:
@@ -33,7 +65,7 @@ spec:
       image: argoproj/argocd:latest
       command: [sh]
       source: |
-        sudo apt-get install -y jq
+        apt-get install -y jq
 
         # Get the app-of-apps application     | Get its managed resources  | Select Applications            | Get their names
         X=`argocd app get app-of-apps -o json | jq -r '.status.resources[] | select(.kind == "Application") | .name'`
