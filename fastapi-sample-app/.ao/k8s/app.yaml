@@ -29,7 +29,7 @@ spec:
         - containerPort: 8000
         env:
         - name: MESSAGE
-          value: "Hello from Kubernetes!!!"
+          value: "Hello from Kubernetes!!!!"
         - name: POSTGRES_HOST
           value: "postgres-service"
         - name: POSTGRES_PORT
