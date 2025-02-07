@@ -28,9 +28,9 @@ spec:
       canaryService: canary-demo-preview
       trafficRouting:
         nginx:
-          stableIngress: canary-demo
+          stableIngress: ingress
       steps:
       - setWeight: 20
-      - pause: {duration: "30s"}
+      - pause: {duration: "20s"}
       - setWeight: 60
-      - pause: {duration: "30s"}
+      - pause: {duration: "20s"}
