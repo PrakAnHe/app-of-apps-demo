@@ -6,6 +6,6 @@ resources:
 - base/guestbook-rollout.yaml
 - canary/canary-service.yaml
 # - canary/canary-ingress.yaml
-- canary/canary-preview-service.yaml
+# - canary/canary-preview-service.yaml
 # - canary/canary-preview-ingress.yaml
 - canary/ingress.yaml
