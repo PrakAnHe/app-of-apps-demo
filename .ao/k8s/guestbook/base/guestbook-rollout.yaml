@@ -24,7 +24,11 @@ spec:
           value: "Hest!"
   strategy:
     canary:
+      stableService: canary-demo
       canaryService: canary-demo-preview
+      trafficRouting:
+        nginx:
+          stableIngress: canary-demo
       steps:
       - setWeight: 20
       - pause: {duration: "30s"}
