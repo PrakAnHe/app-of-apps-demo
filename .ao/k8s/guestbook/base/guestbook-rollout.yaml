@@ -19,6 +19,9 @@ spec:
         ports:
         - name: http
           containerPort: 80
+        env:
+        - name: MESSAGE
+          value: "Hest"
   strategy:
     canary:
       canaryService: canary-demo-preview
