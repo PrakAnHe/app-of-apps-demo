@@ -24,8 +24,8 @@ spec:
           value: "Hest!!!!!!"
   strategy:
     canary:
-      # stableService: canary-demo
-      # canaryService: canary-demo-preview
+      stableService: canary-demo
+      canaryService: canary-demo-preview
       trafficRouting:
         nginx:
           stableIngress: ingress
