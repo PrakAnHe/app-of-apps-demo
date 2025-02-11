@@ -21,7 +21,7 @@ spec:
           containerPort: 80
         env:
         - name: MESSAGE
-          value: "Hest!!!!!!"
+          value: "Hest!!!!!!!"
   strategy:
     canary:
       stableService: canary-demo
