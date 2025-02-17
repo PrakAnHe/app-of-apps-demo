@@ -22,20 +22,20 @@ spec:
         env:
         - name: MESSAGE
           value: "Hest!!!!!!!!!"
-      affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-            - matchExpressions:
-              - key: array
-                operator: In
-                values:
-                - PROD
-      tolerations:
-      - effect: NoSchedule
-        key: target-array
-        operator: Equal
-        value: PROD
+      # affinity:
+      #   nodeAffinity:
+      #     requiredDuringSchedulingIgnoredDuringExecution:
+      #       nodeSelectorTerms:
+      #       - matchExpressions:
+      #         - key: array
+      #           operator: In
+      #           values:
+      #           - PROD
+      # tolerations:
+      # - effect: NoSchedule
+      #   key: target-array
+      #   operator: Equal
+      #   value: PROD
   strategy:
     canary:
       stableService: canary-demo
