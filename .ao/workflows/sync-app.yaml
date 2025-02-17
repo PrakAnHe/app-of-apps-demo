@@ -1,0 +1,22 @@
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: sync-app
+  annotations:
+    workflows.argoproj.io/maintainer: andreas
+spec:
+  entrypoint: sync-app
+  arguments:
+    parameters:
+    - name: app-name
+      value: "guestbook"
+  templates:
+  - name: sync-app
+    script:
+      image: argoproj/argocd:latest
+      command: [sh]
+      source: |
+        echo "Logging in to Argo CD..."
+        argocd login argocd-server.argocd.svc.cluster.local --insecure --username admin --password adminpass
+        echo "Syncing application {{workflow.parameters.app-name}}..."
+        argocd app sync {{workflow.parameters.app-name}}

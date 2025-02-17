@@ -1,23 +1,23 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: argo-workflows-demos
+  name: argo-workflows
 
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: workflows-demos
+  name: workflows
   namespace: argocd
 spec:
   project: default
   source:
     repoURL: 'https://github.com/PrakAnHe/app-of-apps-demo.git'
     targetRevision: HEAD
-    path: '.ao/workflows/demos'
+    path: '.ao/workflows'
   destination:
     server: 'https://kubernetes.default.svc'
-    namespace: argo-workflows-demos
+    namespace: argo-workflows
   syncPolicy:
     automated:
       prune: true
