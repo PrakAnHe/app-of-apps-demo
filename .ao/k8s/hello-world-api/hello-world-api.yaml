@@ -21,6 +21,20 @@ spec:
         env:
         - name: MESSAGE
           value: "Horse Hest Horses!!!!!!"
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: myEnv
+                operator: In
+                values:
+                - PROD
+      tolerations:
+      - effect: NoSchedule
+        key: target-env
+        operator: Equal
+        value: PROD
 
 ---
 apiVersion: v1

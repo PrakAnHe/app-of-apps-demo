@@ -47,6 +47,20 @@ spec:
           initialDelaySeconds: 6
           periodSeconds: 3
           failureThreshold: 3
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: myEnv
+                operator: In
+                values:
+                - PROD
+      tolerations:
+      - effect: NoSchedule
+        key: target-env
+        operator: Equal
+        value: PROD
 
 ---
 apiVersion: v1
