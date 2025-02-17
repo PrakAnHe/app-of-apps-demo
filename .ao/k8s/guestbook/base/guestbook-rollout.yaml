@@ -31,11 +31,11 @@ spec:
                 operator: In
                 values:
                 - PROD
-      # tolerations:
-      # - effect: NoSchedule
-      #   key: target-array
-      #   operator: Equal
-      #   value: PROD
+      tolerations:
+      - effect: NoSchedule
+        key: target-array
+        operator: Equal
+        value: PROD
   strategy:
     canary:
       stableService: canary-demo
