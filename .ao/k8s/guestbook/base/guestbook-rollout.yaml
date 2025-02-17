@@ -22,15 +22,15 @@ spec:
         env:
         - name: MESSAGE
           value: "Hest!!!!!!!!!"
-      # affinity:
-      #   nodeAffinity:
-      #     requiredDuringSchedulingIgnoredDuringExecution:
-      #       nodeSelectorTerms:
-      #       - matchExpressions:
-      #         - key: array
-      #           operator: In
-      #           values:
-      #           - PROD
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: k8s.scaleway.com/array
+                operator: In
+                values:
+                - PROD
       # tolerations:
       # - effect: NoSchedule
       #   key: target-array
