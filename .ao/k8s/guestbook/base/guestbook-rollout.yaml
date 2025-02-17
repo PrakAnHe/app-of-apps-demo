@@ -27,13 +27,13 @@ spec:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
             - matchExpressions:
-              - key: myEnv
+              - key: array
                 operator: In
                 values:
                 - PROD
       tolerations:
       - effect: NoSchedule
-        key: target-env
+        key: target-array
         operator: Equal
         value: PROD
   strategy:
