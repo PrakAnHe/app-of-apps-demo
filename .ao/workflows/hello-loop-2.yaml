@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: WorkflowTemplate
 metadata:
-  name: hello-loop-2
+  name: z-hello-loop-2
   annotations:
     workflows.argoproj.io/description: This is a basic hello world workflow that prints hello messages in two nested loops.
     workflows.argoproj.io/maintainer: andreas

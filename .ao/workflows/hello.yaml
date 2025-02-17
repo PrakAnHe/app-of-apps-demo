@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: WorkflowTemplate
 metadata:
-  name: hello-step
+  name: z-hello-step
   annotations:
     workflows.argoproj.io/description: This is a basic hello world workflow that prints hello.
     workflows.argoproj.io/maintainer: andreas

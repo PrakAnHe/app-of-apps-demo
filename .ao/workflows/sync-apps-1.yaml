@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: WorkflowTemplate
 metadata:
-  name: sync-apps-1
+  name: z-sync-apps-1
   annotations:
     workflows.argoproj.io/maintainer: andreas
 spec:

@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: WorkflowTemplate
 metadata:
-  name: sync-apps-2
+  name: z-sync-apps-2
   annotations:
     workflows.argoproj.io/description: Don't use this, it doesn't work without having configured artifact storage.
     workflows.argoproj.io/maintainer: andreas
