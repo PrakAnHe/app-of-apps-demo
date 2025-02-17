@@ -3,7 +3,7 @@ kind: Rollout
 metadata:
   name: guestbook-ui
 spec:
-  replicas: 2
+  replicas: 10
   revisionHistoryLimit: 1
   selector:
     matchLabels:
@@ -22,6 +22,20 @@ spec:
         env:
         - name: MESSAGE
           value: "Hest!!!!!!!!"
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: myEnv
+                operator: In
+                values:
+                - PROD
+      tolerations:
+      - effect: NoSchedule
+        key: target-env
+        operator: Equal
+        value: PROD
   strategy:
     canary:
       stableService: canary-demo
