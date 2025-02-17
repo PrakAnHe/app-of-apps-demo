@@ -44,6 +44,8 @@ spec:
         nginx:
           stableIngress: ingress
       steps:
+      - setWeight: 50
+      - pause: {}
       - setWeight: 100
       - pause: {duration: "10s"}
       # - setWeight: 20
