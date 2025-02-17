@@ -25,4 +25,4 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: default
-  namespace: argo
+  namespace: argo-workflows-demos
