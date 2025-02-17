@@ -33,7 +33,7 @@ spec:
                 - PROD
       tolerations:
       - effect: NoSchedule
-        key: target-array
+        key: k8s.scaleway.com/target-array
         operator: Equal
         value: PROD
   strategy:
