@@ -26,13 +26,13 @@ spec:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
             - matchExpressions:
-              - key: array
+              - key: k8s.scaleway.com/array
                 operator: In
                 values:
                 - PROD
       tolerations:
       - effect: NoSchedule
-        key: target-array
+        key: k8s.scaleway.com/target-array
         operator: Equal
         value: PROD
 
