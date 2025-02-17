@@ -7,14 +7,14 @@ metadata:
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: workflows-app
+  name: workflows-demos
   namespace: argocd
 spec:
   project: default
   source:
     repoURL: 'https://github.com/PrakAnHe/app-of-apps-demo.git'
     targetRevision: HEAD
-    path: '.ao/workflows'
+    path: '.ao/workflows/demos'
   destination:
     server: 'https://kubernetes.default.svc'
     namespace: argo-workflows
