@@ -5,7 +5,7 @@ metadata:
   annotations:
     workflows.argoproj.io/maintainer: andreas
 spec:
-  entrypoint: monitor-rollout
+  entrypoint: deploy-app
   arguments:
     parameters:
     - name: app-name
