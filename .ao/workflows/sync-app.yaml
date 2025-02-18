@@ -38,7 +38,7 @@ spec:
         x=1
         while [ $x -le 120 ]
         do
-          status=$(argocd app get {{workflow.parameters.app-name}} -o json | jq .status.health.status)
+          status=$(argocd app get {{workflow.parameters.app-name}} -o json | jq -r .status.health.status)
           echo $status
 
           if [ "$status" = "Degraded" ]; then
