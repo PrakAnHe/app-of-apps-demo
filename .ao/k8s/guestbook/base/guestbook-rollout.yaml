@@ -21,7 +21,7 @@ spec:
           containerPort: 80
         env:
         - name: MESSAGE
-          value: "Hest!!!!!!!!!!!!!!!"
+          value: "Hest!!!!!!!!!!!!!!!!"
       affinity:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
@@ -44,11 +44,7 @@ spec:
         nginx:
           stableIngress: ingress
       steps:
-      - setWeight: 50
-      - pause: {}
-      - setWeight: 100
+      - setWeight: 10
       - pause: {duration: "10s"}
-      # - setWeight: 20
-      # - pause: {duration: "10s"}
-      # - setWeight: 60
-      # - pause: {duration: "10s"}
+      - setWeight: 100
+      - pause: {}
