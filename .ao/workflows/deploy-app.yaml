@@ -47,7 +47,7 @@ spec:
 
           if [ "$status" = "Degraded" ]; then
             echo "{{workflow.parameters.app-name}} application is Degraded"
-            sentry-cli send-event -m "Deployment of application \"{{workflow.parameters.app-name}}\" failed." -m "Application is Degraded."
+            sentry-cli send-event -m "Deployment of application \'{{workflow.parameters.app-name}}\' failed." -m "Application is Degraded."
             exit 1
           fi
 
@@ -61,5 +61,5 @@ spec:
         done
 
         echo "Timed out after {{workflow.parameters.monitor-timeout-seconds}} seconds"
-        sentry-cli send-event -m "Deployment of application \"{{workflow.parameters.app-name}}\" failed." -m "Monitor timed out after {{workflow.parameters.monitor-timeout-seconds}} seconds."
+        sentry-cli send-event -m "Deployment of application \'{{workflow.parameters.app-name}}\' failed." -m "Monitor timed out after {{workflow.parameters.monitor-timeout-seconds}} seconds."
         exit 1
