@@ -36,7 +36,7 @@ spec:
       command: [sh]
       source: |
         argocd login argocd-server.argocd.svc.cluster.local --insecure --username admin --password adminpass
-        export SENTRY_DSN="https://310e4e49a5bdc439f87f68f566afaa02@o4508840367882240.ingest.de.sentry.io/4508840377253968"
+        export SENTRY_DSN="https://add568bc79479f8633f796ac375e2a52@o4508840730689536.ingest.de.sentry.io/4508840737833040"
 
         x=1
         while [ $x -le {{workflow.parameters.monitor-timeout-seconds}} ]
@@ -56,7 +56,7 @@ spec:
             exit 0
           fi
           
-          (($x++))
+          (x=$(( $x + 1 )))
           sleep 1
         done
 
