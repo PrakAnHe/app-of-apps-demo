@@ -36,3 +36,4 @@ spec:
         key: k8s.scaleway.com/target-array
         operator: Equal
         value: PROD
+  backoffLimit: 3
