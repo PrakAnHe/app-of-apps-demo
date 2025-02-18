@@ -36,6 +36,7 @@ spec:
       command: [sh]
       source: |
         argocd login argocd-server.argocd.svc.cluster.local --insecure --username admin --password adminpass
+        export SENTRY_DSN="https://310e4e49a5bdc439f87f68f566afaa02@o4508840367882240.ingest.de.sentry.io/4508840377253968"
 
         x=1
         while [ $x -le {{workflow.parameters.monitor-timeout-seconds}} ]
@@ -45,13 +46,12 @@ spec:
 
           if [ "$status" = "Degraded" ]; then
             echo "{{workflow.parameters.app-name}} application is Degraded"
+            sentry-cli send-event -m "Deployment of {{workflow.parameters.app-name}} failed. Application is Degraded."
             exit 1
           fi
 
           if [ "$status" = "Healthy" ]; then
             echo "{{workflow.parameters.app-name}} application is Healthy"
-            export SENTRY_DSN="https://310e4e49a5bdc439f87f68f566afaa02@o4508840367882240.ingest.de.sentry.io/4508840377253968"
-            sentry-cli send-event -m "Guestbook is healthy. Also, hest!"
             exit 0
           fi
           
@@ -60,4 +60,5 @@ spec:
         done
 
         echo "Timed out after {{workflow.parameters.monitor-timeout-seconds}} seconds"
+        sentry-cli send-event -m "Deployment of {{workflow.parameters.app-name}} application timed out after {{workflow.parameters.monitor-timeout-seconds}} seconds."
         exit 1
