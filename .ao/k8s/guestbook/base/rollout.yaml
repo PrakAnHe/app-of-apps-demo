@@ -38,8 +38,8 @@ spec:
         value: PROD
   strategy:
     canary:
-      stableService: canary-demo
-      canaryService: canary-demo-preview
+      stableService: guestbook-ui
+      canaryService: guestbook-ui-canary
       trafficRouting:
         nginx:
           stableIngress: ingress
