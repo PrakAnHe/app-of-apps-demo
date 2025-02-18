@@ -34,14 +34,14 @@ spec:
       command: [sh]
       source: |
         echo "Update"
-        sudo apt update 
+        apt-get update 
         echo "Upgrade"
-        sudo apt upgrade 
+        apt-get upgrade -y
         echo "Install"
-        sudo apt install -y jq
+        apt-get install -y jq
 
-        x=20
-        while [ $x -le 5 ]
+        x=1
+        while [ $x -le 20 ]
         do
           echo "Welcome $x times"
           x=$(( $x + 1 ))
