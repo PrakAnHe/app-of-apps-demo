@@ -30,16 +30,10 @@ spec:
 
   - name: monitor-rollout
     script:
-      image: argoproj/argocd:latest
+      image: prakahe/argo-cluster-control:latest
       command: [sh]
       source: |
-        echo "Update"
-        sudo apt-get update 
-        echo "Upgrade"
-        sudo apt-get upgrade -y
-        echo "Install"
-        sudo apt-get install -y jq
-
+        argocd login argocd-server.argocd.svc.cluster.local --insecure --username admin --password adminpass
         x=1
         while [ $x -le 20 ]
         do
