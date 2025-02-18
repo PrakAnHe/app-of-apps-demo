@@ -10,6 +10,8 @@ spec:
     parameters:
     - name: app-name
       value: "guestbook"
+    - name: monitor-timeout-seconds
+      value: 120
   templates:
   - name: deploy-app
     steps:
@@ -36,7 +38,7 @@ spec:
         argocd login argocd-server.argocd.svc.cluster.local --insecure --username admin --password adminpass
 
         x=1
-        while [ $x -le 120 ]
+        while [ $x -le {{workflow.parameters.monitor-timeout-seconds}} ]
         do
           status=$(argocd app get {{workflow.parameters.app-name}} -o json | jq -r .status.health.status)
           echo $status
@@ -55,5 +57,5 @@ spec:
           sleep 1
         done
 
-        echo "Timed out after 120 seconds"
+        echo "Timed out after {{workflow.parameters.monitor-timeout-seconds}} seconds"
         exit 1
