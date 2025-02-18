@@ -45,6 +45,6 @@ spec:
           stableIngress: ingress
       steps:
       - setWeight: 10
-      - pause: {duration: "30s"}
+      - pause: {duration: "20s"}
       - setWeight: 100
       - pause: {duration: "20s"}
