@@ -21,7 +21,7 @@ spec:
           containerPort: 80
         env:
         - name: MESSAGE
-          value: "Hest!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+          value: "Hest!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
       affinity:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
@@ -47,4 +47,4 @@ spec:
       - setWeight: 10
       - pause: {duration: "30s"}
       - setWeight: 100
-      - pause: {duration: "30s"}
+      - pause: {duration: "10s"}
