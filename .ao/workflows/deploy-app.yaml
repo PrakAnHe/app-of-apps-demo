@@ -17,8 +17,8 @@ spec:
     steps:
     - - name: sync-app
         template: sync-app
-    - - name: monitor-rollout
-        template: monitor-rollout
+    - - name: monitor-deployment
+        template: monitor-deployment
 
   - name: sync-app
     script:
@@ -30,7 +30,7 @@ spec:
         echo "Syncing application {{workflow.parameters.app-name}}..."
         argocd app sync {{workflow.parameters.app-name}}
 
-  - name: monitor-rollout
+  - name: monitor-deployment
     script:
       image: prakahe/argo-cluster-control:latest
       command: [sh]
@@ -50,6 +50,7 @@ spec:
 
           if [ "$status" = "Healthy" ]; then
             echo "{{workflow.parameters.app-name}} application is Healthy"
+            sentry-cli send-event -m "Guestbook is healthy. Also, hest!"
             exit 0
           fi
           
