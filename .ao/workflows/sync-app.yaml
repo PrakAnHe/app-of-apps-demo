@@ -33,7 +33,12 @@ spec:
       image: argoproj/argocd:latest
       command: [sh]
       source: |
-        apt update && apt upgrade && apt install -y jq
+        echo "Update"
+        apt update 
+        echo "Upgrade"
+        apt upgrade 
+        echo "Install"
+        apt install -y jq
 
         x=20
         while [ $x -le 5 ]
