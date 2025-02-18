@@ -34,12 +34,12 @@ spec:
       command: [sh]
       source: |
         argocd login argocd-server.argocd.svc.cluster.local --insecure --username admin --password adminpass
-        
+
         x=1
         while [ $x -le 120 ]
         do
           status=$(argocd app get {{workflow.parameters.app-name}} -o json | jq .status.health.status)
-          echo "{{workflow.parameters.app-name}} application is $status"
+          echo $status
 
           if [ "$status" = "Degraded" ]; then
             echo "{{workflow.parameters.app-name}} application is Degraded"
