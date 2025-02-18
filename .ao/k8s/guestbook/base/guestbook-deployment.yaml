@@ -21,7 +21,7 @@ spec:
           containerPort: 80
         env:
         - name: MESSAGE
-          value: "Hest!!!!!!!!!!!!!!!"
+          value: "Hest!!!!!!!!!!!!!!!!"
       affinity:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
@@ -36,4 +36,3 @@ spec:
         key: k8s.scaleway.com/target-array
         operator: Equal
         value: PROD
-        
