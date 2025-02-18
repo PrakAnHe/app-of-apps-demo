@@ -57,7 +57,7 @@ spec:
           fi
 
           echo $x
-          (x=$(( $x + 1 )))
+          x=$((x + 1))
           echo $x
           sleep 1
         done
