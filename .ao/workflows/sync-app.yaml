@@ -11,6 +11,13 @@ spec:
     - name: app-name
       value: "guestbook"
   templates:
+  - name: deploy-app
+    steps:
+    - - name: sync-app
+        template: sync-app
+    - - name: monitor-rollout
+        template: monitor-rollout
+
   - name: sync-app
     script:
       image: argoproj/argocd:latest
@@ -20,3 +27,19 @@ spec:
         argocd login argocd-server.argocd.svc.cluster.local --insecure --username admin --password adminpass
         echo "Syncing application {{workflow.parameters.app-name}}..."
         argocd app sync {{workflow.parameters.app-name}}
+
+  - name: monitor-rollout
+    script:
+      image: argoproj/argocd:latest
+      command: [sh]
+      source: |
+        apt update && apt upgrade && apt install -y jq
+
+        x=20
+        while [ $x -le 5 ]
+        do
+          echo "Welcome $x times"
+          x=$(( $x + 1 ))
+          sleep 1
+          argocd app get {{workflow.parameters.app-name}} -o json | jq .status.health.status
+        done
