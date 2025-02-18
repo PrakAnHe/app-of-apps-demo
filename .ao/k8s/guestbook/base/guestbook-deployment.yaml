@@ -1,5 +1,5 @@
-apiVersion: argoproj.io/v1alpha1
-kind: Rollout
+apiVersion: apps/v1
+kind: Deployment
 metadata:
   name: guestbook-ui
 spec:
@@ -36,19 +36,4 @@ spec:
         key: k8s.scaleway.com/target-array
         operator: Equal
         value: PROD
-  strategy:
-    canary:
-      stableService: canary-demo
-      canaryService: canary-demo-preview
-      trafficRouting:
-        nginx:
-          stableIngress: ingress
-      steps:
-      - setWeight: 50
-      - pause: {}
-      - setWeight: 100
-      - pause: {duration: "10s"}
-      # - setWeight: 20
-      # - pause: {duration: "10s"}
-      # - setWeight: 60
-      # - pause: {duration: "10s"}
+        

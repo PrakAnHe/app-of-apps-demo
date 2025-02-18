@@ -3,7 +3,8 @@ kind: Kustomization
 
 resources:
 - base/guestbook-namespace.yaml
-- base/guestbook-rollout.yaml
+- base/guestbook-deployment.yaml
+# - base/guestbook-rollout.yaml
 - canary/canary-service.yaml
 # - canary/canary-ingress.yaml
 - canary/canary-preview-service.yaml
