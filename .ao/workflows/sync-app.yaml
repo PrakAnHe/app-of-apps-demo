@@ -34,11 +34,11 @@ spec:
       command: [sh]
       source: |
         echo "Update"
-        apt update 
+        sudo apt update 
         echo "Upgrade"
-        apt upgrade 
+        sudo apt upgrade 
         echo "Install"
-        apt install -y jq
+        sudo apt install -y jq
 
         x=20
         while [ $x -le 5 ]
