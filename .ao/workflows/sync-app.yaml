@@ -54,3 +54,6 @@ spec:
           x=$(( $x + 1 ))
           sleep 1
         done
+
+        echo "Timed out after 120 seconds"
+        exit 1
