@@ -56,7 +56,7 @@ spec:
             exit 0
           fi
           
-          ((x++))
+          (($x++))
           sleep 1
         done
 
