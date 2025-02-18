@@ -1,11 +1,11 @@
 apiVersion: argoproj.io/v1alpha1
 kind: WorkflowTemplate
 metadata:
-  name: sync-app
+  name: deploy-app
   annotations:
     workflows.argoproj.io/maintainer: andreas
 spec:
-  entrypoint: sync-app
+  entrypoint: deploy-app
   arguments:
     parameters:
     - name: app-name
