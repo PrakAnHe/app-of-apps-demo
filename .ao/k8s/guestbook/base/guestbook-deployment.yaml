@@ -14,14 +14,14 @@ spec:
         app: guestbook-ui
     spec:
       containers:
-      - image: gcr.io/heptio-images/ks-guestbook-demo:0.2
+      - image: gcr.io/heptio-images/ks-guestbook-demo:0.2123123
         name: guestbook-ui
         ports:
         - name: http
           containerPort: 80
         env:
         - name: MESSAGE
-          value: "Hest!!!!!!!!!!!!!!!!!"
+          value: "Hest!!!!!!!!!!!!!!!!!!"
       affinity:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
