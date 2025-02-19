@@ -42,7 +42,6 @@ spec:
           value: "admin"
         - name: POSTGRES_PASSWORD
           value: "password"
-        restartPolicy: Never
         livenessProbe:
           httpGet:
             path: /h
