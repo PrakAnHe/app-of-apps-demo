@@ -1,0 +1,40 @@
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: deploy-list-of-apps
+  annotations:
+    workflows.argoproj.io/maintainer: andreas
+spec:
+  entrypoint: deploy-list-of-apps
+  arguments:
+    parameters:
+    - name: app-names
+      value: |
+        [
+          "aoa-bootloader",
+          "app-of-apps",
+          "fastapi-sample-app",
+          "guestbook",
+          "hello-world-api",
+          "hello-world-api-1",
+          "hello-world-api-2",
+          "hello-world-api-3",
+          "hello-world-api-4",
+          "hello-world-api-5",
+          "hello-world-api-6",
+          "workflows",
+          "workflows-demos"
+        ]
+  parallelism: 4
+  templates:
+  - name: deploy-list-of-apps
+    steps:
+    - - name: sync-app
+        templateRef:
+          name: deploy-app
+          template: deploy-app
+        arguments:
+          parameters:
+          - name: "app-name"
+            value: "{{item}}"
+        withParam: "{{workflow.parameters.app-names}}"
