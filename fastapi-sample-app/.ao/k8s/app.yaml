@@ -31,9 +31,9 @@ spec:
         - name: MESSAGE
           value: "Hello from Kubernetes!!!!"
         - name: CRASH_ON_START
-          value: "true"
+          value: "false"
         - name: POSTGRES_HOST
-          value: "postgres-service"
+          value: "postgres-service-aaaaaaaaaaaaaaasdasdasdasd"
         - name: POSTGRES_PORT
           value: "5432"
         - name: POSTGRES_DB
@@ -42,13 +42,12 @@ spec:
           value: "admin"
         - name: POSTGRES_PASSWORD
           value: "password"
-        livenessProbe:
+        startupProbe:
           httpGet:
             path: /h
             port: 8000
-          initialDelaySeconds: 6
           periodSeconds: 3
-          failureThreshold: 3
+          failureThreshold: 6
       affinity:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
