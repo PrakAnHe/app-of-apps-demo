@@ -5,12 +5,12 @@ metadata:
   annotations:
     nginx.ingress.kubernetes.io/proxy-body-size: "100m"
     kubernetes.io/ingress.class: nginx
-    nginx.ingress.kubernetes.io/app-root: /fas
+    nginx.ingress.kubernetes.io/app-root: /
 spec:
   rules:
   - http:
       paths:
-      - path: /
+      - path: /fas/
         pathType: Prefix
         backend:
           service:
