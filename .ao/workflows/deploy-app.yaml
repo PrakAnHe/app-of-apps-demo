@@ -38,12 +38,12 @@ spec:
         argocd login argocd-server.argocd.svc.cluster.local --insecure --username admin --password adminpass
         export SENTRY_DSN="https://add568bc79479f8633f796ac375e2a52@o4508840730689536.ingest.de.sentry.io/4508840737833040"
 
-        x=1
-        while [ $x -le {{workflow.parameters.monitor-timeout-seconds}} ]
+        i=1
+        while [ $i -le {{workflow.parameters.monitor-timeout-seconds}} ]
         do
           status=$(argocd app get {{workflow.parameters.app-name}} -o json | jq -r .status.health.status)
           echo $status
-          echo "Remaining seconds: $(( {{workflow.parameters.monitor-timeout-seconds}} - x ))"
+          echo "Remaining seconds: $(( {{workflow.parameters.monitor-timeout-seconds}} - i ))"
 
           if [ "$status" = "Degraded" ]; then
             echo "{{workflow.parameters.app-name}} application is Degraded"
@@ -56,7 +56,7 @@ spec:
             exit 0
           fi
 
-          x=$((x + 1))
+          i=$((i + 1))
           sleep 1
         done
 
