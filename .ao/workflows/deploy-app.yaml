@@ -82,5 +82,5 @@ spec:
         done
 
         echo "Timed out after {{inputs.parameters.monitor-timeout-seconds}} seconds"
-        sentry-cli send-event -m "Deployment of application '{{workflow.parameters.app-name}}' failed." -m "Monitor timed out after {{inputs.parameters.monitor-timeout-seconds}} seconds."
+        sentry-cli send-event -m "Deployment of application '{{inputs.parameters.app-name}}' failed." -m "Monitor timed out after {{inputs.parameters.monitor-timeout-seconds}} seconds."
         exit 1
