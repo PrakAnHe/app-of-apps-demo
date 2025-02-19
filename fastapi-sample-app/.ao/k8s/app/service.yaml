@@ -3,6 +3,7 @@ kind: Service
 metadata:
   name: fastapi-sample-app
   annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
     argocd.argoproj.io/sync-wave: "2"
 spec:
   ports:
