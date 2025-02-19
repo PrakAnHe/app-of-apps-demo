@@ -3,9 +3,9 @@ kind: Kustomization
 
 resources:
 # - app/deployment.yaml
-- app/ingress.yaml
+# - app/ingress.yaml
 - app/namespace.yaml
 - app/rollout.yaml
 - app/service.yaml
-- canary/canary-service.yaml
+# - canary/canary-service.yaml
 - db/db.yaml

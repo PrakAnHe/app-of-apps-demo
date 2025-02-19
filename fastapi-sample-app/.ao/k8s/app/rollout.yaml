@@ -68,11 +68,11 @@ spec:
         value: PROD
   strategy:
     canary:
-      stableService: fastapi-sample-app
-      canaryService: fastapi-sample-app-canary
-      trafficRouting:
-        nginx:
-          stableIngress: fastapi-sample-app-ingress
+      # stableService: fastapi-sample-app
+      # canaryService: fastapi-sample-app-canary
+      # trafficRouting:
+      #   nginx:
+      #     stableIngress: fastapi-sample-app-ingress
       steps:
       - setWeight: 10
       - pause: {duration: "10s"}
