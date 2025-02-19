@@ -37,4 +37,6 @@ spec:
           parameters:
           - name: "app-name"
             value: "{{item}}"
+          - name: "monitor-timeout-seconds"
+            value: 10
         withParam: "{{workflow.parameters.app-names}}"
