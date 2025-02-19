@@ -1,0 +1,80 @@
+apiVersion: apps/v1
+kind: Rollout
+metadata:
+  name: fastapi-sample-app
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
+spec:
+  replicas: 4
+  revisionHistoryLimit: 1
+  progressDeadlineSeconds: 40
+  selector:
+    matchLabels:
+      app: fastapi-sample-app
+  template:
+    metadata:
+      labels:
+        app: fastapi-sample-app
+    spec:
+      containers:
+      - image: prakahe/fastapi-sample-app:E7RVvNi1rWnEo
+        imagePullPolicy: Always
+        name: fastapi-sample-app
+        ports:
+        - containerPort: 8000
+        env:
+        - name: MESSAGE
+          value: "Hello from Kubernetes!!!!!!"
+        - name: STARTUP_ACTION
+          value: "none"
+        - name: STARTUP_DELAY
+          value: "5"
+        - name: POSTGRES_HOST
+          value: "postgres-service"
+        - name: POSTGRES_PORT
+          value: "5432"
+        - name: POSTGRES_DB
+          value: "fastapi_db"
+        - name: POSTGRES_USER
+          value: "admin"
+        - name: POSTGRES_PASSWORD
+          value: "password"
+        livenessProbe:
+          httpGet:
+            path: /l
+            port: 8000
+          initialDelaySeconds: 6
+          periodSeconds: 3
+          failureThreshold: 3
+        startupProbe:
+          httpGet:
+            path: /s
+            port: 8000
+          periodSeconds: 3
+          failureThreshold: 6
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: k8s.scaleway.com/array
+                operator: In
+                values:
+                - PROD
+      tolerations:
+      - effect: NoSchedule
+        key: k8s.scaleway.com/target-array
+        operator: Equal
+        value: PROD
+  strategy:
+    canary:
+      stableService: fastapi-sample-app
+      canaryService: fastapi-sample-app-canary
+      trafficRouting:
+        nginx:
+          stableIngress: ingress
+      steps:
+      - setWeight: 10
+      - pause: {duration: "10s"}
+      - setWeight: 100
+      - pause: {duration: "10s"}
