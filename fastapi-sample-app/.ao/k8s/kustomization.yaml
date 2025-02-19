@@ -7,5 +7,5 @@ resources:
 - app/namespace.yaml
 - app/rollout.yaml
 - app/service.yaml
-# - canary/canary-service.yaml
+- canary/canary-service.yaml
 - db/db.yaml
