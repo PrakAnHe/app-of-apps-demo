@@ -12,7 +12,7 @@ spec:
   - http:
       paths:
       - path: /fas(/|$)(.*)
-        pathType: Prefix
+        pathType: ImplementationSpecific
         backend:
           service:
             name: fastapi-sample-app
