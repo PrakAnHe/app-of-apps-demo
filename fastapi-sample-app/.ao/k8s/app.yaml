@@ -30,8 +30,6 @@ spec:
         env:
         - name: MESSAGE
           value: "Hello from Kubernetes!!!!"
-        - name: CRASH_ON_START
-          value: "false"
         - name: POSTGRES_HOST
           value: "postgres-service"
         - name: POSTGRES_PORT
