@@ -1,6 +1,7 @@
 import datetime
 import os
 import subprocess
+import time
 from pathlib import Path
 
 from fastapi import Depends, FastAPI, Form, Response
@@ -12,6 +13,12 @@ from app.db import Message, get_db, init_db
 app = FastAPI()
 
 ENV_MESSAGE = os.getenv("MESSAGE", "Default message from FastAPI")
+ENV_CRASH_ON_START = os.getenv("CRASH_ON_START", "False")
+
+if ENV_CRASH_ON_START.lower() == "true":
+    time.sleep(10)
+    print("Intentional crash!")
+    os._exit(1)
 
 crash_on_call = -1
 error_on_call = -1
@@ -78,8 +85,7 @@ def return_code(code: int):
 
 @app.get("/crash/")
 def crash_now():
-    print("Intentional crash!")
-    os._exit(1)
+    crash()
 
 
 @app.get("/crash/{amt}")
@@ -91,7 +97,7 @@ def crash_on_n_call(amt: int):
 
 @app.get("/error/")
 def error_now():
-    raise RuntimeError("Intentional error!")
+    error()
 
 
 @app.get("/error/{amt}")
@@ -107,15 +113,23 @@ def check_crash():
     global crash_on_call
     crash_on_call = crash_on_call - 1
     if crash_on_call == 0:
-        print("Intentional crash!")
-        os._exit(1)
+        crash()
 
 
 def check_error():
     global error_on_call
     error_on_call = error_on_call - 1
     if error_on_call == 0:
-        raise RuntimeError("Intentional error!")
+        error()
+
+
+def crash():
+    print("Intentional crash!")
+    os._exit(1)
+
+
+def error():
+    raise RuntimeError("Intentional error!")
 
 
 def info_object():
