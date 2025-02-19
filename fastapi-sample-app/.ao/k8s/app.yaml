@@ -33,7 +33,7 @@ spec:
         - name: CRASH_ON_START
           value: "false"
         - name: POSTGRES_HOST
-          value: "postgres-service-aaaaaaaaaaaaaaasdasdasdasd"
+          value: "postgres-service"
         - name: POSTGRES_PORT
           value: "5432"
         - name: POSTGRES_DB
