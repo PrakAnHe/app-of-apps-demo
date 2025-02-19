@@ -13,15 +13,6 @@ from app.db import Message, get_db, init_db
 app = FastAPI()
 
 ENV_MESSAGE = os.getenv("MESSAGE", "Default message from FastAPI")
-ENV_CRASH_ON_START = os.getenv("CRASH_ON_START", "False")
-print("Hest 1!")
-
-if ENV_CRASH_ON_START.lower() == "true":
-    time.sleep(10)
-    print("Intentional crash!")
-    os._exit(1)
-
-print("Hest 2!")
 
 crash_on_call = -1
 error_on_call = -1
@@ -30,14 +21,11 @@ error_on_call = -1
 if __name__ == "__main__":
     import uvicorn
 
-    print("Hest 3!")
-
     uvicorn.run(app, host="0.0.0.0", port=8000)
 
 
 @app.on_event("startup")
 def startup():
-    print("Hest 4!")
     init_db()
 
 
