@@ -25,18 +25,20 @@ spec:
           "workflows",
           "workflows-demos"
         ]
+    - name: monitor-timeout-seconds
+      value: 5
   parallelism: 4
   templates:
   - name: deploy-list-of-apps
     steps:
-    - - name: sync-app
+    - - name: deploy-app
         templateRef:
           name: deploy-app
           template: deploy-app
         arguments:
           parameters:
-          - name: "app-name"
+          - name: app-name
             value: "{{item}}"
-          - name: "monitor-timeout-seconds"
-            value: 10
+          - name: monitor-timeout-seconds
+            value: "{{inputs.parameters.monitor-timeout-seconds}}"
         withParam: "{{workflow.parameters.app-names}}"
