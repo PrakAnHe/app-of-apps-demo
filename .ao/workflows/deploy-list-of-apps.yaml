@@ -32,7 +32,7 @@ spec:
   - name: deploy-list-of-apps
     inputs:
       parameters:
-      - name: app-name
+      - name: app-names
       - name: monitor-timeout-seconds
     steps:
     - - name: deploy-app
