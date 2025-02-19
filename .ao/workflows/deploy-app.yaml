@@ -14,21 +14,38 @@ spec:
       value: 120
   templates:
   - name: deploy-app
+    inputs:
+      parameters:
+      - name: app-name
+      - name: monitor-timeout-seconds
     steps:
     - - name: sync-app
         template: sync-app
+        arguments:
+          parameters:
+          - name: app-name
+            value: "{{inputs.parameters.app-name}}"
     - - name: monitor-deployment
         template: monitor-deployment
+        arguments:
+          parameters:
+          - name: app-name
+            value: "{{inputs.parameters.app-name}}"
+          - name: monitor-timeout-seconds
+            value: "{{inputs.parameters.monitor-timeout-seconds}}"
 
   - name: sync-app
+    inputs:
+      parameters:
+      - name: app-name
     script:
       image: argoproj/argocd:latest
       command: [sh]
       source: |
         echo "Logging in to Argo CD..."
         argocd login argocd-server.argocd.svc.cluster.local --insecure --username admin --password adminpass
-        echo "Syncing application {{workflow.parameters.app-name}}..."
-        argocd app sync {{workflow.parameters.app-name}}
+        echo "Syncing application {{inputs.parameters.app-name}}..."
+        argocd app sync {{inputs.parameters.app-name}}
 
   - name: monitor-deployment
     script:
