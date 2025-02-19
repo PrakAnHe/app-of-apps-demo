@@ -72,7 +72,7 @@ spec:
       canaryService: fastapi-sample-app-canary
       trafficRouting:
         nginx:
-          stableIngress: ingress
+          stableIngress: fastapi-sample-app-ingress
       steps:
       - setWeight: 10
       - pause: {duration: "10s"}
