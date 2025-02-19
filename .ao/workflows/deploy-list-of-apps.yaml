@@ -45,3 +45,4 @@ spec:
           - name: monitor-timeout-seconds
             value: "{{inputs.parameters.monitor-timeout-seconds}}"
         withParam: "{{inputs.parameters.app-names}}"
+        failFast: true
