@@ -72,7 +72,7 @@ spec:
             exit 1
           fi
 
-          if [ "$status" = "Healthy asdasdasdasd" ]; then
+          if [ "$status" = "Healthy" ]; then
             echo "{{inputs.parameters.app-name}} application is Healthy"
             exit 0
           fi
