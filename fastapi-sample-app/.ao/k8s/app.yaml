@@ -13,6 +13,7 @@ metadata:
 spec:
   replicas: 1
   revisionHistoryLimit: 1
+  progressDeadlineSeconds: 40
   selector:
     matchLabels:
       app: fastapi-sample-app
