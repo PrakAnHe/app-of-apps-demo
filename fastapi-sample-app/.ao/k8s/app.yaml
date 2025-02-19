@@ -42,14 +42,14 @@ spec:
           value: "password"
         livenessProbe:
           httpGet:
-            path: /h
+            path: /l
             port: 8000
           initialDelaySeconds: 6
           periodSeconds: 3
           failureThreshold: 3
         startupProbe:
           httpGet:
-            path: /h
+            path: /s
             port: 8000
           periodSeconds: 3
           failureThreshold: 6

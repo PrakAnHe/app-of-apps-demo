@@ -37,8 +37,13 @@ def web_page():
     return FileResponse(file_path)
 
 
-@app.get("/h")
-def healthcheck():
+@app.get("/s")
+def startupProbe():
+    return Response(status_code=200)
+
+
+@app.get("/l")
+def livenessProbe():
     return Response(status_code=200)
 
 
