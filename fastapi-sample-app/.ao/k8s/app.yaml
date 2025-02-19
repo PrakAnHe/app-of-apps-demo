@@ -30,6 +30,10 @@ spec:
         env:
         - name: MESSAGE
           value: "Hello from Kubernetes!!!!"
+        - name: STARTUP_ACTION
+          value: "none"
+        - name: STARTUP_DELAY
+          value: "10"
         - name: POSTGRES_HOST
           value: "postgres-service"
         - name: POSTGRES_PORT

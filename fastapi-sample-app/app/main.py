@@ -13,6 +13,8 @@ from app.db import Message, get_db, init_db
 app = FastAPI()
 
 ENV_MESSAGE = os.getenv("MESSAGE", "Default message from FastAPI")
+ENV_STARTUP_ACTION = os.getenv("STARTUP_ACTION", "none")
+ENV_STARTUP_DELAY = os.getenv("STARTUP_DELAY", "0")
 
 crash_on_call = -1
 error_on_call = -1
@@ -26,6 +28,11 @@ if __name__ == "__main__":
 
 @app.on_event("startup")
 def startup():
+    time.sleep(int(ENV_STARTUP_DELAY))
+
+    if ENV_STARTUP_ACTION == "crash":
+        crash()
+
     init_db()
 
 
