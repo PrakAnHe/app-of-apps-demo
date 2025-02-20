@@ -101,7 +101,7 @@ spec:
     inputs:
       parameters:
       - name: deployment-status
-        value: "{{workflow.mainEntrypoint.outputs.parameters.deployment-status}}"
+        value: "Degraded"
       - name: app-name
         value: "fastapi-sample-app-hest"
       - name: monitor-timeout-seconds
