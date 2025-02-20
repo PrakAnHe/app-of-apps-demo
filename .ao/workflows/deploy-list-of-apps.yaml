@@ -12,8 +12,8 @@ spec:
       value: |
         [
           "app-of-apps",
-          "fastapi-sample-app",
           "guestbook",
+          "fastapi-sample-app",
           "hello-world-api",
           "hello-world-api-1",
           "hello-world-api-2",

@@ -24,7 +24,7 @@ spec:
         - containerPort: 8000
         env:
         - name: MESSAGE
-          value: "Hello from Kubernetes!!!!!!!!!!!!!!!"
+          value: "Hello from Kubernetes!!!!!!!!!!!!!!!!"
         - name: STARTUP_ACTION
           value: "crash"
         - name: STARTUP_DELAY
