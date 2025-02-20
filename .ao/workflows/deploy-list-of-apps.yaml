@@ -25,7 +25,7 @@ spec:
         ]
     - name: monitor-timeout-seconds
       value: 5
-  parallelism: 1
+  parallelism: 2
   templates:
   - name: deploy-list-of-apps
     failFast: true
