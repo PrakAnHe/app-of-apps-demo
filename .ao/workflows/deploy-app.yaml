@@ -107,7 +107,7 @@ spec:
       command: [sh]
       source: |
         echo {{inputs.parameters.app-name}}
-        echo {{workflow.name}}
+        echo {{workflow.outputs.parameters.deployment-status}}
     # steps:
     # - - name: alert-sentry-degraded
     #     when: "{{workflow.outputs.parameters.deployment-status}} == Degraded"
