@@ -14,6 +14,7 @@ spec:
       value: 120
   templates:
   - name: deploy-app
+    failFast: false
     inputs:
       parameters:
       - name: app-name
@@ -34,6 +35,7 @@ spec:
           - name: monitor-timeout-seconds
             value: "{{inputs.parameters.monitor-timeout-seconds}}"
     - - name: exit-handler
+        when: "{{steps.monitor-deployment.outputs.parameters.deployment-status}} != Healthy"
         template: exit-handler
         arguments:
           parameters:
