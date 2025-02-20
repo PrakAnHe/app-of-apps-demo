@@ -1,0 +1,22 @@
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: alert-sentry
+  annotations:
+    workflows.argoproj.io/maintainer: andreas
+spec:
+  entrypoint: alert-sentry
+  arguments:
+    parameters:
+    - name: message
+  templates:
+  - name: alert-sentry
+    inputs:
+      parameters:
+      - name: message
+    script:
+      image: prakahe/argo-cluster-control:latest
+      command: [sh]
+      source: |
+        export SENTRY_DSN="https://add568bc79479f8633f796ac375e2a52@o4508840730689536.ingest.de.sentry.io/4508840737833040"
+        sentry-cli send-event -m "{{inputs.parameters.message}}"

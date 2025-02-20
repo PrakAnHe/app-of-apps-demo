@@ -6,6 +6,7 @@ metadata:
     workflows.argoproj.io/maintainer: andreas
 spec:
   entrypoint: deploy-list-of-apps
+  onExit: exit-handler
   arguments:
     parameters:
     - name: app-names
@@ -25,7 +26,7 @@ spec:
         ]
     - name: monitor-timeout-seconds
       value: 5
-  parallelism: 2
+  parallelism: 1
   templates:
   - name: deploy-list-of-apps
     failFast: true
@@ -45,3 +46,13 @@ spec:
           - name: monitor-timeout-seconds
             value: "{{inputs.parameters.monitor-timeout-seconds}}"
         withParam: "{{inputs.parameters.app-names}}"
+
+  - name: exit-handler
+    when: "{{workflow.status}} != Succeeded"
+    templateRef:
+      name: alert-sentry
+      template: alert-sentry
+    arguments:
+      parameters:
+      - name: message
+        value: "This workflow failed! Hest!"
