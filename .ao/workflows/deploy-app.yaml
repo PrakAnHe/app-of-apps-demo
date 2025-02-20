@@ -106,7 +106,7 @@ spec:
       image: prakahe/argo-cluster-control:latest
       command: [sh]
       source: |
-        echo {{inputs.parameters.hest}}
+        echo {{inputs.parameters.deployment-status}}
     # steps:
     # - - name: alert-sentry-degraded
     #     when: "{{workflow.outputs.parameters.deployment-status}} == Degraded"
