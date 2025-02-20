@@ -34,6 +34,12 @@ spec:
             value: "{{inputs.parameters.app-name}}"
           - name: monitor-timeout-seconds
             value: "{{inputs.parameters.monitor-timeout-seconds}}"
+    outputs:
+      parameters:
+      - name: deployment-status
+        valueFrom:
+          parameter: "{{steps.monitor-deployment.outputs.parameters.deployment-status}}"
+
 
   - name: sync-app
     inputs:
@@ -95,7 +101,7 @@ spec:
     inputs:
       parameters:
       - name: deployment-status
-        value: "Healthy"
+        value: "{{workflow.outputs.parameters.deployment-status}}"
       - name: app-name
         value: "fastapi-sample-app-hest"
       - name: monitor-timeout-seconds
