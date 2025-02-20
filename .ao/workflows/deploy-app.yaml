@@ -6,7 +6,6 @@ metadata:
     workflows.argoproj.io/maintainer: andreas
 spec:
   entrypoint: deploy-app
-  onExit: exit-handler
   arguments:
     parameters:
     - name: app-name
@@ -34,11 +33,12 @@ spec:
             value: "{{inputs.parameters.app-name}}"
           - name: monitor-timeout-seconds
             value: "{{inputs.parameters.monitor-timeout-seconds}}"
-    outputs:
-      parameters:
-      - name: deployment-status
-        valueFrom:
-          parameter: "{{steps.monitor-deployment.outputs.parameters.deployment-status}}"
+    - - name: exit-handler
+        template: exit-handler
+        arguments:
+          parameters:
+          - name: deployment-status
+            value: "{{steps.monitor-deployment.outputs.parameters.deployment-status}}"
 
 
   - name: sync-app
@@ -100,14 +100,13 @@ spec:
   - name: exit-handler
     inputs:
       parameters:
-      - name: app-name
-        value: "fastapi-sample-app-hest"
+      - name: deployment-status
+        value: "hesthesthesthest"
     script:
       image: prakahe/argo-cluster-control:latest
       command: [sh]
       source: |
-        echo {{inputs.parameters.app-name}}
-        echo {{workflow.mainEntrypoint}}
+        echo {{inputs.parameters.hest}}
     # steps:
     # - - name: alert-sentry-degraded
     #     when: "{{workflow.outputs.parameters.deployment-status}} == Degraded"
