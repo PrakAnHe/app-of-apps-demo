@@ -48,10 +48,18 @@ spec:
         withParam: "{{inputs.parameters.app-names}}"
 
   - name: exit-handler
-    # when: "{{workflow.status}} != Succeeded"
-    templateRef:
-      name: alert-sentry
-      template: alert-sentry
+    when: "{{workflow.status}} != Succeeded"
+    container:
+      image: busybox
+      command: [ echo ]
+      args: [ "hello world" ]
+      resources: # limit the resources
+        limits:
+          memory: 32Mi
+          cpu: 100m
+    # templateRef:
+    #   name: alert-sentry
+    #   template: alert-sentry
     arguments:
       parameters:
       - name: message
