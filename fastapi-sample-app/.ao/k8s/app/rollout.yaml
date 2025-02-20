@@ -6,7 +6,7 @@ metadata:
     argocd.argoproj.io/sync-wave: "2"
 spec:
   replicas: 4
-  revisionHistoryLimit: 1
+  revisionHistoryLimit: 2
   progressDeadlineSeconds: 40
   selector:
     matchLabels:
@@ -24,7 +24,7 @@ spec:
         - containerPort: 8000
         env:
         - name: MESSAGE
-          value: "Hello from Kubernetes!!!!!!!!!!!!!!"
+          value: "Hello from Kubernetes!!!!!!!!!!!!!!!"
         - name: STARTUP_ACTION
           value: "none"
         - name: STARTUP_DELAY
