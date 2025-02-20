@@ -100,15 +100,13 @@ spec:
   - name: exit-handler
     inputs:
       parameters:
-      - name: deployment-status
-        value: "Degraded"
       - name: app-name
         value: "fastapi-sample-app-hest"
       - name: monitor-timeout-seconds
         value: 420
     steps:
     - - name: alert-sentry-degraded
-        when: "{{inputs.parameters.deployment-status}} == Degraded"
+        when: "{{workflow.outputs.parameters.deployment-status}} == Degraded"
         templateRef:
           name: alert-sentry
           template: alert-sentry
@@ -116,21 +114,21 @@ spec:
           parameters:
           - name: message
             value: "Deployment of application '{{inputs.parameters.app-name}}' failed. Application is Degraded."
-      - name: alert-sentry-timeout
-        when: "{{inputs.parameters.deployment-status}} == Timeout"
-        templateRef:
-          name: alert-sentry
-          template: alert-sentry
-        arguments:
-          parameters:
-          - name: message
-            value: "Deployment of application '{{inputs.parameters.app-name}}' failed. Monitor timed out after {{inputs.parameters.monitor-timeout-seconds}} seconds."
-      - name: alert-sentry-success
-        when: "{{inputs.parameters.deployment-status}} == Healthy"
-        templateRef:
-          name: alert-sentry
-          template: alert-sentry
-        arguments:
-          parameters:
-          - name: message
-            value: "Deployment of application '{{inputs.parameters.app-name}}' succeeded. Application is Healthy."
+      # - name: alert-sentry-timeout
+      #   when: "{{inputs.parameters.deployment-status}} == Timeout"
+      #   templateRef:
+      #     name: alert-sentry
+      #     template: alert-sentry
+      #   arguments:
+      #     parameters:
+      #     - name: message
+      #       value: "Deployment of application '{{inputs.parameters.app-name}}' failed. Monitor timed out after {{inputs.parameters.monitor-timeout-seconds}} seconds."
+      # - name: alert-sentry-success
+      #   when: "{{inputs.parameters.deployment-status}} == Healthy"
+      #   templateRef:
+      #     name: alert-sentry
+      #     template: alert-sentry
+      #   arguments:
+      #     parameters:
+      #     - name: message
+      #       value: "Deployment of application '{{inputs.parameters.app-name}}' succeeded. Application is Healthy."
