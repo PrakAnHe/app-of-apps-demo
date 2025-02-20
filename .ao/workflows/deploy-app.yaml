@@ -98,6 +98,8 @@ spec:
         value: "Healthy"
       - name: app-name
         value: "fastapi-sample-app-hest"
+      - name: monitor-timeout-seconds
+        value: 420
     steps:
     - - name: alert-sentry-degraded
         when: "{{inputs.parameters.deployment-status}} == Degraded"
