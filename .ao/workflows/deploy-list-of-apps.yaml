@@ -48,19 +48,22 @@ spec:
         withParam: "{{inputs.parameters.app-names}}"
 
   - name: exit-handler
-    when: "{{workflow.status}} != Succeeded"
-    container:
-      image: busybox
-      command: [ echo ]
-      args: [ "hello world" ]
-      resources: # limit the resources
-        limits:
-          memory: 32Mi
-          cpu: 100m
-    # templateRef:
-    #   name: alert-sentry
-    #   template: alert-sentry
-    arguments:
-      parameters:
-      - name: message
-        value: "This workflow failed! Hest!"
+    steps:
+    - - name: alert-sentry-success
+        when: "{{workflow.status}} == Succeeded"
+        templateRef:
+          name: alert-sentry
+          template: alert-sentry
+        arguments:
+          parameters:
+          - name: message
+            value: "Hest! Success!"
+      - name: alert-sentry-failed
+        when: "{{workflow.status}} != Succeeded"
+        templateRef:
+          name: alert-sentry
+          template: alert-sentry
+        arguments:
+          parameters:
+          - name: message
+            value: "Hest! Failed!"
