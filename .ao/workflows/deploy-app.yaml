@@ -6,7 +6,6 @@ metadata:
     workflows.argoproj.io/maintainer: andreas
 spec:
   entrypoint: deploy-app
-  onExit: exit-handler
   arguments:
     parameters:
     - name: app-name
@@ -15,6 +14,7 @@ spec:
       value: 120
   templates:
   - name: deploy-app
+    onExit: exit-handler
     inputs:
       parameters:
       - name: app-name
@@ -96,6 +96,8 @@ spec:
       parameters:
       - name: deployment-status
         value: "Healthy"
+      - name: app-name
+        value: "fastapi-sample-app-hest"
     steps:
     - - name: alert-sentry-degraded
         when: "{{inputs.parameters.deployment-status}} == Degraded"
