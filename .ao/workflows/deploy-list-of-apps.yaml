@@ -11,7 +11,6 @@ spec:
     - name: app-names
       value: |
         [
-          "app-of-apps",
           "guestbook",
           "fastapi-sample-app",
           "hello-world-api",
@@ -26,7 +25,7 @@ spec:
         ]
     - name: monitor-timeout-seconds
       value: 5
-  parallelism: 2
+  parallelism: 1
   templates:
   - name: deploy-list-of-apps
     failFast: true
