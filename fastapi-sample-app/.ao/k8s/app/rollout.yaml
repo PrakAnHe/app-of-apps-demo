@@ -26,9 +26,9 @@ spec:
         - name: MESSAGE
           value: "Hello from Kubernetes!!!!!!!!!!!!!!!"
         - name: STARTUP_ACTION
-          value: "none"
+          value: "crash"
         - name: STARTUP_DELAY
-          value: "2"
+          value: "14"
         - name: POSTGRES_HOST
           value: "postgres-service"
         - name: POSTGRES_PORT
