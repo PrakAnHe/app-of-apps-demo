@@ -9,7 +9,7 @@ spec:
   arguments:
     parameters:
     - name: app-name
-      value: "guestbook"
+      value: "fastapi-sample-app"
     - name: monitor-timeout-seconds
       value: 120
   templates:
