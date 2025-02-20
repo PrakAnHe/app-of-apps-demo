@@ -6,6 +6,7 @@ metadata:
     workflows.argoproj.io/maintainer: andreas
 spec:
   entrypoint: deploy-app
+  onExit: exit-handler
   arguments:
     parameters:
     - name: app-name
@@ -14,7 +15,6 @@ spec:
       value: 120
   templates:
   - name: deploy-app
-    onExit: exit-handler
     inputs:
       parameters:
       - name: app-name
