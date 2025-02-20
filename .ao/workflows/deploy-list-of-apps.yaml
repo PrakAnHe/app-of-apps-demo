@@ -9,6 +9,7 @@ spec:
   arguments:
     parameters:
     - name: app-names
+      failFast: true
       value: |
         [
           "app-of-apps",
@@ -35,7 +36,6 @@ spec:
       - name: monitor-timeout-seconds
     steps:
     - - name: deploy-app
-        failFast: true
         templateRef:
           name: deploy-app
           template: deploy-app
