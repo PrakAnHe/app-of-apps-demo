@@ -9,7 +9,6 @@ spec:
   arguments:
     parameters:
     - name: app-names
-      failFast: true
       value: |
         [
           "app-of-apps",
@@ -34,15 +33,29 @@ spec:
       parameters:
       - name: app-names
       - name: monitor-timeout-seconds
-    steps:
-    - - name: deploy-app
-        templateRef:
-          name: deploy-app
-          template: deploy-app
-        arguments:
-          parameters:
-          - name: app-name
-            value: "{{item}}"
-          - name: monitor-timeout-seconds
-            value: "{{inputs.parameters.monitor-timeout-seconds}}"
-        withParam: "{{inputs.parameters.app-names}}"
+    dag:
+      failFast: true
+      tasks:
+      - - name: deploy-app
+          templateRef:
+            name: deploy-app
+            template: deploy-app
+          arguments:
+            parameters:
+            - name: app-name
+              value: "{{item}}"
+            - name: monitor-timeout-seconds
+              value: "{{inputs.parameters.monitor-timeout-seconds}}"
+          withParam: "{{inputs.parameters.app-names}}"
+    # steps:
+    # - - name: deploy-app
+    #     templateRef:
+    #       name: deploy-app
+    #       template: deploy-app
+    #     arguments:
+    #       parameters:
+    #       - name: app-name
+    #         value: "{{item}}"
+    #       - name: monitor-timeout-seconds
+    #         value: "{{inputs.parameters.monitor-timeout-seconds}}"
+    #     withParam: "{{inputs.parameters.app-names}}"
