@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: alert-slack
+  annotations:
+    workflows.argoproj.io/maintainer: andreas
+spec:
+  entrypoint: alert-slack
+  arguments:
+    parameters:
+    - name: message
+  templates:
+  - name: alert-slack
+    inputs:
+      parameters:
+      - name: message
+    script:
+      image: prakahe/argo-cluster-control:latest
+      command: [sh]
+      source: |
+        echo "Sending slack message to 'Hesthest.lol'..."
+        echo "(Not really, it's not implemented lol.)"
+        echo "{{inputs.parameters.message}}"

@@ -139,11 +139,6 @@ spec:
       - name: app-name
       - name: monitor-timeout-seconds
       - name: deployment-status
-    # script:
-    #   image: prakahe/argo-cluster-control:latest
-    #   command: [sh]
-    #   source: |
-    #     echo {{inputs.parameters.deployment-status}}
     steps:
     - - name: alert-application-degraded
         when: "{{inputs.parameters.deployment-status}} == Degraded"
@@ -165,11 +160,13 @@ spec:
             value: "Deployment of application '{{inputs.parameters.app-name}}' failed. Monitor timed out after {{inputs.parameters.monitor-timeout-seconds}} seconds."
       - name: alert-application-success
         when: "{{inputs.parameters.deployment-status}} == Healthy"
-        script:
-          image: prakahe/argo-cluster-control:latest
-          command: [sh]
-          source: |
-            echo "Deployment of application '{{inputs.parameters.app-name}}' succeeded. Application is Healthy."
+        templateRef:
+          name: alert-slack
+          template: alert-slack
+        arguments:
+          parameters:
+          - name: message
+            value: "Deployment of application '{{inputs.parameters.app-name}}' succeeded. Application is Healthy.."
       - name: fail-workflow
         when: "{{inputs.parameters.deployment-status}} != Healthy"
         templateRef:
