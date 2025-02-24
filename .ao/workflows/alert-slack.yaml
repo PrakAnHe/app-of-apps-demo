@@ -18,7 +18,7 @@ spec:
       parameters:
       - name: message
         value: "asdasdasdasd"
-  - name: alert-slack
+  - name: send-slack-message
     inputs:
       parameters:
       - name: message
