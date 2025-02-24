@@ -10,15 +10,15 @@ spec:
     parameters:
     - name: message
   templates:
+  # - name: alert-slack
+  #   templateRef:
+  #     name: send-slack-message
+  #     template: send-slack-message
+  #   arguments:
+  #     parameters:
+  #     - name: message
+  #       value: "asdasdasdasd"
   - name: alert-slack
-    templateRef:
-      name: send-slack-message
-      template: send-slack-message
-    arguments:
-      parameters:
-      - name: message
-        value: "asdasdasdasd"
-  - name: send-slack-message
     inputs:
       parameters:
       - name: message
