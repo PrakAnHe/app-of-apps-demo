@@ -41,12 +41,12 @@ spec:
             value: "{{inputs.parameters.monitor-timeout-seconds}}"
       - name: exit-handler
         dependencies: [sync-app, monitor-deployment]
-        when: "{{steps.monitor-deployment.outputs.parameters.deployment-status}} != Healthy"
+        when: "Degraded != Healthy"
         template: exit-handler
         arguments:
           parameters:
           - name: deployment-status
-            value: "{{steps.monitor-deployment.outputs.parameters.deployment-status}}"
+            value: Degraded
     # steps:
     # - - name: sync-app
     #     template: sync-app
