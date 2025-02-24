@@ -64,7 +64,7 @@ spec:
         arguments:
           parameters:
           - name: message
-            value: "Deployment workflow {{workflow.mainEntrypoint}} finished with status \`{{workflow.status}}\`"
+            value: "Deployment workflow {{workflow.mainEntrypoint}} finished with status `{{workflow.status}}`"
       - name: alert-sentry-on-failed
         when: "{{workflow.status}} != Succeeded"
         templateRef:
