@@ -146,6 +146,8 @@ spec:
           name: fail-workflow
           template: fail-workflow
 
+  # exit-handler is ONLY run if the 'deploy-app' workflowTemplate is submitted. 
+  # It is not run if the 'deploy-app' template is referenced by another workflow.
   - name: exit-handler
     steps:
     - - name: alert-deploy-succeeded
