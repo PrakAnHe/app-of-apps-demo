@@ -42,12 +42,10 @@ spec:
         template: post-monitor-handler
         arguments:
           parameters:
-          - name: app-name
-            value: "{{inputs.parameters.app-name}}"
-          - name: monitor-timeout-seconds
-            value: "{{inputs.parameters.monitor-timeout-seconds}}"
           - name: deployment-status
             value: "{{steps.monitor-deployment.outputs.parameters.deployment-status}}"
+          - name: deployment-message
+            value: "{{steps.monitor-deployment.outputs.parameters.deployment-message}}"
 
 
   - name: sync-app
@@ -73,6 +71,9 @@ spec:
       - name: deployment-status
         valueFrom:
           path: /tmp/deployment-status
+      - name: deployment-message
+        valueFrom:
+          path: /tmp/deployment-message
     script:
       image: prakahe/argo-cluster-control:latest
       command: [sh]
@@ -89,12 +90,14 @@ spec:
           if [ "$status" = "Degraded" ]; then
             echo "{{inputs.parameters.app-name}} application is Degraded"
             echo "Degraded" > /tmp/deployment-status
+            echo "Deployment of application '{{inputs.parameters.app-name}}' failed. Application is Degraded." > /tmp/deployment-message
             exit 1
           fi
 
           if [ "$status" = "Healthy" ]; then
             echo "{{inputs.parameters.app-name}} application is Healthy"
             echo "Healthy" > /tmp/deployment-status
+            echo "Deployment of application '{{inputs.parameters.app-name}}' succeeded. Application is Healthy." > /tmp/deployment-message
             exit 0
           fi
 
@@ -104,42 +107,32 @@ spec:
 
         echo "Timed out after {{inputs.parameters.monitor-timeout-seconds}} seconds"
         echo "Timeout" > /tmp/deployment-status
+        echo "Deployment of application '{{inputs.parameters.app-name}}' failed. Monitor timed out after {{inputs.parameters.monitor-timeout-seconds}} seconds." > /tmp/deployment-message
         exit 1
 
   - name: post-monitor-handler
     inputs:
       parameters:
-      - name: app-name
-      - name: monitor-timeout-seconds
       - name: deployment-status
+      - name: deployment-message
     steps:
-    - - name: alert-application-degraded
-        when: "{{inputs.parameters.deployment-status}} == Degraded"
+    - - name: alert-sentry-failed
+        when: "{{inputs.parameters.deployment-status}} != Healthy"
         templateRef:
           name: alert-sentry
           template: alert-sentry
         arguments:
           parameters:
           - name: message
-            value: "Deployment of application '{{inputs.parameters.app-name}}' failed. Application is Degraded."
-      - name: alert-application-timeout
-        when: "{{inputs.parameters.deployment-status}} == Timeout"
-        templateRef:
-          name: alert-sentry
-          template: alert-sentry
-        arguments:
-          parameters:
-          - name: message
-            value: "Deployment of application '{{inputs.parameters.app-name}}' failed. Monitor timed out after {{inputs.parameters.monitor-timeout-seconds}} seconds."
-      - name: alert-application-success
-        when: "{{inputs.parameters.deployment-status}} == Healthy"
+            value: "{{inputs.parameters.deployment-message}}"
+      - name: alert-slack
         templateRef:
           name: alert-slack
           template: alert-slack
         arguments:
           parameters:
           - name: message
-            value: "Deployment of application '{{inputs.parameters.app-name}}' succeeded. Application is Healthy.."
+            value: "{{inputs.parameters.deployment-message}}"
       - name: fail-workflow
         when: "{{inputs.parameters.deployment-status}} != Healthy"
         templateRef:
