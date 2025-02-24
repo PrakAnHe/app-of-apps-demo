@@ -115,7 +115,7 @@ spec:
       - name: deployment-status
       - name: deployment-message
     steps:
-    - - name: alert-sentry-failed
+    - - name: alert-sentry-on-failed
         when: "{{inputs.parameters.deployment-status}} != Healthy"
         templateRef:
           name: alert-sentry
