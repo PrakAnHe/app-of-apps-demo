@@ -6,6 +6,8 @@ metadata:
     workflows.argoproj.io/maintainer: andreas
 spec:
   entrypoint: deploy-app
+  #                                           Prøv at bruge et artifact to at sende deployment-status til exit-handler
+  # onExit: exit-handler
   arguments:
     parameters:
     - name: app-name
@@ -19,14 +21,17 @@ spec:
       parameters:
       - name: app-name
       - name: monitor-timeout-seconds
-    steps:
-    - - name: sync-app
+    #                                             Prøv DAG i stedet for steps
+    dag:
+      tasks:
+      - name: sync-app
         template: sync-app
         arguments:
           parameters:
           - name: app-name
             value: "{{inputs.parameters.app-name}}"
-    - - name: monitor-deployment
+      - name: monitor-deployment
+        dependencies: [sync-app]
         template: monitor-deployment
         arguments:
           parameters:
@@ -34,13 +39,36 @@ spec:
             value: "{{inputs.parameters.app-name}}"
           - name: monitor-timeout-seconds
             value: "{{inputs.parameters.monitor-timeout-seconds}}"
-    - - name: exit-handler
+      - name: exit-handler
+        dependencies: [sync-app, monitor-deployment]
         when: "{{steps.monitor-deployment.outputs.parameters.deployment-status}} != Healthy"
         template: exit-handler
         arguments:
           parameters:
           - name: deployment-status
             value: "{{steps.monitor-deployment.outputs.parameters.deployment-status}}"
+    # steps:
+    # - - name: sync-app
+    #     template: sync-app
+    #     arguments:
+    #       parameters:
+    #       - name: app-name
+    #         value: "{{inputs.parameters.app-name}}"
+    # - - name: monitor-deployment
+    #     template: monitor-deployment
+    #     arguments:
+    #       parameters:
+    #       - name: app-name
+    #         value: "{{inputs.parameters.app-name}}"
+    #       - name: monitor-timeout-seconds
+    #         value: "{{inputs.parameters.monitor-timeout-seconds}}"
+    # - - name: exit-handler
+    #     when: "{{steps.monitor-deployment.outputs.parameters.deployment-status}} != Healthy"
+    #     template: exit-handler
+    #     arguments:
+    #       parameters:
+    #       - name: deployment-status
+    #         value: "{{steps.monitor-deployment.outputs.parameters.deployment-status}}"
 
 
   - name: sync-app
