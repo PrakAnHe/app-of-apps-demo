@@ -15,9 +15,14 @@ spec:
       parameters:
       - name: message
     script:
-      image: prakahe/argo-cluster-control:latest
-      command: [sh]
+      image: appropriate/curl:latest
+      command: [sh, -c]
       source: |
-        echo "Sending slack message to 'Hesthest.lol'..."
-        echo "(Not really, it's not implemented lol.)"
-        echo "{{inputs.parameters.message}}"
+        curl -X POST -H 'Content-type: application/json' --data '{"text":"{{inputs.parameters.message}}"}' https://hooks.slack.com/services/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
+    # script:
+    #   image: prakahe/argo-cluster-control:latest
+    #   command: [sh]
+    #   source: |
+    #     echo "Sending slack message to 'Hesthest.lol'..."
+    #     echo "(Not really, it's not implemented lol.)"
+    #     echo "{{inputs.parameters.message}}"
