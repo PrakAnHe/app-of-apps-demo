@@ -23,6 +23,7 @@ spec:
       - name: monitor-timeout-seconds
     #                                             Prøv DAG i stedet for steps
     dag:
+      failFast: true
       tasks:
       - name: sync-app
         template: sync-app
