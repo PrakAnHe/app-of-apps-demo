@@ -18,5 +18,6 @@ spec:
       image: appropriate/curl:latest
       command: [sh, -c]
       source: |
+        echo "{{inputs.parameters.message}}"
         cred="T08EH7TLVBJ/B08EHMA0H4N/F3zpHs4aBsaXqYbtJYnODWn9"
-        curl -X POST -H 'Content-type: application/json' --data '{"text":"_{{workflow.name}}_ -> {{inputs.parameters.message}}"}' https://hooks.slack.com/services/$cred
+        curl -X POST -H 'Content-type: application/json' --data '{"text":":white_small_square: -> {{workflow.name}} -> {{inputs.parameters.message}}"}' https://hooks.slack.com/services/$cred

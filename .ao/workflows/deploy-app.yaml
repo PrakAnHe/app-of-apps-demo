@@ -96,7 +96,7 @@ spec:
           if [ "$status" = "Healthy" ]; then
             echo "{{inputs.parameters.app-name}} application is Healthy"
             echo "Healthy" > /tmp/deployment-status
-            echo "Deployment of application {{inputs.parameters.app-name}} finished without errors" > /tmp/deployment-message
+            echo "{{inputs.parameters.app-name}} deployed." > /tmp/deployment-message
             exit 0
           fi
 
@@ -150,7 +150,7 @@ spec:
         arguments:
           parameters:
           - name: message
-            value: "Deployment workflow '{{workflow.mainEntrypoint}}' of application '{{workflow.parameters.app-name}}' succeeded"
+            value: "Deployment of application '{{workflow.parameters.app-name}}' succeeded"
       - name: alert-deploy-failed
         when: "{{workflow.status}} != Succeeded"
         templateRef:
