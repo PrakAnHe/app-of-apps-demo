@@ -39,7 +39,6 @@ spec:
           - name: monitor-timeout-seconds
             value: "{{inputs.parameters.monitor-timeout-seconds}}"
     - - name: post-monitor-handler
-        when: "{{steps.monitor-deployment.outputs.parameters.deployment-status}} != Healthy"
         template: post-monitor-handler
         arguments:
           parameters:
