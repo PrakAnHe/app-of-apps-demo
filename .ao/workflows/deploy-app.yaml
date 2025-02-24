@@ -167,4 +167,4 @@ spec:
         arguments:
           parameters:
           - name: message
-            value: "Deployment workflow '{{workflow.name}}' of application '{{workflow.parameters.app-name}}' failed."
+            value: "Deployment workflow '{{workflow.entrypoint}}' of application '{{workflow.parameters.app-name}}' failed."
