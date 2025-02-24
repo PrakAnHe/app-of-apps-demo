@@ -19,7 +19,7 @@ spec:
       command: [sh, -c]
       source: |
         cred="T08EH7TLVBJ/B08EHMA0H4N/F3zpHs4aBsaXqYbtJYnODWn9"
-        curl -X POST -H 'Content-type: application/json' --data '{"text":"Hello, World!"}' https://hooks.slack.com/services/$cred
+        curl -X POST -H 'Content-type: application/json' --data '{"text":"{{inputs.parameters.message}}"}' https://hooks.slack.com/services/$cred
     # script:
     #   image: prakahe/argo-cluster-control:latest
     #   command: [sh]
