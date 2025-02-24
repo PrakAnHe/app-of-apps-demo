@@ -42,7 +42,7 @@ spec:
         arguments:
           parameters:
           - name: message
-            value: "Deployment workflow _{{workflow.mainEntrypoint}}_ started"
+            value: "Deployment workflow {{workflow.mainEntrypoint}} started"
     - - name: deploy-app
         templateRef:
           name: deploy-app
