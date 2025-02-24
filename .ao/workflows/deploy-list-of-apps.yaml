@@ -42,7 +42,7 @@ spec:
         arguments:
           parameters:
           - name: message
-            value: "Deployment workflow '{{workflow.mainEntrypoint}}' of multiple applications started."
+            value: "Deployment workflow _{{workflow.mainEntrypoint}}_ started..."
     - - name: deploy-app
         templateRef:
           name: deploy-app
@@ -58,14 +58,13 @@ spec:
   - name: exit-handler
     steps:
     - - name: alert-sentry-success
-        when: "{{workflow.status}} == Succeeded"
         templateRef:
           name: alert-sentry
           template: alert-sentry
         arguments:
           parameters:
           - name: message
-            value: "Deployment of applications succeded."
+            value: "Deployment workflow _{{workflow.mainEntrypoint}}_ finished with status _{{workflow.status}}_."
       - name: alert-sentry-failed
         when: "{{workflow.status}} != Succeeded"
         templateRef:
@@ -74,4 +73,4 @@ spec:
         arguments:
           parameters:
           - name: message
-            value: "Deployment of applications failed."
+            value: "Deployment workflow _{{workflow.mainEntrypoint}}_ failed."

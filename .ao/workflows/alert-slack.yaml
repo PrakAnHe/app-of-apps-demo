@@ -19,11 +19,4 @@ spec:
       command: [sh, -c]
       source: |
         cred="T08EH7TLVBJ/B08EHMA0H4N/F3zpHs4aBsaXqYbtJYnODWn9"
-        curl -X POST -H 'Content-type: application/json' --data '{"text":"{{inputs.parameters.message}}"}' https://hooks.slack.com/services/$cred
-    # script:
-    #   image: prakahe/argo-cluster-control:latest
-    #   command: [sh]
-    #   source: |
-    #     echo "Sending slack message to 'Hesthest.lol'..."
-    #     echo "(Not really, it's not implemented lol.)"
-    #     echo "{{inputs.parameters.message}}"
+        curl -X POST -H 'Content-type: application/json' --data '{"text":"_{{workflow.name}}_ -> {{inputs.parameters.message}}"}' https://hooks.slack.com/services/$cred
