@@ -55,6 +55,8 @@ spec:
             value: "{{inputs.parameters.monitor-timeout-seconds}}"
         withParam: "{{inputs.parameters.app-names}}"
 
+  # exit-handler is ONLY run if the 'deploy-list-of-apps' workflowTemplate is submitted. 
+  # It is not run if the 'deploy-list-of-apps' template is referenced by another workflow.
   - name: exit-handler
     steps:
     - - name: alert-slack
