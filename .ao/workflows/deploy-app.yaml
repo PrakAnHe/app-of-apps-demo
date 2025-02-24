@@ -170,3 +170,7 @@ spec:
           parameters:
           - name: message
             value: "Deployment of application '{{inputs.parameters.app-name}}' succeeded. Application is Healthy."
+    - - name: fail-workflow
+        templateRef:
+          name: fail-workflow
+          template: fail-workflow
