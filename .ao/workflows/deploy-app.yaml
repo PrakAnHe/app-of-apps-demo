@@ -89,7 +89,7 @@ spec:
           if [ "$status" = "Degraded" ]; then
             echo "{{inputs.parameters.app-name}} application is Degraded"
             echo "Degraded" > /tmp/deployment-status
-            echo "Deployment of application {{inputs.parameters.app-name}} `failed`. Application is Degraded" > /tmp/deployment-message
+            echo "Deployment of application {{inputs.parameters.app-name}} \`failed\`. Application is Degraded" > /tmp/deployment-message
             exit 1
           fi
 
@@ -106,7 +106,7 @@ spec:
 
         echo "Timed out after {{inputs.parameters.monitor-timeout-seconds}} seconds"
         echo "Timeout" > /tmp/deployment-status
-        echo "Deployment of application {{inputs.parameters.app-name}} `failed`. Monitor timed out after {{inputs.parameters.monitor-timeout-seconds}} seconds" > /tmp/deployment-message
+        echo "Deployment of application {{inputs.parameters.app-name}} \`failed\`. Monitor timed out after {{inputs.parameters.monitor-timeout-seconds}} seconds" > /tmp/deployment-message
         exit 1
 
   - name: post-monitor-handler
