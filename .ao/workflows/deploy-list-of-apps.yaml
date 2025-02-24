@@ -42,7 +42,7 @@ spec:
         arguments:
           parameters:
           - name: message
-            value: "Deployment started..."
+            value: "Deployments started..."
     - - name: deploy-app
         templateRef:
           name: deploy-app
@@ -66,7 +66,7 @@ spec:
         arguments:
           parameters:
           - name: message
-            value: "Deployment workflow {{workflow.mainEntrypoint}} finished with status `{{workflow.status}}`"
+            value: "Deployment workflow {{workflow.mainEntrypoint}} finished with status {{workflow.status}}"
       - name: alert-sentry-on-failed
         when: "{{workflow.status}} != Succeeded"
         templateRef:
