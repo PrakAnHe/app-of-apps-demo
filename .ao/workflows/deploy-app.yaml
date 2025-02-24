@@ -31,7 +31,7 @@ spec:
           - name: app-name
             value: "{{inputs.parameters.app-name}}"
       - name: monitor-deployment
-        dependencies: [sync-app]
+        depends: "sync-app"
         template: monitor-deployment
         arguments:
           parameters:
