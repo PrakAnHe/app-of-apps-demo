@@ -43,6 +43,10 @@ spec:
         template: post-monitor-handler
         arguments:
           parameters:
+          - name: app-name
+            value: "{{inputs.parameters.app-name}}"
+          - name: monitor-timeout-seconds
+            value: "{{inputs.parameters.monitor-timeout-seconds}}"
           - name: deployment-status
             value: "{{steps.monitor-deployment.outputs.parameters.deployment-status}}"
 
