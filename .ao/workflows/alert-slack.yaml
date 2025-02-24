@@ -10,8 +10,14 @@ spec:
     parameters:
     - name: message
   templates:
+  # - name: alert-slack
+  #   template: send-slack-message
+  #   inputs:
+  #     parameters:
+  #     - name: message
+  #       value: "asdasdasdasd"
   - name: alert-slack
-    arguments:
+    inputs:
       parameters:
       - name: message
         value: "asdasdasdasd"
@@ -22,7 +28,6 @@ spec:
           parameters:
           - name: message
             value: "{{inputs.parameters.message}}"
-            
   - name: send-slack-message
     inputs:
       parameters:
