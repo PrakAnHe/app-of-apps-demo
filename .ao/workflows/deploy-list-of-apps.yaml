@@ -57,15 +57,15 @@ spec:
 
   - name: exit-handler
     steps:
-    - - name: alert-sentry-success
+    - - name: alert-slack
         templateRef:
-          name: alert-sentry
-          template: alert-sentry
+          name: alert-slack
+          template: alert-slack
         arguments:
           parameters:
           - name: message
-            value: "Deployment workflow _{{workflow.mainEntrypoint}}_ finished with status _{{workflow.status}}_."
-      - name: alert-sentry-failed
+            value: "Deployment workflow {{workflow.mainEntrypoint}} finished with status \`{{workflow.status}}\`"
+      - name: alert-sentry-on-failed
         when: "{{workflow.status}} != Succeeded"
         templateRef:
           name: alert-sentry
@@ -73,4 +73,4 @@ spec:
         arguments:
           parameters:
           - name: message
-            value: "Deployment workflow _{{workflow.mainEntrypoint}}_ failed."
+            value: "Deployment workflow {{workflow.mainEntrypoint}} failed"
