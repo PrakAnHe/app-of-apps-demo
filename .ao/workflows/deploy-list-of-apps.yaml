@@ -57,7 +57,7 @@ spec:
         arguments:
           parameters:
           - name: message
-            value: "Hest! Success!"
+            value: "Deployment of applications succeded."
       - name: alert-sentry-failed
         when: "{{workflow.status}} != Succeeded"
         templateRef:
