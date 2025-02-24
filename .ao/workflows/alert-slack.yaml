@@ -11,9 +11,7 @@ spec:
     - name: message
   templates:
   - name: alert-slack
-    templateRef:
-      name: alert-slack
-      template: send-slack-message
+    template: send-slack-message
     arguments:
       parameters:
       - name: message
