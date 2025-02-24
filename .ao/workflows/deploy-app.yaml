@@ -176,15 +176,15 @@ spec:
           name: fail-workflow
           template: fail-workflow
 
-  - name: exit-handler
-    when: "{{workflow.status}} != Succeeded"
-    templateRef:
-      name: alert-sentry
-      template: alert-sentry
-    arguments:
-      parameters:
-      - name: message
-        value: "Workflow '{{workflow.name}}' failed!"
+  # - name: exit-handler
+  #   when: "{{workflow.status}} != Succeeded"
+  #   templateRef:
+  #     name: alert-sentry
+  #     template: alert-sentry
+  #   arguments:
+  #     parameters:
+  #     - name: message
+  #       value: "Workflow '{{workflow.name}}' failed!"
 
   - name: exit-handler
     steps:
