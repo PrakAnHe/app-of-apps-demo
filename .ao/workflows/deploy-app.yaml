@@ -6,7 +6,6 @@ metadata:
     workflows.argoproj.io/maintainer: andreas
 spec:
   entrypoint: deploy-app
-  #                                           Prøv at bruge et artifact to at sende deployment-status til exit-handler
   onExit: exit-handler
   arguments:
     parameters:
@@ -97,7 +96,7 @@ spec:
           if [ "$status" = "Healthy" ]; then
             echo "{{inputs.parameters.app-name}} application is Healthy"
             echo "Healthy" > /tmp/deployment-status
-            echo "Deployment of application '{{inputs.parameters.app-name}}' succeeded. Application is Healthy." > /tmp/deployment-message
+            echo "Deployment of application '{{inputs.parameters.app-name}}' finished without errors." > /tmp/deployment-message
             exit 0
           fi
 
