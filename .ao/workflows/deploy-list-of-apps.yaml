@@ -66,4 +66,4 @@ spec:
         arguments:
           parameters:
           - name: message
-            value: "Hest! Failed!"
+            value: "Deployment of applications failed."

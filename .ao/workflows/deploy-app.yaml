@@ -7,7 +7,7 @@ metadata:
 spec:
   entrypoint: deploy-app
   #                                           Prøv at bruge et artifact to at sende deployment-status til exit-handler
-  # onExit: exit-handler
+  onExit: exit-handler
   arguments:
     parameters:
     - name: app-name
@@ -22,43 +22,17 @@ spec:
       - name: app-name
       - name: monitor-timeout-seconds
     #                                             Prøv DAG i stedet for steps
-    dag:
-      failFast: true
-      tasks:
-      - name: sync-app
-        template: sync-app
-        arguments:
-          parameters:
-          - name: app-name
-            value: "{{inputs.parameters.app-name}}"
-      - name: monitor-deployment
-        depends: "sync-app"
-        template: monitor-deployment
-        arguments:
-          parameters:
-          - name: app-name
-            value: "{{inputs.parameters.app-name}}"
-          - name: monitor-timeout-seconds
-            value: "{{inputs.parameters.monitor-timeout-seconds}}"
-      - name: exit-handler
-        depends: "!sync-app.Succeeded || !monitor-deployment.Succeeded"
-        template: exit-handler
-        arguments:
-          parameters:
-          - name: app-name
-            value: "{{inputs.parameters.app-name}}"
-          - name: monitor-timeout-seconds
-            value: "{{inputs.parameters.monitor-timeout-seconds}}"
-          - name: deployment-status
-            value: "{{tasks.monitor-deployment.outputs.parameters.deployment-status}}"
-    # steps:
-    # - - name: sync-app
+    # dag:
+    #   failFast: true
+    #   tasks:
+    #   - name: sync-app
     #     template: sync-app
     #     arguments:
     #       parameters:
     #       - name: app-name
     #         value: "{{inputs.parameters.app-name}}"
-    # - - name: monitor-deployment
+    #   - name: monitor-deployment
+    #     depends: "sync-app"
     #     template: monitor-deployment
     #     arguments:
     #       parameters:
@@ -66,13 +40,41 @@ spec:
     #         value: "{{inputs.parameters.app-name}}"
     #       - name: monitor-timeout-seconds
     #         value: "{{inputs.parameters.monitor-timeout-seconds}}"
-    # - - name: exit-handler
-    #     when: "{{steps.monitor-deployment.outputs.parameters.deployment-status}} != Healthy"
-    #     template: exit-handler
+    #   - name: fail-handler
+    #     depends: "!sync-app.Succeeded || !monitor-deployment.Succeeded"
+    #     template: fail-handler
     #     arguments:
     #       parameters:
+    #       - name: app-name
+    #         value: "{{inputs.parameters.app-name}}"
+    #       - name: monitor-timeout-seconds
+    #         value: "{{inputs.parameters.monitor-timeout-seconds}}"
     #       - name: deployment-status
-    #         value: "{{steps.monitor-deployment.outputs.parameters.deployment-status}}"
+    #         value: "{{tasks.monitor-deployment.outputs.parameters.deployment-status}}"
+    steps:
+    - - name: sync-app
+        template: sync-app
+        arguments:
+          parameters:
+          - name: app-name
+            value: "{{inputs.parameters.app-name}}"
+    - - name: monitor-deployment
+        template: monitor-deployment
+        continueOn:
+          failed: true
+        arguments:
+          parameters:
+          - name: app-name
+            value: "{{inputs.parameters.app-name}}"
+          - name: monitor-timeout-seconds
+            value: "{{inputs.parameters.monitor-timeout-seconds}}"
+    - - name: post-monitor-handler
+        when: "{{steps.monitor-deployment.outputs.parameters.deployment-status}} != Healthy"
+        template: post-monitor-handler
+        arguments:
+          parameters:
+          - name: deployment-status
+            value: "{{steps.monitor-deployment.outputs.parameters.deployment-status}}"
 
 
   - name: sync-app
@@ -131,7 +133,7 @@ spec:
         echo "Timeout" > /tmp/deployment-status
         exit 1
 
-  - name: exit-handler
+  - name: post-monitor-handler
     inputs:
       parameters:
       - name: app-name
@@ -143,7 +145,7 @@ spec:
     #   source: |
     #     echo {{inputs.parameters.deployment-status}}
     steps:
-    - - name: alert-sentry-degraded
+    - - name: alert-application-degraded
         when: "{{inputs.parameters.deployment-status}} == Degraded"
         templateRef:
           name: alert-sentry
@@ -152,7 +154,7 @@ spec:
           parameters:
           - name: message
             value: "Deployment of application '{{inputs.parameters.app-name}}' failed. Application is Degraded."
-      - name: alert-sentry-timeout
+      - name: alert-application-timeout
         when: "{{inputs.parameters.deployment-status}} == Timeout"
         templateRef:
           name: alert-sentry
@@ -161,16 +163,44 @@ spec:
           parameters:
           - name: message
             value: "Deployment of application '{{inputs.parameters.app-name}}' failed. Monitor timed out after {{inputs.parameters.monitor-timeout-seconds}} seconds."
-      - name: alert-sentry-success
+      - name: alert-application-success
         when: "{{inputs.parameters.deployment-status}} == Healthy"
+        script:
+          image: prakahe/argo-cluster-control:latest
+          command: [sh]
+          source: |
+            echo "Deployment of application '{{inputs.parameters.app-name}}' succeeded. Application is Healthy."
+      - name: fail-workflow
+        when: "{{inputs.parameters.deployment-status}} != Healthy"
+        templateRef:
+          name: fail-workflow
+          template: fail-workflow
+
+  - name: exit-handler
+    when: "{{workflow.status}} != Succeeded"
+    templateRef:
+      name: alert-sentry
+      template: alert-sentry
+    arguments:
+      parameters:
+      - name: message
+        value: "Workflow '{{workflow.name}}' failed!"
+
+  - name: exit-handler
+    steps:
+    - - name: alert-deploy-succeeded
+        when: "{{workflow.status}} == Succeeded"
+        script:
+          image: prakahe/argo-cluster-control:latest
+          command: [sh]
+          source: |
+            echo "Deployment of application '{{workflow.parameters.app-name}}' succeeded."
+      - name: alert-deploy-failed
+        when: "{{workflow.status}} != Succeeded"
         templateRef:
           name: alert-sentry
           template: alert-sentry
         arguments:
           parameters:
           - name: message
-            value: "Deployment of application '{{inputs.parameters.app-name}}' succeeded. Application is Healthy."
-    - - name: fail-workflow
-        templateRef:
-          name: fail-workflow
-          template: fail-workflow
+            value: "Deployment workflow '{{workflow.name}}' of application '{{workflow.parameters.app-name}}' failed."
