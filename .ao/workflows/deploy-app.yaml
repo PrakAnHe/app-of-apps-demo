@@ -188,14 +188,14 @@ spec:
 
   - name: exit-handler
     steps:
-    - - name: alert-deploy-succeeded
-        when: "{{workflow.status}} == Succeeded"
-        script:
-          image: prakahe/argo-cluster-control:latest
-          command: [sh]
-          source: |
-            echo "Deployment of application '{{workflow.parameters.app-name}}' succeeded."
-      - name: alert-deploy-failed
+    # - - name: alert-deploy-succeeded
+    #     when: "{{workflow.status}} == Succeeded"
+    #     script:
+    #       image: prakahe/argo-cluster-control:latest
+    #       command: [sh]
+    #       source: |
+    #         echo "Deployment of application '{{workflow.parameters.app-name}}' succeeded."
+    - - name: alert-deploy-failed
         when: "{{workflow.status}} != Succeeded"
         templateRef:
           name: alert-sentry
