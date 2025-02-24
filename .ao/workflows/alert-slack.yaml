@@ -18,7 +18,7 @@ spec:
       image: appropriate/curl:latest
       command: [sh, -c]
       source: |
-        curl -X POST -H 'Content-type: application/json' --data '{"text":"Hello, World!"}' https://hooks.slack.com/services/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
+        curl -X POST -H 'Content-type: application/json' --data '{"text":"Hello, World!"}' https://hooks.slack.com/services/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
     # script:
     #   image: prakahe/argo-cluster-control:latest
     #   command: [sh]
