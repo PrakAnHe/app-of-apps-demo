@@ -35,6 +35,14 @@ spec:
       - name: app-names
       - name: monitor-timeout-seconds
     steps:
+    - - name: alert-deployments-started
+        templateRef:
+          name: alert-slack
+          template: alert-slack
+        arguments:
+          parameters:
+          - name: message
+            value: "Deployment workflow '{{workflow.entrypoint}}' of multiple applications started."
     - - name: deploy-app
         templateRef:
           name: deploy-app
