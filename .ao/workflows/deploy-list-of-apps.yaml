@@ -13,8 +13,8 @@ spec:
       value: |
         [
           "guestbook",
-          "fastapi-sample-app",
           "hello-world-api",
+          "fastapi-sample-app",
           "hello-world-api-1",
           "hello-world-api-2",
           "hello-world-api-3",
