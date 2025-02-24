@@ -11,11 +11,18 @@ spec:
     - name: message
   templates:
   - name: alert-slack
-    template: send-slack-message
     arguments:
       parameters:
       - name: message
         value: "asdasdasdasd"
+    steps:
+    - - name: send-slack-message
+        template: send-slack-message
+        arguments:
+          parameters:
+          - name: message
+            value: "{{inputs.parameters.message}}"
+            
   - name: send-slack-message
     inputs:
       parameters:
