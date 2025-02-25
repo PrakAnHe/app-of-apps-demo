@@ -38,4 +38,4 @@ spec:
         arguments:
           parameters:
           - name: message
-            value: "Sentry event: asdasd"
+            value: "Sentry event: {{steps.alert-sentry.outputs.parameters.event-url}}"
