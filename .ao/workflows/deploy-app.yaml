@@ -115,38 +115,82 @@ spec:
       - name: deployment-status
       - name: deployment-message
     steps:
-    - - name: alert-sentry-on-failed
-        when: "{{inputs.parameters.deployment-status}} != Healthy"
-        templateRef:
-          name: alert-sentry
-          template: alert-sentry
-        arguments:
-          parameters:
-          - name: message
-            value: "{{inputs.parameters.deployment-message}}"
-      - name: alert-slack-on-success
+    - - name: handle-success
         when: "{{inputs.parameters.deployment-status}} == Healthy"
-        templateRef:
-          name: alert-slack
-          template: alert-slack-success
-        arguments:
-          parameters:
-          - name: message
-            value: "{{inputs.parameters.deployment-message}}"
-      - name: alert-slack-on-failed
+        steps:
+        - - name: alert-slack
+            templateRef:
+              name: alert-slack
+              template: alert-slack-success
+            arguments:
+              parameters:
+              - name: message
+                value: "successssssssssssssss!!!!!!!"
+          - name: alert-slack
+            templateRef:
+              name: alert-slack
+              template: alert-slack-success
+            arguments:
+              parameters:
+              - name: message
+                value: "successssssssssssssss!!!!!!! 2 :D"
+      - name: handle-failed
         when: "{{inputs.parameters.deployment-status}} != Healthy"
-        templateRef:
-          name: alert-slack
-          template: alert-slack-error
-        arguments:
-          parameters:
-          - name: message
-            value: "{{inputs.parameters.deployment-message}}"
-      - name: fail-workflow
-        when: "{{inputs.parameters.deployment-status}} != Healthy"
-        templateRef:
-          name: fail-workflow
-          template: fail-workflow
+        steps:
+        - - name: alert-slack
+            templateRef:
+              name: alert-slack
+              template: alert-slack-error
+            arguments:
+              parameters:
+              - name: message
+                value: "Faaaaaaaaaaiiiil, neeeeerd, elelele"
+          - name: alert-sentry
+            templateRef:
+              name: alert-sentry
+              template: alert-sentry
+            arguments:
+              parameters:
+              - name: message
+                value: "elelelelelelele"
+          - name: fail-workflow
+            templateRef:
+              name: fail-workflow
+              template: fail-workflow
+
+    # steps:
+    # - - name: alert-sentry-on-failed
+    #     when: "{{inputs.parameters.deployment-status}} != Healthy"
+    #     templateRef:
+    #       name: alert-sentry
+    #       template: alert-sentry
+    #     arguments:
+    #       parameters:
+    #       - name: message
+    #         value: "{{inputs.parameters.deployment-message}}"
+    #   - name: alert-slack-on-success
+    #     when: "{{inputs.parameters.deployment-status}} == Healthy"
+    #     templateRef:
+    #       name: alert-slack
+    #       template: alert-slack-success
+    #     arguments:
+    #       parameters:
+    #       - name: message
+    #         value: "{{inputs.parameters.deployment-message}}"
+    #   - name: alert-slack-on-failed
+    #     when: "{{inputs.parameters.deployment-status}} != Healthy"
+    #     templateRef:
+    #       name: alert-slack
+    #       template: alert-slack-error
+    #     arguments:
+    #       parameters:
+    #       - name: message
+    #         value: "{{inputs.parameters.deployment-message}}"
+    #   - name: fail-workflow
+    #     when: "{{inputs.parameters.deployment-status}} != Healthy"
+    #     templateRef:
+    #       name: fail-workflow
+    #       template: fail-workflow
 
   # exit-handler is ONLY run if the 'deploy-app' workflowTemplate is submitted. 
   # It is not run if the 'deploy-app' template is referenced by another workflow.
