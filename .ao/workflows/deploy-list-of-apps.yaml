@@ -67,9 +67,6 @@ spec:
         template: handle-failed
 
   - name: handle-success
-    inputs:
-      parameters:
-      - name: deployment-message
     steps:
     - - name: alert-slack-1
         templateRef:
@@ -81,9 +78,6 @@ spec:
             value: "Deployments completed without errors."
 
   - name: handle-failed
-    inputs:
-      parameters:
-      - name: deployment-message
     steps:
     - - name: alert-slack
         templateRef:
