@@ -120,14 +120,14 @@ spec:
         template: handle-success
         arguments:
           parameters:
-          - name: message
+          - name: deployment-message
             value: "{{inputs.parameters.deployment-message}}"
       - name: handle-failed
         when: "{{inputs.parameters.deployment-status}} != Healthy"
         template: handle-failed
         arguments:
           parameters:
-          - name: message
+          - name: deployment-message
             value: "{{inputs.parameters.deployment-message}}"
 
   - name: handle-success
