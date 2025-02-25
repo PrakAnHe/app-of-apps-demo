@@ -81,6 +81,7 @@ spec:
       image: prakahe/argo-cluster-control:latest
       command: [sh]
       source: |
+        #todo: use scaleway secrets
         argocd login argocd-server.argocd.svc.cluster.local --insecure --username admin --password adminpass
 
         i=1

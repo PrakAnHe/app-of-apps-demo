@@ -124,7 +124,8 @@ spec:
           - name: emoji
             value: ":white_small_square:"
 
-  - name: send-slack-message #todo: rename to send-message
+    #todo: rename to send-message
+  - name: send-slack-message 
     inputs:
       parameters:
       - name: message
@@ -136,7 +137,8 @@ spec:
       image: appropriate/curl:latest
       command: [sh, -c]
       source: |
-        cred="T08EH7TLVBJ/B08EHMA0H4N/F3zpHs4aBsaXqYbtJYnODWn9"
+        #todo: use scaleway secrets
+        cred="T08EH7TLVBJ/B08EHMA0H4N/F3zpHs4aBsaXqYbtJYnODWn9" 
 
         if [ "{{inputs.parameters.exclude-workflow-name}}" != "true" ]; then
           curl -X POST -H 'Content-type: application/json' --data '{"text":"{{inputs.parameters.emoji}}  ->  {{workflow.name}}  ->  {{inputs.parameters.message}}"}' https://hooks.slack.com/services/$cred
@@ -144,7 +146,8 @@ spec:
           curl -X POST -H 'Content-type: application/json' --data '{"text":"{{inputs.parameters.emoji}}  ->  {{inputs.parameters.message}}"}' https://hooks.slack.com/services/$cred
         fi
 
-  - name: send-slack-message-raw #todo: rename to send-message-raw
+    #todo: rename to send-message-raw
+  - name: send-slack-message-raw 
     inputs:
       parameters:
       - name: data
@@ -152,5 +155,6 @@ spec:
       image: appropriate/curl:latest
       command: [sh, -c]
       source: |
-        cred="T08EH7TLVBJ/B08EHMA0H4N/F3zpHs4aBsaXqYbtJYnODWn9"
+        #todo: use scaleway secrets
+        cred="T08EH7TLVBJ/B08EHMA0H4N/F3zpHs4aBsaXqYbtJYnODWn9" 
         curl -X POST -H 'Content-type: application/json' --data '{{inputs.parameters.data}}' https://hooks.slack.com/services/$cred
