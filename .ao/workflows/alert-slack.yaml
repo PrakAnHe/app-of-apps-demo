@@ -124,7 +124,7 @@ spec:
           - name: emoji
             value: ":white_small_square:"
 
-  - name: send-slack-message
+  - name: send-slack-message #todo: rename to send-message
     inputs:
       parameters:
       - name: message
@@ -144,7 +144,7 @@ spec:
           curl -X POST -H 'Content-type: application/json' --data '{"text":"{{inputs.parameters.emoji}}  ->  {{inputs.parameters.message}}"}' https://hooks.slack.com/services/$cred
         fi
 
-  - name: send-slack-message-raw
+  - name: send-slack-message-raw #todo: rename to send-message-raw
     inputs:
       parameters:
       - name: data
