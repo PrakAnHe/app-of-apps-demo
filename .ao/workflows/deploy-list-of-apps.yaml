@@ -62,8 +62,8 @@ spec:
     - - name: alert-slack-on-success
         when: "{{workflow.status}} == Succeeded"
         templateRef:
-          name: alert-slack
-          template: alert-slack-success
+          name: alert-slack-success
+          template: alert-slack
         arguments:
           parameters:
           - name: message
@@ -71,8 +71,8 @@ spec:
       - name: alert-slack-on-failed
         when: "{{workflow.status}} != Succeeded"
         templateRef:
-          name: alert-slack
-          template: alert-slack-error
+          name: alert-slack-error
+          template: alert-slack
         arguments:
           parameters:
           - name: message

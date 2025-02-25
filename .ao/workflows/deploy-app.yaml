@@ -118,8 +118,8 @@ spec:
     - - name: alert-sentry-on-failed
         when: "{{inputs.parameters.deployment-status}} != Healthy"
         templateRef:
-          name: alert-sentry
-          template: alert-sentry-error
+          name: alert-sentry-error
+          template: alert-sentry
         arguments:
           parameters:
           - name: message
@@ -127,8 +127,8 @@ spec:
       - name: alert-slack-on-success
         when: "{{inputs.parameters.deployment-status}} == Healthy"
         templateRef:
-          name: alert-slack
-          template: alert-slack-success
+          name: alert-slack-success
+          template: alert-slack
         arguments:
           parameters:
           - name: message
