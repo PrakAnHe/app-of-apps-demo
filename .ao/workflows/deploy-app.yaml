@@ -124,7 +124,7 @@ spec:
 
   - name: handle-success
     steps:
-    - - name: alert-slack
+    - - name: alert-slack-1
         templateRef:
           name: alert-slack
           template: alert-slack-success
@@ -132,7 +132,7 @@ spec:
           parameters:
           - name: message
             value: "successssssssssssssss!!!!!!!"
-      - name: alert-slack
+      - name: alert-slack-2
         templateRef:
           name: alert-slack
           template: alert-slack-success
