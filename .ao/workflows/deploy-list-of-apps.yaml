@@ -63,7 +63,7 @@ spec:
         when: "{{workflow.status}} == Succeeded"
         template: handle-success
       - name: handle-failed
-        when: "{{workflow.status}} == Succeeded"
+        when: "{{workflow.status}} != Succeeded"
         template: handle-failed
 
   - name: handle-success
