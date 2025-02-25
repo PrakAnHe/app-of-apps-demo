@@ -118,11 +118,22 @@ spec:
     - - name: handle-success
         when: "{{inputs.parameters.deployment-status}} == Healthy"
         template: handle-success
+        arguments:
+          parameters:
+          - name: message
+            value: "{{inputs.parameters.deployment-message}}"
       - name: handle-failed
         when: "{{inputs.parameters.deployment-status}} != Healthy"
         template: handle-failed
+        arguments:
+          parameters:
+          - name: message
+            value: "{{inputs.parameters.deployment-message}}"
 
   - name: handle-success
+    inputs:
+      parameters:
+      - name: deployment-message
     steps:
     - - name: alert-slack-1
         templateRef:
@@ -131,7 +142,7 @@ spec:
         arguments:
           parameters:
           - name: message
-            value: "successssssssssssssss!!!!!!!"
+            value: "{{inputs.parameters.deployment-message}}"
       - name: alert-slack-2
         templateRef:
           name: alert-slack
@@ -139,9 +150,12 @@ spec:
         arguments:
           parameters:
           - name: message
-            value: "successssssssssssssss!!!!!!! 2 :D"
+            value: "{{inputs.parameters.deployment-message}}"
 
   - name: handle-failed
+    inputs:
+      parameters:
+      - name: deployment-message
     steps:
     - - name: alert-slack
         templateRef:
@@ -150,7 +164,7 @@ spec:
         arguments:
           parameters:
           - name: message
-            value: "Faaaaaaaaaaiiiil, neeeeerd, elelele"
+            value: "{{inputs.parameters.deployment-message}}"
       - name: alert-sentry
         templateRef:
           name: alert-sentry
@@ -158,7 +172,7 @@ spec:
         arguments:
           parameters:
           - name: message
-            value: "elelelelelelele"
+            value: "{{inputs.parameters.deployment-message}}"
       - name: fail-workflow
         templateRef:
           name: fail-workflow

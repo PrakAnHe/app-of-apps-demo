@@ -59,30 +59,74 @@ spec:
   # It is not run if the 'deploy-list-of-apps' template is referenced by another workflow.
   - name: exit-handler
     steps:
-    - - name: alert-slack-on-success
+    - - name: handle-success
         when: "{{workflow.status}} == Succeeded"
+        template: handle-success
+      - name: handle-failed
+        when: "{{workflow.status}} == Succeeded"
+        template: handle-failed
+
+  - name: handle-success
+    inputs:
+      parameters:
+      - name: deployment-message
+    steps:
+    - - name: alert-slack-1
         templateRef:
           name: alert-slack
-          template: alert-slack-success
+          template: alert-slack-success-loud
         arguments:
           parameters:
           - name: message
-            value: "Deployment workflow {{workflow.mainEntrypoint}} finished with status {{workflow.status}}"
-      - name: alert-slack-on-failed
-        when: "{{workflow.status}} != Succeeded"
+            value: "Deployments completed without errors."
+
+  - name: handle-failed
+    inputs:
+      parameters:
+      - name: deployment-message
+    steps:
+    - - name: alert-slack
         templateRef:
           name: alert-slack
           template: alert-slack-error
         arguments:
           parameters:
           - name: message
-            value: "Deployment workflow {{workflow.mainEntrypoint}} finished with status {{workflow.status}}"
-      - name: alert-sentry-on-failed
-        when: "{{workflow.status}} != Succeeded"
+            value: "Deployment failed. Workflow {{workflow.mainEntrypoint}} finished with status `{{workflow.status}}`"
+      - name: alert-sentry
         templateRef:
           name: alert-sentry
           template: alert-sentry
         arguments:
           parameters:
           - name: message
-            value: "Deployment workflow {{workflow.mainEntrypoint}} failed"
+            value: "Deployment failed. Workflow {{workflow.mainEntrypoint}} finished with status `{{workflow.status}}`"
+  
+    # steps:
+    # - - name: alert-slack-on-success
+    #     when: "{{workflow.status}} == Succeeded"
+    #     templateRef:
+    #       name: alert-slack
+    #       template: alert-slack-success
+    #     arguments:
+    #       parameters:
+    #       - name: message
+    #         value: "Deployment workflow {{workflow.mainEntrypoint}} finished with status {{workflow.status}}"
+    #   - name: alert-slack-on-failed
+    #     when: "{{workflow.status}} != Succeeded"
+    #     templateRef:
+    #       name: alert-slack
+    #       template: alert-slack-error
+    #     arguments:
+    #       parameters:
+    #       - name: message
+    #         value: "Deployment workflow {{workflow.mainEntrypoint}} finished with status {{workflow.status}}"
+    #   - name: alert-sentry-on-failed
+    #     when: "{{workflow.status}} != Succeeded"
+    #     templateRef:
+    #       name: alert-sentry
+    #       template: alert-sentry
+    #     arguments:
+    #       parameters:
+    #       - name: message
+    #         value: "Deployment workflow {{workflow.mainEntrypoint}} failed"
