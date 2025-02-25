@@ -127,8 +127,8 @@ spec:
       - name: alert-slack-on-success
         when: "{{inputs.parameters.deployment-status}} == Healthy"
         templateRef:
-          name: alert-slack-success
-          template: alert-slack
+          name: alert-slack
+          template: alert-slack-success
         arguments:
           parameters:
           - name: message
@@ -136,8 +136,8 @@ spec:
       - name: alert-slack-on-failed
         when: "{{inputs.parameters.deployment-status}} != Healthy"
         templateRef:
-          name: alert-slack-error
-          template: alert-slack
+          name: alert-slack
+          template: alert-slack-error
         arguments:
           parameters:
           - name: message
