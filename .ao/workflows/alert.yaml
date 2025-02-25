@@ -1,0 +1,37 @@
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: alert
+  annotations:
+    workflows.argoproj.io/maintainer: andreas
+spec:
+  entrypoint: alert-error
+  arguments:
+    parameters:
+    - name: message
+  templates:
+  - name: alert-error
+    inputs:
+      parameters:
+      - name: message
+    dag:
+      tasks:
+      - name: alert-sentry
+        templateRef:
+          name: alert-sentry
+          template: alert-sentry
+        arguments:
+          parameters:
+          - name: message
+            value: "{{inputs.parameters.deployment-message}}"
+      - name: alert-slack
+        dependencies: [alert-sentry]
+        templateRef:
+          name: alert-slack
+          template: alert-slack-error
+        arguments:
+          parameters:
+          - name: message
+            value: "{{inputs.parameters.deployment-message}}"
+          - name: event-url
+            value: "{{tasks.alert-sentry.outputs.parameters.event-url}}"

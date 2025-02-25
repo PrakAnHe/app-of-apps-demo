@@ -68,6 +68,8 @@ spec:
     inputs:
       parameters:
       - name: message
+      - name: event-url
+        value: "none"
     steps:
     - - name: send-slack-message
         template: send-slack-message
@@ -77,6 +79,8 @@ spec:
             value: "{{inputs.parameters.message}}"
           - name: emoji
             value: ":x:"
+          - name: event-url
+            value: "{{inputs.parameters.event-url}}"
 
   - name: alert-slack-start
     inputs:
@@ -98,10 +102,16 @@ spec:
       - name: message
       - name: emoji
         value: ":white_small_square:"
+      - name: event-url
+        value: "none"
     script:
       image: appropriate/curl:latest
       command: [sh, -c]
       source: |
-        echo "{{inputs.parameters.message}}"
         cred="T08EH7TLVBJ/B08EHMA0H4N/F3zpHs4aBsaXqYbtJYnODWn9"
+        
         curl -X POST -H 'Content-type: application/json' --data '{"text":"{{inputs.parameters.emoji}} -> {{workflow.name}} -> {{inputs.parameters.message}}"}' https://hooks.slack.com/services/$cred
+        
+        if [ "{{inputs.parameters.event-url}}" != "none" ]; then
+          curl -X POST -H 'Content-type: application/json' --data '{"text":"Sentry event: {{inputs.parameters.event-url}}"}' https://hooks.slack.com/services/$cred
+        fi
