@@ -151,7 +151,7 @@ spec:
     - - name: alert-slack
         templateRef:
           name: alert-slack
-          template: alert-slack
+          template: alert-slack-step
         arguments:
           parameters:
           - name: message
