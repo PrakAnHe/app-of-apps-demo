@@ -187,7 +187,7 @@ spec:
         arguments:
           parameters:
           - name: message
-            value: "Deployment of application '{{workflow.parameters.app-name}}' succeeded"
+            value: "Deployment of application {{workflow.parameters.app-name}} succeeded"
       - name: alert-deploy-failed
         when: "{{workflow.status}} != Succeeded"
         templateRef:
@@ -196,4 +196,4 @@ spec:
         arguments:
           parameters:
           - name: message
-            value: "Deployment workflow '{{workflow.mainEntrypoint}}' of application '{{workflow.parameters.app-name}}' failed"
+            value: "Deployment of application '{{workflow.parameters.app-name}}' failed"

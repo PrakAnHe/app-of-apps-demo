@@ -86,5 +86,5 @@ spec:
         arguments:
           parameters:
           - name: message
-            value: "Deployment failed. Workflow {{workflow.mainEntrypoint}} finished with status `{{workflow.status}}`"
+            value: "Deployments failed. Workflow finished with status `{{workflow.status}}`"
   
