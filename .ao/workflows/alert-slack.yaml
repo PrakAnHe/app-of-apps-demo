@@ -96,22 +96,40 @@ spec:
           - name: emoji
             value: ":small_blue_diamond:"
 
+  - name: alert-slack-step
+    inputs:
+      parameters:
+      - name: message
+    steps:
+    - - name: send-slack-message
+        template: send-slack-message
+        arguments:
+          parameters:
+          - name: message
+            value: "{{inputs.parameters.message}}"
+          - name: emoji
+            value: ":white_small_square:"
+
   - name: send-slack-message
     inputs:
       parameters:
       - name: message
       - name: emoji
-        value: ":white_small_square:"
-      - name: event-url
-        value: "none"
+        value: ":grey_exclamation:"
     script:
       image: appropriate/curl:latest
       command: [sh, -c]
       source: |
         cred="T08EH7TLVBJ/B08EHMA0H4N/F3zpHs4aBsaXqYbtJYnODWn9"
-        
         curl -X POST -H 'Content-type: application/json' --data '{"text":"{{inputs.parameters.emoji}} -> {{workflow.name}} -> {{inputs.parameters.message}}"}' https://hooks.slack.com/services/$cred
-        
-        if [ "{{inputs.parameters.event-url}}" != "none" ]; then
-          curl -X POST -H 'Content-type: application/json' --data '{"text":"Sentry event: {{inputs.parameters.event-url}}"}' https://hooks.slack.com/services/$cred
-        fi
+
+  - name: send-slack-message-raw
+    inputs:
+      parameters:
+      - name: data
+    script:
+      image: appropriate/curl:latest
+      command: [sh, -c]
+      source: |
+        cred="T08EH7TLVBJ/B08EHMA0H4N/F3zpHs4aBsaXqYbtJYnODWn9"
+        curl -X POST -H 'Content-type: application/json' --data '{{inputs.parameters.data}}' https://hooks.slack.com/services/$cred

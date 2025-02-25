@@ -33,5 +33,3 @@ spec:
           parameters:
           - name: message
             value: "{{inputs.parameters.message}}"
-          - name: event-url
-            value: "{{tasks.alert-sentry.outputs.parameters.event-url}}"

@@ -71,7 +71,7 @@ spec:
     - - name: alert-slack
         templateRef:
           name: alert-slack
-          template: alert-slack-success-loud
+          template: alert-slack-success
         arguments:
           parameters:
           - name: message

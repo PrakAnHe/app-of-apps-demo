@@ -16,6 +16,9 @@ spec:
       - name: message
     outputs:
       parameters:
+      - name: event-id
+        valueFrom:
+          path: /tmp/event-id
       - name: event-url
         valueFrom:
           path: /tmp/event-url
@@ -28,4 +31,5 @@ spec:
         org_slug="myorganization-ti"
         event_id=$(sentry-cli send-event --raw -m "{{inputs.parameters.message}}" | grep -oP '(?<=Event id: )[\w-]+')
 
+        echo $event_id > /tmp/event-id
         echo https://sentry.io/organizations/$org_slug/issues/?query=$event_id > /tmp/event-url
