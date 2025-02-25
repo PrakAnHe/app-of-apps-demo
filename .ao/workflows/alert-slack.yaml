@@ -78,6 +78,8 @@ spec:
           - name: emoji
             value: ":x:"
 
+  #! This is not ideal. Since every sub-error is a seperate workflow step, it is very slow and clogs up the workflow graph.
+  #! Limit usage to 1 or 2 sub errors until a proper workflow-error-alert slack app is made. 
   - name: alert-slack-error-sub
     inputs:
       parameters:
