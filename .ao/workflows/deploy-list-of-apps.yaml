@@ -43,7 +43,7 @@ spec:
           parameters:
           - name: message
             value: "Deployments started..."
-    - - name: deploy-app
+      - name: deploy-app
         templateRef:
           name: deploy-app
           template: deploy-app
