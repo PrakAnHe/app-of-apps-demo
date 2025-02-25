@@ -14,7 +14,6 @@ spec:
     inputs:
       parameters:
       - name: message
-        value: "asdasdasdasd"
     steps:
     - - name: send-slack-message
         template: send-slack-message
@@ -27,7 +26,6 @@ spec:
     inputs:
       parameters:
       - name: message
-        value: "asdasdasdasdsuccess"
     steps:
     - - name: send-slack-message
         template: send-slack-message
@@ -42,7 +40,6 @@ spec:
     inputs:
       parameters:
       - name: message
-        value: "asdasdasdasdsuccessloud"
     steps:
     - - name: send-slack-message
         template: send-slack-message
@@ -57,7 +54,6 @@ spec:
     inputs:
       parameters:
       - name: message
-        value: "asdasdasdasdwarning"
     steps:
     - - name: send-slack-message
         template: send-slack-message
@@ -72,7 +68,6 @@ spec:
     inputs:
       parameters:
       - name: message
-        value: "asdasdasdasderror"
     steps:
     - - name: send-slack-message
         template: send-slack-message
@@ -83,12 +78,26 @@ spec:
           - name: emoji
             value: ":x:"
 
+  - name: alert-slack-start
+    inputs:
+      parameters:
+      - name: message
+    steps:
+    - - name: send-slack-message
+        template: send-slack-message
+        arguments:
+          parameters:
+          - name: message
+            value: "{{inputs.parameters.message}}"
+          - name: emoji
+            value: ":small_blue_diamond:"
+
   - name: send-slack-message
     inputs:
       parameters:
       - name: message
       - name: emoji
-        value: ":white_medium_small_square:"
+        value: ":white_small_square:"
     script:
       image: appropriate/curl:latest
       command: [sh, -c]

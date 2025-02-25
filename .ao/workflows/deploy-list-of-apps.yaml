@@ -38,7 +38,7 @@ spec:
     - - name: alert-deployments-started
         templateRef:
           name: alert-slack
-          template: alert-slack
+          template: alert-slack-start
         arguments:
           parameters:
           - name: message

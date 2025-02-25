@@ -139,7 +139,7 @@ spec:
     - - name: alert-slack
         templateRef:
           name: alert-slack
-          template: alert-slack-success
+          template: alert-slack
         arguments:
           parameters:
           - name: message
