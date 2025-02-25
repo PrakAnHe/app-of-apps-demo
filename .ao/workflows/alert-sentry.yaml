@@ -29,7 +29,7 @@ spec:
         export SENTRY_DSN="https://add568bc79479f8633f796ac375e2a52@o4508840730689536.ingest.de.sentry.io/4508840737833040"
 
         org_slug="myorganization-ti"
-        event_id=$(sentry-cli send-event --raw -m '{{workflow.name}} : {{inputs.parameters.message}}' | grep -oP '(?<=Event id: )[\w-]+')
+        event_id=$(sentry-cli send-event --raw -m '{{workflow.mainEntrypoint}} : {{inputs.parameters.message}}' -e workflow:{{workflow.name}} | grep -oP '(?<=Event id: )[\w-]+')
 
         echo $event_id > /tmp/event-id
         echo https://sentry.io/organizations/$org_slug/issues/?query=$event_id > /tmp/event-url
