@@ -119,12 +119,22 @@ spec:
         when: "{{inputs.parameters.deployment-status}} != Healthy"
         templateRef:
           name: alert-sentry
-          template: alert-sentry
+          template: alert-sentry-error
         arguments:
           parameters:
           - name: message
             value: "{{inputs.parameters.deployment-message}}"
-      - name: alert-slack
+      - name: alert-slack-on-success
+        when: "{{inputs.parameters.deployment-status}} == Healthy"
+        templateRef:
+          name: alert-slack
+          template: alert-slack-success
+        arguments:
+          parameters:
+          - name: message
+            value: "{{inputs.parameters.deployment-message}}"
+      - name: alert-slack-on-failed
+        when: "{{inputs.parameters.deployment-status}} != Healthy"
         templateRef:
           name: alert-slack
           template: alert-slack
