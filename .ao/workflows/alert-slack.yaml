@@ -88,7 +88,7 @@ spec:
       parameters:
       - name: message
       - name: emoji
-        value: ":white_small_square:"
+        value: ":white_medium_small_square:"
     script:
       image: appropriate/curl:latest
       command: [sh, -c]
