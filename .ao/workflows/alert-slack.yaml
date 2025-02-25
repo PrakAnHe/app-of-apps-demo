@@ -68,8 +68,6 @@ spec:
     inputs:
       parameters:
       - name: message
-      - name: event-url
-        value: "none"
     steps:
     - - name: send-slack-message
         template: send-slack-message
@@ -79,8 +77,6 @@ spec:
             value: "{{inputs.parameters.message}}"
           - name: emoji
             value: ":x:"
-          - name: event-url
-            value: "{{inputs.parameters.event-url}}"
 
   - name: alert-slack-start
     inputs:
