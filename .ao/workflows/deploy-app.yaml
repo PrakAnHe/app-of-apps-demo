@@ -41,6 +41,10 @@ spec:
         template: post-monitor-handler
         arguments:
           parameters:
+          - name: app-name
+            value: "{{inputs.parameters.app-name}}"
+          - name: monitor-timeout-seconds
+            value: "{{inputs.parameters.monitor-timeout-seconds}}"
           - name: deployment-status
             value: "{{steps.monitor-deployment.outputs.parameters.deployment-status}}"
           - name: deployment-message
@@ -112,6 +116,8 @@ spec:
   - name: post-monitor-handler
     inputs:
       parameters:
+      - name: app-name
+      - name: monitor-timeout-seconds
       - name: deployment-status
       - name: deployment-message
     steps:
@@ -122,13 +128,20 @@ spec:
           parameters:
           - name: deployment-message
             value: "{{inputs.parameters.deployment-message}}"
-      - name: handle-failed
-        when: "{{inputs.parameters.deployment-status}} != Healthy"
+      - name: handle-failed-timeout
+        when: "{{inputs.parameters.deployment-status}} == Timeout"
         template: handle-failed
         arguments:
           parameters:
           - name: deployment-message
-            value: "{{inputs.parameters.deployment-message}}"
+            value: "Deployment of application '{{inputs.parameters.app-name}}' failed. Monitor timed out after {{inputs.parameters.monitor-timeout-seconds}} seconds"
+      - name: handle-failed-degraded
+        when: "{{inputs.parameters.deployment-status}} == Degraded"
+        template: handle-failed
+        arguments:
+          parameters:
+          - name: deployment-message
+            value: "Deployment of application '{{inputs.parameters.app-name}}' failed. Application is Degraded"
 
   - name: handle-success
     inputs:

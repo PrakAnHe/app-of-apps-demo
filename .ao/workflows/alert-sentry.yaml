@@ -20,4 +20,4 @@ spec:
       source: |
         echo "{{inputs.parameters.message}}"
         export SENTRY_DSN="https://add568bc79479f8633f796ac375e2a52@o4508840730689536.ingest.de.sentry.io/4508840737833040"
-        sentry-cli send-event -m "{{inputs.parameters.message}}"
+        sentry-cli send-event --raw -m "{{inputs.parameters.message}}"
