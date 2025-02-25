@@ -117,46 +117,52 @@ spec:
     steps:
     - - name: handle-success
         when: "{{inputs.parameters.deployment-status}} == Healthy"
-        steps:
-        - - name: alert-slack
-            templateRef:
-              name: alert-slack
-              template: alert-slack-success
-            arguments:
-              parameters:
-              - name: message
-                value: "successssssssssssssss!!!!!!!"
-          - name: alert-slack
-            templateRef:
-              name: alert-slack
-              template: alert-slack-success
-            arguments:
-              parameters:
-              - name: message
-                value: "successssssssssssssss!!!!!!! 2 :D"
+        template: handle-success
       - name: handle-failed
         when: "{{inputs.parameters.deployment-status}} != Healthy"
-        steps:
-        - - name: alert-slack
-            templateRef:
-              name: alert-slack
-              template: alert-slack-error
-            arguments:
-              parameters:
-              - name: message
-                value: "Faaaaaaaaaaiiiil, neeeeerd, elelele"
-          - name: alert-sentry
-            templateRef:
-              name: alert-sentry
-              template: alert-sentry
-            arguments:
-              parameters:
-              - name: message
-                value: "elelelelelelele"
-          - name: fail-workflow
-            templateRef:
-              name: fail-workflow
-              template: fail-workflow
+        template: handle-failed
+
+  - name: handle-success
+    steps:
+    - - name: alert-slack
+        templateRef:
+          name: alert-slack
+          template: alert-slack-success
+        arguments:
+          parameters:
+          - name: message
+            value: "successssssssssssssss!!!!!!!"
+      - name: alert-slack
+        templateRef:
+          name: alert-slack
+          template: alert-slack-success
+        arguments:
+          parameters:
+          - name: message
+            value: "successssssssssssssss!!!!!!! 2 :D"
+
+  - name: handle-failed
+    steps:
+    - - name: alert-slack
+        templateRef:
+          name: alert-slack
+          template: alert-slack-error
+        arguments:
+          parameters:
+          - name: message
+            value: "Faaaaaaaaaaiiiil, neeeeerd, elelele"
+      - name: alert-sentry
+        templateRef:
+          name: alert-sentry
+          template: alert-sentry
+        arguments:
+          parameters:
+          - name: message
+            value: "elelelelelelele"
+      - name: fail-workflow
+        templateRef:
+          name: fail-workflow
+          template: fail-workflow
 
     # steps:
     # - - name: alert-sentry-on-failed
