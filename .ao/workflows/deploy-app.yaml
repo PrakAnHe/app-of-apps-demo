@@ -110,6 +110,7 @@ spec:
         exit 1
 
   - name: post-monitor-handler
+    parallelism: 99
     inputs:
       parameters:
       - name: deployment-status
