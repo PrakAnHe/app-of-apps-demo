@@ -162,18 +162,10 @@ spec:
       parameters:
       - name: deployment-message
     steps:
-    - - name: alert-slack
+    - - name: alert
         templateRef:
-          name: alert-slack
-          template: alert-slack-error
-        arguments:
-          parameters:
-          - name: message
-            value: "{{inputs.parameters.deployment-message}}"
-      - name: alert-sentry
-        templateRef:
-          name: alert-sentry
-          template: alert-sentry
+          name: alert
+          template: alert-error
         arguments:
           parameters:
           - name: message

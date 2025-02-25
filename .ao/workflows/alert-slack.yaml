@@ -78,6 +78,20 @@ spec:
           - name: emoji
             value: ":x:"
 
+  - name: alert-slack-error-sub
+    inputs:
+      parameters:
+      - name: message
+    steps:
+    - - name: send-slack-message
+        template: send-slack-message
+        arguments:
+          parameters:
+          - name: message
+            value: "{{inputs.parameters.message}}"
+          - name: emoji
+            value: ":small_red_triangle_down:"
+
   - name: alert-slack-start
     inputs:
       parameters:
@@ -117,7 +131,7 @@ spec:
       command: [sh, -c]
       source: |
         cred="T08EH7TLVBJ/B08EHMA0H4N/F3zpHs4aBsaXqYbtJYnODWn9"
-        curl -X POST -H 'Content-type: application/json' --data '{"text":"{{inputs.parameters.emoji}} -> {{workflow.name}} -> {{inputs.parameters.message}}"}' https://hooks.slack.com/services/$cred
+        curl -X POST -H 'Content-type: application/json' --data '{"text":"{{inputs.parameters.emoji}}  ->  {{workflow.name}}  ->  {{inputs.parameters.message}}"}' https://hooks.slack.com/services/$cred
 
   - name: send-slack-message-raw
     inputs:

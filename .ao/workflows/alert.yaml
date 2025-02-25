@@ -14,22 +14,28 @@ spec:
     inputs:
       parameters:
       - name: message
-    dag:
-      tasks:
-      - name: alert-sentry
-        templateRef:
-          name: alert-sentry
-          template: alert-sentry
-        arguments:
-          parameters:
-          - name: message
-            value: "{{inputs.parameters.message}}"
-      - name: alert-slack
-        dependencies: [alert-sentry]
-        templateRef:
-          name: alert-slack
-          template: alert-slack-error
-        arguments:
-          parameters:
-          - name: message
-            value: "{{inputs.parameters.message}}"
+    steps:
+    - name: alert-sentry
+      templateRef:
+        name: alert-sentry
+        template: alert-sentry
+      arguments:
+        parameters:
+        - name: message
+          value: "{{inputs.parameters.message}}"
+    - name: alert-slack
+      templateRef:
+        name: alert-slack
+        template: alert-slack-error
+      arguments:
+        parameters:
+        - name: message
+          value: "{{inputs.parameters.message}}"
+    - name: alert-slack
+      templateRef:
+        name: alert-slack
+        template: alert-slack-error-sub
+      arguments:
+        parameters:
+        - name: message
+          value: "Sentry event: asdasd"
