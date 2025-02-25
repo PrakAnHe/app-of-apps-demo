@@ -135,15 +135,7 @@ spec:
       parameters:
       - name: deployment-message
     steps:
-    - - name: alert-slack-1
-        templateRef:
-          name: alert-slack
-          template: alert-slack-success
-        arguments:
-          parameters:
-          - name: message
-            value: "{{inputs.parameters.deployment-message}}"
-      - name: alert-slack-2
+    - - name: alert-slack
         templateRef:
           name: alert-slack
           template: alert-slack-success
