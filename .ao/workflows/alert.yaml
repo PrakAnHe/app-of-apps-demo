@@ -22,7 +22,7 @@ spec:
         arguments:
           parameters:
           - name: message
-            value: "{{inputs.parameters.message}}"
+            value: "{{workflow.name}} : {{inputs.parameters.message}}"
     - - name: alert-slack-error
         templateRef:
           name: alert-slack
