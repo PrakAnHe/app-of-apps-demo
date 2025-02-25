@@ -23,7 +23,7 @@ spec:
         arguments:
           parameters:
           - name: message
-            value: "{{inputs.parameters.deployment-message}}"
+            value: "{{inputs.parameters.message}}"
       - name: alert-slack
         dependencies: [alert-sentry]
         templateRef:
@@ -32,6 +32,6 @@ spec:
         arguments:
           parameters:
           - name: message
-            value: "{{inputs.parameters.deployment-message}}"
+            value: "{{inputs.parameters.message}}"
           - name: event-url
             value: "{{tasks.alert-sentry.outputs.parameters.event-url}}"
