@@ -134,14 +134,14 @@ spec:
         arguments:
           parameters:
           - name: deployment-message
-            value: "Deployment of application '{{inputs.parameters.app-name}}' failed. Monitor timed out after {{inputs.parameters.monitor-timeout-seconds}} seconds"
+            value: "Deployment of application '{{inputs.parameters.app-name}}' `failed`. Monitor timed out after {{inputs.parameters.monitor-timeout-seconds}} seconds"
       - name: handle-failed-degraded
         when: "{{inputs.parameters.deployment-status}} == Degraded"
         template: handle-failed
         arguments:
           parameters:
           - name: deployment-message
-            value: "Deployment of application '{{inputs.parameters.app-name}}' failed. Application is Degraded"
+            value: "Deployment of application '{{inputs.parameters.app-name}}' `failed`. Application is Degraded"
 
   - name: handle-success
     inputs:
@@ -196,4 +196,4 @@ spec:
         arguments:
           parameters:
           - name: message
-            value: "Deployment of application '{{workflow.parameters.app-name}}' failed"
+            value: "Deployment of application '{{workflow.parameters.app-name}}' `failed`"
