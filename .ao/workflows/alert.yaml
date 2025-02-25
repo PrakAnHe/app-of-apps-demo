@@ -31,7 +31,7 @@ spec:
           parameters:
           - name: message
             value: "{{inputs.parameters.message}}"
-    - - name: alert-slack-sentry-url
+      - name: alert-slack-sentry-url
         templateRef:
           name: alert-slack
           template: alert-slack-error-sub
