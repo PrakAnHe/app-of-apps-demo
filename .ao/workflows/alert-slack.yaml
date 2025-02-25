@@ -27,7 +27,7 @@ spec:
     inputs:
       parameters:
       - name: message
-        value: "asdasdasdasd"
+        value: "asdasdasdasdsuccess"
     steps:
     - - name: send-slack-message
         template: send-slack-message
@@ -42,7 +42,7 @@ spec:
     inputs:
       parameters:
       - name: message
-        value: "asdasdasdasd"
+        value: "asdasdasdasdsuccessloud"
     steps:
     - - name: send-slack-message
         template: send-slack-message
@@ -57,7 +57,7 @@ spec:
     inputs:
       parameters:
       - name: message
-        value: "asdasdasdasd"
+        value: "asdasdasdasdwarning"
     steps:
     - - name: send-slack-message
         template: send-slack-message
@@ -72,7 +72,7 @@ spec:
     inputs:
       parameters:
       - name: message
-        value: "asdasdasdasd"
+        value: "asdasdasdasderror"
     steps:
     - - name: send-slack-message
         template: send-slack-message
