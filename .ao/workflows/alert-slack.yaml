@@ -35,7 +35,7 @@ spec:
           parameters:
           - name: message
             value: "{{inputs.parameters.message}}"
-          - name: message
+          - name: emoji
             value: ":heavy_check_mark:"
 
   - name: alert-slack-success-loud
@@ -50,7 +50,7 @@ spec:
           parameters:
           - name: message
             value: "{{inputs.parameters.message}}"
-          - name: message
+          - name: emoji
             value: ":white_check_mark:"
 
   - name: alert-slack-warning
@@ -65,7 +65,7 @@ spec:
           parameters:
           - name: message
             value: "{{inputs.parameters.message}}"
-          - name: message
+          - name: emoji
             value: ":warning:"
 
   - name: alert-slack-error
@@ -80,15 +80,15 @@ spec:
           parameters:
           - name: message
             value: "{{inputs.parameters.message}}"
-          - name: message
+          - name: emoji
             value: ":x:"
 
   - name: send-slack-message
     inputs:
       parameters:
+      - name: message
       - name: emoji
         value: ":white_small_square:"
-      - name: message
     script:
       image: appropriate/curl:latest
       command: [sh, -c]
