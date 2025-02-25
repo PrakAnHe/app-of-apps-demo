@@ -93,6 +93,8 @@ spec:
             value: "{{inputs.parameters.message}}"
           - name: emoji
             value: ":small_red_triangle_down:"
+          - name: exclude-workflow-name
+            value: "true"
 
   - name: alert-slack-start
     inputs:
@@ -128,12 +130,19 @@ spec:
       - name: message
       - name: emoji
         value: ":grey_exclamation:"
+      - name: exclude-workflow-name
+        value: "false"
     script:
       image: appropriate/curl:latest
       command: [sh, -c]
       source: |
         cred="T08EH7TLVBJ/B08EHMA0H4N/F3zpHs4aBsaXqYbtJYnODWn9"
-        curl -X POST -H 'Content-type: application/json' --data '{"text":"{{inputs.parameters.emoji}}  ->  {{workflow.name}}  ->  {{inputs.parameters.message}}"}' https://hooks.slack.com/services/$cred
+
+        if [ "{{inputs.parameters.exclude-workflow-name}}" != "true" ]; then
+          curl -X POST -H 'Content-type: application/json' --data '{"text":"{{inputs.parameters.emoji}}  ->  {{workflow.name}}  ->  {{inputs.parameters.message}}"}' https://hooks.slack.com/services/$cred
+        else
+          curl -X POST -H 'Content-type: application/json' --data '{"text":"{{inputs.parameters.emoji}}  ->  {{inputs.parameters.message}}"}' https://hooks.slack.com/services/$cred
+        fi
 
   - name: send-slack-message-raw
     inputs:
