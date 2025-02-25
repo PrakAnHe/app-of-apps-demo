@@ -10,12 +10,6 @@ spec:
     parameters:
     - name: message
   templates:
-  # - name: alert-slack
-  #   template: send-slack-message
-  #   inputs:
-  #     parameters:
-  #     - name: message
-  #       value: "asdasdasdasd"
   - name: alert-slack
     inputs:
       parameters:
@@ -28,9 +22,72 @@ spec:
           parameters:
           - name: message
             value: "{{inputs.parameters.message}}"
+
+  - name: alert-slack-success
+    inputs:
+      parameters:
+      - name: message
+        value: "asdasdasdasd"
+    steps:
+    - - name: send-slack-message
+        template: send-slack-message
+        arguments:
+          parameters:
+          - name: message
+            value: "{{inputs.parameters.message}}"
+          - name: message
+            value: ":heavy_check_mark:"
+
+  - name: alert-slack-success-loud
+    inputs:
+      parameters:
+      - name: message
+        value: "asdasdasdasd"
+    steps:
+    - - name: send-slack-message
+        template: send-slack-message
+        arguments:
+          parameters:
+          - name: message
+            value: "{{inputs.parameters.message}}"
+          - name: message
+            value: ":white_check_mark:"
+
+  - name: alert-slack-warning
+    inputs:
+      parameters:
+      - name: message
+        value: "asdasdasdasd"
+    steps:
+    - - name: send-slack-message
+        template: send-slack-message
+        arguments:
+          parameters:
+          - name: message
+            value: "{{inputs.parameters.message}}"
+          - name: message
+            value: ":warning:"
+
+  - name: alert-slack-error
+    inputs:
+      parameters:
+      - name: message
+        value: "asdasdasdasd"
+    steps:
+    - - name: send-slack-message
+        template: send-slack-message
+        arguments:
+          parameters:
+          - name: message
+            value: "{{inputs.parameters.message}}"
+          - name: message
+            value: ":x:"
+
   - name: send-slack-message
     inputs:
       parameters:
+      - name: emoji
+        value: ":white_small_square:"
       - name: message
     script:
       image: appropriate/curl:latest
@@ -38,4 +95,4 @@ spec:
       source: |
         echo "{{inputs.parameters.message}}"
         cred="T08EH7TLVBJ/B08EHMA0H4N/F3zpHs4aBsaXqYbtJYnODWn9"
-        curl -X POST -H 'Content-type: application/json' --data '{"text":":white_small_square: -> {{workflow.name}} -> {{inputs.parameters.message}}"}' https://hooks.slack.com/services/$cred
+        curl -X POST -H 'Content-type: application/json' --data '{"text":"{{inputs.parameters.emoji}} -> {{workflow.name}} -> {{inputs.parameters.message}}"}' https://hooks.slack.com/services/$cred

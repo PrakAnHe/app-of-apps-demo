@@ -67,6 +67,8 @@ spec:
           parameters:
           - name: message
             value: "Deployment workflow {{workflow.mainEntrypoint}} finished with status {{workflow.status}}"
+          - name: emoji
+            value: "{{workflow.status}} == Succeeded ? ':heavy_check_mark:' : ':x:'" #Doesn't work :(
       - name: alert-sentry-on-failed
         when: "{{workflow.status}} != Succeeded"
         templateRef:
