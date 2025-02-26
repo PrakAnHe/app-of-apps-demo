@@ -11,9 +11,11 @@ spec:
       projectId: 81fba592-e69f-4d95-94bd-b362fcb77300
       accessKey:
         secretRef:
-          name: scwsm-access
+          name: scwsm-secret
           key: access-key
+          namespace: external-secrets
       secretKey:
         secretRef:
-          name: scwsm-access
+          name: scwsm-secret
           key: secret-access-key
+          namespace: external-secrets
