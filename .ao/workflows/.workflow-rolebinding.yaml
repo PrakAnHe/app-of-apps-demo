@@ -26,22 +26,3 @@ subjects:
 - kind: ServiceAccount
   name: default
   namespace: argo-workflows
-
----
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: workflow-semaphores
-  namespace: argo-workflows
-  annotations:
-    argocd.argoproj.io/sync-wave: "-1"
-data:
-  "1": "1"
-  "2": "2"
-  "3": "3"
-  "4": "4"
-  "6": "6"
-  "8": "8"
-  "10": "10"
-  "12": "12"
-  "16": "16"
