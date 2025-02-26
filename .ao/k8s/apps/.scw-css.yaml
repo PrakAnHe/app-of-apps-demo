@@ -1,0 +1,19 @@
+apiVersion: external-secrets.io/v1beta1
+kind: ClusterSecretStore
+metadata:
+  name: scw-secret-store
+  annotations:
+    argocd.argoproj.io/sync-wave: "-10"
+spec:
+  provider:
+    scaleway:
+      region: nl-ams
+      projectId: 81fba592-e69f-4d95-94bd-b362fcb77300
+      accessKey:
+        secretRef:
+          name: scwsm-access
+          key: access-key
+      secretKey:
+        secretRef:
+          name: scwsm-access
+          key: secret-access-key
