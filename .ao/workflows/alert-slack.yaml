@@ -137,10 +137,11 @@ spec:
       command: [sh, -c]
       env:
       - name: SLACK_WEBHOOK
-        valueFrom:
-          secretKeyRef:
-            name: external
-            key: SLACK_WEBHOOK_ARGOWORKFLOWS_DEVOPS
+        value: asdasd
+        # valueFrom:
+        #   secretKeyRef:
+        #     name: external
+        #     key: SLACK_WEBHOOK_ARGOWORKFLOWS_DEVOPS
       source: |
         if [ "{{inputs.parameters.exclude-workflow-name}}" != "true" ]; then
           curl -X POST -H 'Content-type: application/json' --data '{"text":"{{inputs.parameters.emoji}}  ->  {{workflow.name}}  ->  {{inputs.parameters.message}}"}' $SLACK_WEBHOOK
@@ -157,9 +158,10 @@ spec:
       command: [sh, -c]
       env:
       - name: SLACK_WEBHOOK
-        valueFrom:
-          secretKeyRef:
-            name: external
-            key: SLACK_WEBHOOK_ARGOWORKFLOWS_DEVOPS
+        value: asdasd
+        # valueFrom:
+        #   secretKeyRef:
+        #     name: external
+        #     key: SLACK_WEBHOOK_ARGOWORKFLOWS_DEVOPS
       source: |
         curl -X POST -H 'Content-type: application/json' --data '{{inputs.parameters.data}}' $SLACK_WEBHOOK
