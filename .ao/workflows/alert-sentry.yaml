@@ -26,16 +26,18 @@ spec:
       image: prakahe/argo-cluster-control:3
       command: [sh]
       env:
-      - name: SENTRY_WORKFLOWS_DSN
+      - name: SENTRY_DSN
         valueFrom:
           secretKeyRef:
             name: external
             key: SENTRY_WORKFLOWS_DSN
+      - name: SENTRY_ORGANIZATION_SLUG
+        valueFrom:
+          secretKeyRef:
+            name: external
+            key: SENTRY_ORGANIZATION_SLUG
       source: |
-        export SENTRY_DSN=$SENTRY_WORKFLOWS_DSN
-
-        org_slug="myorganization-ti"
         event_id=$(sentry-cli send-event --raw -m '{{workflow.mainEntrypoint}} : {{inputs.parameters.message}}' -e workflow-name:{{workflow.name}} -e workflow-status:{{workflow.status}} | grep -oP '(?<=Event id: )[\w-]+')
 
         echo $event_id > /tmp/event-id
-        echo https://sentry.io/organizations/$org_slug/issues/?query=$event_id > /tmp/event-url
+        echo https://sentry.io/organizations/$SENTRY_ORGANIZATION_SLUG/issues/?query=$event_id > /tmp/event-url
