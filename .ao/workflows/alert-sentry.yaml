@@ -39,6 +39,8 @@ spec:
             name: external
             key: SENTRY_ORGANIZATION_SLUG
       source: |
+        printenv
+
         event_id=$(sentry-cli send-event --raw -m '{{workflow.mainEntrypoint}} : {{inputs.parameters.message}}' -e workflow-name:{{workflow.name}} -e workflow-status:{{workflow.status}} | grep -oP '(?<=Event id: )[\w-]+')
 
         echo $event_id > /tmp/event-id
