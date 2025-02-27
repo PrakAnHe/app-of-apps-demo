@@ -150,6 +150,7 @@ spec:
         fi
 
         if [ "$res" != "ok" ]; then
+          echo "curl returned: \'$res\'"
           exit 1
         fi
 
