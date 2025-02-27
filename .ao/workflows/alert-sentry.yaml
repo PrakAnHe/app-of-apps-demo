@@ -33,11 +33,11 @@ spec:
             name: external
             key: SENTRY_WORKFLOWS_DSN
       - name: SENTRY_ORGANIZATION_SLUG
-        # value: asdasd
-        valueFrom:
-          secretKeyRef:
-            name: external
-            key: SENTRY_ORGANIZATION_SLUG
+        value: asdasdheeeeeeeeeeeeeeest
+        # valueFrom:
+        #   secretKeyRef:
+        #     name: external
+        #     key: SENTRY_ORGANIZATION_SLUG
       source: |
         output=$(sentry-cli send-event --raw -m '{{workflow.mainEntrypoint}} : {{inputs.parameters.message}}' -e workflow-name:{{workflow.name}} -e workflow-status:{{workflow.status}})
 
