@@ -149,7 +149,7 @@ spec:
           curl -X POST -H 'Content-type: application/json' --data '{"text":"{{inputs.parameters.emoji}}  ->  {{inputs.parameters.message}}"}' $SLACK_WEBHOOK > /tmp/res
         fi
 
-        if [`cat /tmp/res` != "ok"]
+        if [`cat /tmp/res` != "ok"]; then
           exit 1
         fi
 
