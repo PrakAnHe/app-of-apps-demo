@@ -27,17 +27,15 @@ spec:
       command: [sh]
       env:
       - name: SENTRY_DSN
-        # value: https://add568bc794af796ac375e2a52@o4508840730689536.ingest.de.sentry.io/450884a3040
         valueFrom:
           secretKeyRef:
             name: external
             key: SENTRY_WORKFLOWS_DSN
       - name: SENTRY_ORGANIZATION_SLUG
-        value: asdasdheeeeeeeeeeeeeeest
-        # valueFrom:
-        #   secretKeyRef:
-        #     name: external
-        #     key: SENTRY_ORGANIZATION_SLUG
+        valueFrom:
+          secretKeyRef:
+            name: external
+            key: SENTRY_ORGANIZATION_SLUG
       source: |
         output=$(sentry-cli send-event --raw -m '{{workflow.mainEntrypoint}} : {{inputs.parameters.message}}' -e workflow-name:{{workflow.name}} -e workflow-status:{{workflow.status}})
 
