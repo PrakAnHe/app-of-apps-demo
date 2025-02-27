@@ -32,13 +32,7 @@ spec:
             name: external
             key: SENTRY_WORKFLOWS_DSN
       source: |
-        printenv
-
-        echo "super secret dsn: "
-        echo $SENTRY_WORKFLOWS_DSN
-
-        #todo: use scaleway secrets
-        export SENTRY_DSN="https://add568bc79479f8633f796ac375e2a52@o4508840730689536.ingest.de.sentry.io/4508840737833040"
+        export SENTRY_DSN=$SENTRY_WORKFLOWS_DSN
 
         org_slug="myorganization-ti"
         event_id=$(sentry-cli send-event --raw -m '{{workflow.mainEntrypoint}} : {{inputs.parameters.message}}' -e workflow-name:{{workflow.name}} -e workflow-status:{{workflow.status}} | grep -oP '(?<=Event id: )[\w-]+')
