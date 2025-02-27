@@ -15,8 +15,8 @@ spec:
       parameters:
       - name: message
     steps:
-    - - name: send-slack-message
-        template: send-slack-message
+    - - name: send-message
+        template: send-message
         arguments:
           parameters:
           - name: message
@@ -27,8 +27,8 @@ spec:
       parameters:
       - name: message
     steps:
-    - - name: send-slack-message
-        template: send-slack-message
+    - - name: send-message
+        template: send-message
         arguments:
           parameters:
           - name: message
@@ -41,8 +41,8 @@ spec:
       parameters:
       - name: message
     steps:
-    - - name: send-slack-message
-        template: send-slack-message
+    - - name: send-message
+        template: send-message
         arguments:
           parameters:
           - name: message
@@ -55,8 +55,8 @@ spec:
       parameters:
       - name: message
     steps:
-    - - name: send-slack-message
-        template: send-slack-message
+    - - name: send-message
+        template: send-message
         arguments:
           parameters:
           - name: message
@@ -69,8 +69,8 @@ spec:
       parameters:
       - name: message
     steps:
-    - - name: send-slack-message
-        template: send-slack-message
+    - - name: send-message
+        template: send-message
         arguments:
           parameters:
           - name: message
@@ -85,8 +85,8 @@ spec:
       parameters:
       - name: message
     steps:
-    - - name: send-slack-message
-        template: send-slack-message
+    - - name: send-message
+        template: send-message
         arguments:
           parameters:
           - name: message
@@ -101,8 +101,8 @@ spec:
       parameters:
       - name: message
     steps:
-    - - name: send-slack-message
-        template: send-slack-message
+    - - name: send-message
+        template: send-message
         arguments:
           parameters:
           - name: message
@@ -115,8 +115,8 @@ spec:
       parameters:
       - name: message
     steps:
-    - - name: send-slack-message
-        template: send-slack-message
+    - - name: send-message
+        template: send-message
         arguments:
           parameters:
           - name: message
@@ -124,8 +124,7 @@ spec:
           - name: emoji
             value: ":white_small_square:"
 
-    #todo: rename to send-message
-  - name: send-slack-message 
+  - name: send-message 
     inputs:
       parameters:
       - name: message
@@ -149,8 +148,7 @@ spec:
           curl -X POST -H 'Content-type: application/json' --data '{"text":"{{inputs.parameters.emoji}}  ->  {{inputs.parameters.message}}"}' $SLACK_WEBHOOK
         fi
 
-    #todo: rename to send-message-raw
-  - name: send-slack-message-raw 
+  - name: send-message-raw 
     inputs:
       parameters:
       - name: data
