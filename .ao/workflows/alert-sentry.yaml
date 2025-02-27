@@ -27,11 +27,13 @@ spec:
       command: [sh]
       env:
       - name: SENTRY_DSN
-        valueFrom:
-          secretKeyRef:
-            name: external
-            key: SENTRY_WORKFLOWS_DSN
+        value: asdasd
+        # valueFrom:
+        #   secretKeyRef:
+        #     name: external
+        #     key: SENTRY_WORKFLOWS_DSN
       - name: SENTRY_ORGANIZATION_SLUG
+        # value: asdasd
         valueFrom:
           secretKeyRef:
             name: external
