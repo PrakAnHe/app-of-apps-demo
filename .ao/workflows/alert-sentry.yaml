@@ -39,9 +39,13 @@ spec:
             name: external
             key: SENTRY_ORGANIZATION_SLUG
       source: |
-        printenv
+        output=$(sentry-cli send-event --raw -m '{{workflow.mainEntrypoint}} : {{inputs.parameters.message}}' -e workflow-name:{{workflow.name}} -e workflow-status:{{workflow.status}})
 
-        event_id=$(sentry-cli send-event --raw -m '{{workflow.mainEntrypoint}} : {{inputs.parameters.message}}' -e workflow-name:{{workflow.name}} -e workflow-status:{{workflow.status}} | grep -oP '(?<=Event id: )[\w-]+')
+        if ! echo "$output" | grep -q "Event dispatched"; then
+          exit 1
+        fi
+
+        event_id=$(echo "$output" | grep -oP '(?<=Event id: )[\w-]+')
 
         echo $event_id > /tmp/event-id
         echo https://sentry.io/organizations/$SENTRY_ORGANIZATION_SLUG/issues/?query=$event_id > /tmp/event-url
