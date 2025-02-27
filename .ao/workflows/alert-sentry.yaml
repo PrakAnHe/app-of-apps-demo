@@ -26,7 +26,7 @@ spec:
     - name: SENTRY_WORKFLOWS_DSN
       valueFrom:
         secretKeyRef:
-          name: external
+          name: externalASD
           key: SENTRY_WORKFLOWS_DSN
     script:
       image: prakahe/argo-cluster-control:3
