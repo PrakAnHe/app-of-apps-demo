@@ -146,7 +146,7 @@ spec:
         if [ "{{inputs.parameters.exclude-workflow-name}}" != "true" ]; then
           res=$(curl -X POST -H 'Content-type: application/json' --data '{"text":"{{inputs.parameters.emoji}}  ->  {{workflow.name}}  ->  {{inputs.parameters.message}}"}' $SLACK_WEBHOOK)
         else
-          res=curl -X POST -H 'Content-type: application/json' --data '{"text":"{{inputs.parameters.emoji}}  ->  {{inputs.parameters.message}}"}' $SLACK_WEBHOOK
+          res=$(curl -X POST -H 'Content-type: application/json' --data '{"text":"{{inputs.parameters.emoji}}  ->  {{inputs.parameters.message}}"}' $SLACK_WEBHOOK)
         fi
 
         if [ "$res" != "ok"]; then
