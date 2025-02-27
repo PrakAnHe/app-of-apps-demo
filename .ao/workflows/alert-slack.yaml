@@ -137,11 +137,10 @@ spec:
       command: [sh, -c]
       env:
       - name: SLACK_WEBHOOK
-        value: https://hooks.slack.com/services/T08EH7TLVBJ/B08FHGNLMLZ/dddd
-        # valueFrom:
-        #   secretKeyRef:
-        #     name: external
-        #     key: SLACK_WEBHOOK_ARGOWORKFLOWS_DEVOPS
+        valueFrom:
+          secretKeyRef:
+            name: external
+            key: SLACK_WEBHOOK_ARGOWORKFLOWS_DEVOPS
       source: |
         if [ "{{inputs.parameters.exclude-workflow-name}}" != "true" ]; then
           res=$(curl -X POST -H 'Content-type: application/json' --data '{"text":"{{inputs.parameters.emoji}}  ->  {{workflow.name}}  ->  {{inputs.parameters.message}}"}' $SLACK_WEBHOOK)
@@ -163,10 +162,9 @@ spec:
       command: [sh, -c]
       env:
       - name: SLACK_WEBHOOK
-        value: https://hooks.slack.com/services/T08EH7TLVBJ/B08FHGNLMLZ/dddd
-        # valueFrom:
-        #   secretKeyRef:
-        #     name: external
-        #     key: SLACK_WEBHOOK_ARGOWORKFLOWS_DEVOPS
+        valueFrom:
+          secretKeyRef:
+            name: external
+            key: SLACK_WEBHOOK_ARGOWORKFLOWS_DEVOPS
       source: |
         curl -X POST -H 'Content-type: application/json' --data '{{inputs.parameters.data}}' $SLACK_WEBHOOK
