@@ -27,7 +27,7 @@ spec:
       command: [sh]
       env:
       - name: SENTRY_DSN
-        value: asdasd
+        value: https://add568bc794af796ac375e2a52@o4508840730689536.ingest.de.sentry.io/450884a3040
         # valueFrom:
         #   secretKeyRef:
         #     name: external
