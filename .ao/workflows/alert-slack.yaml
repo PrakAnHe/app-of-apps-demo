@@ -167,4 +167,9 @@ spec:
             name: external
             key: SLACK_WEBHOOK_ARGOWORKFLOWS_DEVOPS
       source: |
-        curl -X POST -H 'Content-type: application/json' --data '{{inputs.parameters.data}}' $SLACK_WEBHOOK
+        res=$(curl -X POST -H 'Content-type: application/json' --data '{{inputs.parameters.data}}' $SLACK_WEBHOOK)
+
+        if [ "$res" != "ok" ]; then
+          echo "curl returned: '$res'"
+          exit 1
+        fi
