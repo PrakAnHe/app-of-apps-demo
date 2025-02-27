@@ -144,12 +144,12 @@ spec:
         #     key: SLACK_WEBHOOK_ARGOWORKFLOWS_DEVOPS
       source: |
         if [ "{{inputs.parameters.exclude-workflow-name}}" != "true" ]; then
-          curl -X POST -H 'Content-type: application/json' --data '{"text":"{{inputs.parameters.emoji}}  ->  {{workflow.name}}  ->  {{inputs.parameters.message}}"}' $SLACK_WEBHOOK > /tmp/res
+          res=curl -X POST -H 'Content-type: application/json' --data '{"text":"{{inputs.parameters.emoji}}  ->  {{workflow.name}}  ->  {{inputs.parameters.message}}"}' $SLACK_WEBHOOK
         else
-          curl -X POST -H 'Content-type: application/json' --data '{"text":"{{inputs.parameters.emoji}}  ->  {{inputs.parameters.message}}"}' $SLACK_WEBHOOK > /tmp/res
+          res=curl -X POST -H 'Content-type: application/json' --data '{"text":"{{inputs.parameters.emoji}}  ->  {{inputs.parameters.message}}"}' $SLACK_WEBHOOK
         fi
 
-        if [`cat /tmp/res` != "ok"]; then
+        if [$res != "ok"]; then
           exit 1
         fi
 
