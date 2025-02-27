@@ -136,14 +136,17 @@ spec:
     script:
       image: appropriate/curl:latest
       command: [sh, -c]
+      env:
+      - name: SLACK_WEBHOOK
+        valueFrom:
+          secretKeyRef:
+            name: external
+            key: SLACK_WEBHOOK_ARGOWORKFLOWS_DEVOPS
       source: |
-        #todo: use scaleway secrets
-        cred="T08EH7TLVBJ/B08EHMA0H4N/F3zpHs4aBsaXqYbtJYnODWn9" 
-
         if [ "{{inputs.parameters.exclude-workflow-name}}" != "true" ]; then
-          curl -X POST -H 'Content-type: application/json' --data '{"text":"{{inputs.parameters.emoji}}  ->  {{workflow.name}}  ->  {{inputs.parameters.message}}"}' https://hooks.slack.com/services/$cred
+          curl -X POST -H 'Content-type: application/json' --data '{"text":"{{inputs.parameters.emoji}}  ->  {{workflow.name}}  ->  {{inputs.parameters.message}}"}' $SLACK_WEBHOOK
         else
-          curl -X POST -H 'Content-type: application/json' --data '{"text":"{{inputs.parameters.emoji}}  ->  {{inputs.parameters.message}}"}' https://hooks.slack.com/services/$cred
+          curl -X POST -H 'Content-type: application/json' --data '{"text":"{{inputs.parameters.emoji}}  ->  {{inputs.parameters.message}}"}' $SLACK_WEBHOOK
         fi
 
     #todo: rename to send-message-raw
@@ -154,7 +157,11 @@ spec:
     script:
       image: appropriate/curl:latest
       command: [sh, -c]
+      env:
+      - name: SLACK_WEBHOOK
+        valueFrom:
+          secretKeyRef:
+            name: external
+            key: SLACK_WEBHOOK_ARGOWORKFLOWS_DEVOPS
       source: |
-        #todo: use scaleway secrets
-        cred="T08EH7TLVBJ/B08EHMA0H4N/F3zpHs4aBsaXqYbtJYnODWn9" 
-        curl -X POST -H 'Content-type: application/json' --data '{{inputs.parameters.data}}' https://hooks.slack.com/services/$cred
+        curl -X POST -H 'Content-type: application/json' --data '{{inputs.parameters.data}}' $SLACK_WEBHOOK
