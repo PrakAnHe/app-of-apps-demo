@@ -26,13 +26,16 @@ spec:
     - name: SENTRY_WORKFLOWS_DSN
       valueFrom:
         secretKeyRef:
-          name: externalASD
+          name: external
           key: SENTRY_WORKFLOWS_DSN
     script:
       image: prakahe/argo-cluster-control:3
       command: [sh]
       source: |
-        echo "super secret dsn: '$SENTRY_WORKFLOWS_DSN'"
+        printenv
+
+        echo "super secret dsn: "
+        echo $SENTRY_WORKFLOWS_DSN
 
         #todo: use scaleway secrets
         export SENTRY_DSN="https://add568bc79479f8633f796ac375e2a52@o4508840730689536.ingest.de.sentry.io/4508840737833040"
