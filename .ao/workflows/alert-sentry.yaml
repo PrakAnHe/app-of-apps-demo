@@ -22,15 +22,15 @@ spec:
       - name: event-url
         valueFrom:
           path: /tmp/event-url
-    env:
-    - name: SENTRY_WORKFLOWS_DSN
-      valueFrom:
-        secretKeyRef:
-          name: external
-          key: SENTRY_WORKFLOWS_DSN
     script:
       image: prakahe/argo-cluster-control:3
       command: [sh]
+      env:
+      - name: SENTRY_WORKFLOWS_DSN
+        valueFrom:
+          secretKeyRef:
+            name: external
+            key: SENTRY_WORKFLOWS_DSN
       source: |
         printenv
 
