@@ -12,4 +12,4 @@ spec:
       image: prakahe/argo-cluster-control:3
       command: [sh]
       source: |
-        exit 1
+        exit 0
