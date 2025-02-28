@@ -124,12 +124,26 @@ spec:
           - name: emoji
             value: ":white_small_square:"
 
+  - name: alert-slack-info
+    inputs:
+      parameters:
+      - name: message
+    steps:
+    - - name: send-message
+        template: send-message
+        arguments:
+          parameters:
+          - name: message
+            value: "{{inputs.parameters.message}}"
+          - name: emoji
+            value: ":grey_exclamation:"
+
   - name: send-message 
     inputs:
       parameters:
       - name: message
       - name: emoji
-        value: ":grey_exclamation:"
+        value: ":white_small_square:"
       - name: exclude-workflow-name
         value: "false"
     script:
