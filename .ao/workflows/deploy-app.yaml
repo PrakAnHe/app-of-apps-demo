@@ -190,16 +190,16 @@ spec:
   # It is not run if the 'deploy-app' template is referenced by another workflow.
   - name: exit-handler
     steps:
-    - - name: alert-deploy-succeeded
-        when: "{{workflow.status}} == Succeeded"
-        templateRef:
-          name: alert-slack
-          template: alert-slack
-        arguments:
-          parameters:
-          - name: message
-            value: "Deployment of application {{workflow.parameters.app-name}} succeeded"
-      - name: alert-deploy-failed
+    # - - name: alert-deploy-succeeded
+    #     when: "{{workflow.status}} == Succeeded"
+    #     templateRef:
+    #       name: alert-slack
+    #       template: alert-slack
+    #     arguments:
+    #       parameters:
+    #       - name: message
+    #         value: "Deployment of application {{workflow.parameters.app-name}} succeeded"
+    - - name: alert-deploy-failed
         when: "{{workflow.status}} != Succeeded"
         templateRef:
           name: alert-sentry
