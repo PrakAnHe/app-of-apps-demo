@@ -19,7 +19,7 @@ spec:
       path: '.ao/workflows/auxiliaries'
       targetRevision: HEAD
     - repoURL: 'https://github.com/PrakAnHe/app-of-apps-demo.git'
-      path: '.ao/workflows'
+      path: '.ao/workflows/templates'
       targetRevision: HEAD
   # syncPolicy:
   #   automated:
