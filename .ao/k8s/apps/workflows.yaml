@@ -15,9 +15,9 @@ spec:
     server: 'https://kubernetes.default.svc'
     namespace: argo-workflows
   sources:
-    - repoURL: 'https://github.com/PrakAnHe/app-of-apps-demo.git'
-      path: '.ao/workflows/auxiliaries'
-      targetRevision: HEAD
+    # - repoURL: 'https://github.com/PrakAnHe/app-of-apps-demo.git'
+    #   path: '.ao/workflows/auxiliaries'
+    #   targetRevision: HEAD
     - repoURL: 'https://github.com/PrakAnHe/app-of-apps-demo.git'
       path: '.ao/workflows'
       targetRevision: HEAD
