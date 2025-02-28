@@ -1,0 +1,15 @@
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: fail-workflow-copy
+  annotations:
+    workflows.argoproj.io/maintainer: andreas
+spec:
+  entrypoint: fail-workflow-copy
+  templates:
+  - name: fail-workflow-copy
+    script:
+      image: prakahe/argo-cluster-control:3
+      command: [sh]
+      source: |
+        exit 1
