@@ -18,9 +18,9 @@ spec:
     - repoURL: 'https://github.com/PrakAnHe/app-of-apps-demo.git'
       path: '.ao/workflows/auxiliaries'
       targetRevision: HEAD
-    # - repoURL: 'https://github.com/PrakAnHe/app-of-apps-demo.git'
-    #   path: '.ao/workflows'
-    #   targetRevision: HEAD
+    - repoURL: 'https://github.com/PrakAnHe/app-of-apps-demo.git'
+      path: '.ao/workflows'
+      targetRevision: HEAD
   # syncPolicy:
   #   automated:
   #     prune: true
