@@ -27,3 +27,39 @@ jobs:
         uses: Digital-Udvikling/actions-calver@v0.4.0
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
+  build:
+    runs-on: ubuntu-latest
+    needs: [ tag ]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      # - uses: webfactory/ssh-agent@v0.9.0
+      #   with:
+      #     ssh-private-key: ${{ secrets.ORG_PRIVATE_KEY }}
+      - name: setup docker context for buildx
+        id: buildx-context
+        run: |
+          docker context create builders
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+        with:
+          endpoint: builders
+      # - name: Login to scaleway registry
+      #   uses: docker/login-action@v3
+      #   with:
+      #     registry: rg.nl-ams.scw.cloud/aob2c-main
+      #     username: ${{ secrets.SCALEWAY_PRODUCTION_DOCKER_REGISTRY_USERNAME }}
+      #     password: ${{ secrets.SCALEWAY_PRODUCTION_DOCKER_REGISTRY_PASSWORD }}
+      # - name: Build and push to GitHub registry
+      #   uses: docker/build-push-action@v5
+      #   with:
+      #     build-args: |
+      #       release=${{ needs.tag.outputs.tag }}
+      #     context: .
+      #     push: true
+      #     tags: |
+      #       rg.nl-ams.scw.cloud/aob2c-main/reviews:${{ needs.tag.outputs.tag }}
+      #       rg.nl-ams.scw.cloud/aob2c-main/reviews:latest
+      #     cache-from: type=gha
+      #     cache-to: type=gha,mode=max
+      #     ssh: default
