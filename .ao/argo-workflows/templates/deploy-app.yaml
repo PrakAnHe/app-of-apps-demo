@@ -94,6 +94,8 @@ spec:
       source: |
         argocd login argocd-server.argocd.svc.cluster.local --insecure --username admin --password adminpass
         # argocd login argocd-server.argocd.svc.cluster.local --insecure --username $ARGOCD_USERNAME --password $ARGOCD_PASSWORD
+        echo $ARGOCD_USERNAME
+        echo $ARGOCD_PASSWORD
 
         i=1
         while [ $i -le {{inputs.parameters.monitor-timeout-seconds}} ]
