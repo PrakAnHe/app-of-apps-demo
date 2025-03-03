@@ -70,8 +70,6 @@ spec:
             name: external
             key: ARGOCD_PASSWORD
       source: |
-        kubectl config view
-
         echo "Logging in to Argo CD..."
         argocd login argocd-server.argocd.svc.cluster.local --insecure --username $ARGOCD_USERNAME --password $ARGOCD_PASSWORD
         echo "Syncing application {{inputs.parameters.app-name}}..."
@@ -91,7 +89,8 @@ spec:
         valueFrom:
           path: /tmp/deployment-message
     script:
-      image: rg.nl-ams.scw.cloud/b2c-prak/argo-workflow-tools:2025.03.03-04
+      image: prakahe/argo-cluster-control:3
+      # image: rg.nl-ams.scw.cloud/b2c-prak/argo-workflow-tools:2025.03.03-04
       command: [sh]
       env:
       - name: ARGOCD_USERNAME
@@ -105,8 +104,6 @@ spec:
             name: external
             key: ARGOCD_PASSWORD
       source: |
-        kubectl config view
-        
         argocd login argocd-server.argocd.svc.cluster.local --insecure --username $ARGOCD_USERNAME --password $ARGOCD_PASSWORD
 
         i=1
