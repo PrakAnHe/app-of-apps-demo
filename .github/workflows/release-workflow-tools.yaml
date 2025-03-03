@@ -56,7 +56,7 @@ jobs:
           cache-to: type=gha,mode=max
           # ssh: default
   bump-gitops:
-    runs-on: debian-latest
+    runs-on: ubuntu-latest
     needs: [tag, build]
     steps:
       - name: Checkout
