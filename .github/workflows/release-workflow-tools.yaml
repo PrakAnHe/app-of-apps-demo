@@ -13,3 +13,17 @@ jobs:
 
     - name: Print Hello World
       run: echo "Hello, World!"
+  tag:
+    runs-on: self-hosted
+    permissions:
+      contents: write
+    outputs:
+      tag: ${{ steps.tag.outputs.tag }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Create git tag
+        id: tag
+        uses: Digital-Udvikling/actions-calver@v0.4.0
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
