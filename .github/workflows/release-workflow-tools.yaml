@@ -55,3 +55,21 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
           # ssh: default
+  bump-gitops:
+    runs-on: debian-latest
+    needs: [tag, build]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Bump gitops version
+        uses: fjogeleit/yaml-update-action@v0.13.2
+        with:
+          branch: master
+          message: "ci: aob2c-main/reviews updated to ${{ needs.tag.outputs.tag }}"
+          token: ${{ secrets.ORG_PAT }}
+          changes: |
+            {
+              ".ao/argo-workflows/templates/deploy-app.yaml": {
+                "spec.templates.2.script.image": "dddddddddddd:${{ needs.tag.outputs.tag }}"
+              }
+            }
