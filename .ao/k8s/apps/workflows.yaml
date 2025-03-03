@@ -16,10 +16,10 @@ spec:
     namespace: argo-workflows
   sources:
     - repoURL: 'https://github.com/PrakAnHe/app-of-apps-demo.git'
-      path: '.ao/workflows/auxiliaries'
+      path: '.ao/argo-workflows/auxiliaries'
       targetRevision: HEAD
     - repoURL: 'https://github.com/PrakAnHe/app-of-apps-demo.git'
-      path: '.ao/workflows/templates'
+      path: '.ao/argo-workflows/templates'
       targetRevision: HEAD
   syncPolicy:
     automated:
