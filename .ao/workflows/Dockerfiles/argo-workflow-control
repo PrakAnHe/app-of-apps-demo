@@ -1,0 +1,20 @@
+FROM ubuntu:latest
+
+# Set non-interactive mode for apt-get to avoid prompts
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Install required packages
+RUN apt-get update && apt-get install -y \
+    jq \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install ArgoCD CLI
+RUN curl -sSL -o /usr/local/bin/argocd "https://github.com/argoproj/argo-cd/releases/latest/download/argocd-linux-amd64" \
+    && chmod +x /usr/local/bin/argocd
+
+# Install Sentry CLI
+RUN curl -sSL https://sentry.io/get-cli/ | bash
+
+# Set default command
+CMD ["bash"]
