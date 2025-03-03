@@ -89,8 +89,8 @@ spec:
         valueFrom:
           path: /tmp/deployment-message
     script:
-      image: prakahe/argo-cluster-control:3
-      # image: rg.nl-ams.scw.cloud/b2c-prak/argo-workflow-tools:2025.03.03-04
+      # image: prakahe/argo-cluster-control:3
+      image: rg.nl-ams.scw.cloud/b2c-prak/argo-workflow-tools:2025.03.03-05
       command: [sh]
       env:
       - name: ARGOCD_USERNAME
