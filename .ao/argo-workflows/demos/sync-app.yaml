@@ -13,7 +13,7 @@ spec:
   templates:
   - name: sync-app
     script:
-      image: argoproj/argocd:latest
+      image: argoproj/argocd:v2.3.0
       command: [sh]
       source: |
         echo "Logging in to Argo CD..."

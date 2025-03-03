@@ -56,7 +56,7 @@ spec:
       parameters:
       - name: app-name
     script:
-      image: argoproj/argocd:latest
+      image: argoproj/argocd:v2.3.0
       command: [sh]
       env:
       - name: ARGOCD_USERNAME

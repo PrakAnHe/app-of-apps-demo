@@ -30,7 +30,7 @@ spec:
         # withParam: "{{steps.fetch-apps.outputs.result}}"
   - name: get-child-apps
     script:
-      image: argoproj/argocd:latest
+      image: argoproj/argocd:v2.3.0
       command: [sh]
       source: |
         argocd app get app-of-apps -o json | jq -r '.status.resources[] | select(.kind == "Application") | .name' > /tmp/apps.txt
@@ -40,6 +40,6 @@ spec:
       parameters:
       - name: app-name
     container:
-      image: argoproj/argocd:latest
+      image: argoproj/argocd:v2.3.0
       command: ["argocd", "app", "sync"]
       args: ["{{inputs.parameters.app-name}}"]
