@@ -1,4 +1,4 @@
-FROM ubuntu:latest
+FROM debian:latest
 
 # Set non-interactive mode for apt-get to avoid prompts
 ENV DEBIAN_FRONTEND=noninteractive
