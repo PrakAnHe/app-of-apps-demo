@@ -41,16 +41,17 @@ jobs:
           registry: rg.nl-ams.scw.cloud/b2c-prak
           username: nologin
           password: ${{ secrets.SCW_CONTAINER_REGISTRY_SECRET_KEY }}
-      # - name: Build and push to GitHub registry
-      #   uses: docker/build-push-action@v5
-      #   with:
-      #     build-args: |
-      #       release=${{ needs.tag.outputs.tag }}
-      #     context: .
-      #     push: true
-      #     tags: |
-      #       rg.nl-ams.scw.cloud/aob2c-main/reviews:${{ needs.tag.outputs.tag }}
-      #       rg.nl-ams.scw.cloud/aob2c-main/reviews:latest
-      #     cache-from: type=gha
-      #     cache-to: type=gha,mode=max
-      #     ssh: default
+      - name: Build and push to GitHub registry
+        uses: docker/build-push-action@v5
+        with:
+          build-args: |
+            release=${{ needs.tag.outputs.tag }}
+          context: .
+          file: .ao/argo-workflows/Dockerfiles/argo-workflow-tools
+          push: true
+          tags: |
+            rg.nl-ams.scw.cloud/b2c-prak/argo-workflow-tools:${{ needs.tag.outputs.tag }}
+            rg.nl-ams.scw.cloud/b2c-prak/argo-workflow-tools:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          # ssh: default
