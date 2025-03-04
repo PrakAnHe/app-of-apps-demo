@@ -86,7 +86,7 @@ jobs:
   #           }
   notify:
     runs-on: ubuntu-latest
-    needs: [ tag, build, bump-gitops ]
+    needs: [ tag ]
     steps:
       - name: Create github release
         uses: softprops/action-gh-release@v1
