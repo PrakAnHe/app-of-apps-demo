@@ -66,7 +66,7 @@ jobs:
         with:
           branch: master
           message: "ci: aob2c-main/reviews updated to ${{ needs.tag.outputs.tag }}"
-          token: ${{ secrets.ORG_PAT }}
+          token: ${{ secrets.USR_PAT }}
           changes: |
             {
               ".ao/argo-workflows/templates/deploy-app.yaml": {
