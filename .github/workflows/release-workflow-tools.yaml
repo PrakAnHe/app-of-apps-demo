@@ -71,14 +71,10 @@ jobs:
             {
               ".ao/argo-workflows/templates/alert-sentry.yaml": {
                 "spec.templates.0.script.image": "rg.nl-ams.scw.cloud/b2c-prak/argo-workflow-tools:${{ needs.tag.outputs.tag }}"
-              }
-            },
-            {
+              },
               ".ao/argo-workflows/templates/deploy-app.yaml": {
                 "spec.templates.2.script.image": "rg.nl-ams.scw.cloud/b2c-prak/argo-workflow-tools:${{ needs.tag.outputs.tag }}"
-              }
-            },
-            {
+              },
               ".ao/argo-workflows/templates/fail-workflow.yaml": {
                 "spec.templates.0.script.image": "rg.nl-ams.scw.cloud/b2c-prak/argo-workflow-tools:${{ needs.tag.outputs.tag }}"
               }
