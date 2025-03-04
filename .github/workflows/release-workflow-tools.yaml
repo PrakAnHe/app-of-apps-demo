@@ -23,67 +23,67 @@ jobs:
         uses: Digital-Udvikling/actions-calver@v0.4.0
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-  build:
-    runs-on: ubuntu-latest
-    needs: [ tag ]
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      # - uses: webfactory/ssh-agent@v0.9.0
-      #   with:
-      #     ssh-private-key: ${{ secrets.ORG_PRIVATE_KEY }}
-      - name: setup docker context for buildx
-        id: buildx-context
-        run: |
-          docker context create builders
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-        with:
-          endpoint: builders
-      - name: Login to scaleway registry
-        uses: docker/login-action@v3
-        with:
-          registry: rg.nl-ams.scw.cloud/b2c-prak
-          username: nologin
-          password: ${{ secrets.SCW_CONTAINER_REGISTRY_SECRET_KEY }}
-      - name: Build and push to GitHub registry
-        uses: docker/build-push-action@v5
-        with:
-          build-args: |
-            release=${{ needs.tag.outputs.tag }}
-          context: .
-          file: .ao/argo-workflows/Dockerfiles/argo-workflow-tools
-          push: true
-          tags: |
-            rg.nl-ams.scw.cloud/b2c-prak/argo-workflow-tools:${{ needs.tag.outputs.tag }}
-            rg.nl-ams.scw.cloud/b2c-prak/argo-workflow-tools:latest
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-          # ssh: default
-  bump-gitops:
-    runs-on: ubuntu-latest
-    needs: [tag, build]
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Bump gitops version
-        uses: fjogeleit/yaml-update-action@v0.13.2
-        with:
-          branch: main
-          message: "ci: aob2c-main/reviews updated to ${{ needs.tag.outputs.tag }}"
-          token: ${{ secrets.USR_PAT }}
-          changes: |
-            {
-              ".ao/argo-workflows/templates/alert-sentry.yaml": {
-                "spec.templates.0.script.image": "rg.nl-ams.scw.cloud/b2c-prak/argo-workflow-tools:${{ needs.tag.outputs.tag }}"
-              },
-              ".ao/argo-workflows/templates/deploy-app.yaml": {
-                "spec.templates.2.script.image": "rg.nl-ams.scw.cloud/b2c-prak/argo-workflow-tools:${{ needs.tag.outputs.tag }}"
-              },
-              ".ao/argo-workflows/templates/fail-workflow.yaml": {
-                "spec.templates.0.script.image": "rg.nl-ams.scw.cloud/b2c-prak/argo-workflow-tools:${{ needs.tag.outputs.tag }}"
-              }
-            }
+  # build:
+  #   runs-on: ubuntu-latest
+  #   needs: [ tag ]
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v4
+  #     # - uses: webfactory/ssh-agent@v0.9.0
+  #     #   with:
+  #     #     ssh-private-key: ${{ secrets.ORG_PRIVATE_KEY }}
+  #     - name: setup docker context for buildx
+  #       id: buildx-context
+  #       run: |
+  #         docker context create builders
+  #     - name: Set up Docker Buildx
+  #       uses: docker/setup-buildx-action@v3
+  #       with:
+  #         endpoint: builders
+  #     - name: Login to scaleway registry
+  #       uses: docker/login-action@v3
+  #       with:
+  #         registry: rg.nl-ams.scw.cloud/b2c-prak
+  #         username: nologin
+  #         password: ${{ secrets.SCW_CONTAINER_REGISTRY_SECRET_KEY }}
+  #     - name: Build and push to GitHub registry
+  #       uses: docker/build-push-action@v5
+  #       with:
+  #         build-args: |
+  #           release=${{ needs.tag.outputs.tag }}
+  #         context: .
+  #         file: .ao/argo-workflows/Dockerfiles/argo-workflow-tools
+  #         push: true
+  #         tags: |
+  #           rg.nl-ams.scw.cloud/b2c-prak/argo-workflow-tools:${{ needs.tag.outputs.tag }}
+  #           rg.nl-ams.scw.cloud/b2c-prak/argo-workflow-tools:latest
+  #         cache-from: type=gha
+  #         cache-to: type=gha,mode=max
+  #         # ssh: default
+  # bump-gitops:
+  #   runs-on: ubuntu-latest
+  #   needs: [tag, build]
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v4
+  #     - name: Bump gitops version
+  #       uses: fjogeleit/yaml-update-action@v0.13.2
+  #       with:
+  #         branch: main
+  #         message: "ci: aob2c-main/reviews updated to ${{ needs.tag.outputs.tag }}"
+  #         token: ${{ secrets.USR_PAT }}
+  #         changes: |
+  #           {
+  #             ".ao/argo-workflows/templates/alert-sentry.yaml": {
+  #               "spec.templates.0.script.image": "rg.nl-ams.scw.cloud/b2c-prak/argo-workflow-tools:${{ needs.tag.outputs.tag }}"
+  #             },
+  #             ".ao/argo-workflows/templates/deploy-app.yaml": {
+  #               "spec.templates.2.script.image": "rg.nl-ams.scw.cloud/b2c-prak/argo-workflow-tools:${{ needs.tag.outputs.tag }}"
+  #             },
+  #             ".ao/argo-workflows/templates/fail-workflow.yaml": {
+  #               "spec.templates.0.script.image": "rg.nl-ams.scw.cloud/b2c-prak/argo-workflow-tools:${{ needs.tag.outputs.tag }}"
+  #             }
+  #           }
   notify:
     runs-on: ubuntu-latest
     needs: [ tag, build, bump-gitops ]
