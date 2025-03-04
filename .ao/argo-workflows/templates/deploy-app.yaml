@@ -87,7 +87,7 @@ spec:
             valueFrom:
               path: /tmp/deployment-message
       script:
-        image: dddddddddddd:2025.03.04-02
+        image: dddddddddddd:2025.03.04-04
         command:
           - sh
         env:
