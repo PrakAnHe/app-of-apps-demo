@@ -100,4 +100,4 @@ jobs:
         with:
           payload: "{\"text\":\":small_blue_diamond:  ->  ${{ github.workflow }}:${{ github.run_id }}  ->  `rg.nl-ams.scw.cloud/b2c-prak/argo-workflow-tools` bumped to `${{ needs.tag.outputs.tag }}` in argo-workflow templates.\"}"
         env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_RELEASE_WEBHOOK }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
