@@ -9,214 +9,197 @@ spec:
   onExit: exit-handler
   arguments:
     parameters:
-    - name: app-name
-      value: "fastapi-sample-app"
-    - name: monitor-timeout-seconds
-      value: 120
+      - name: app-name
+        value: fastapi-sample-app
+      - name: monitor-timeout-seconds
+        value: 120
   templates:
-  - name: deploy-app
-    failFast: false
-    inputs:
-      parameters:
-      - name: app-name
-      - name: monitor-timeout-seconds
-    steps:
-    - - name: sync-app
-        template: sync-app
-        arguments:
-          parameters:
+    - name: deploy-app
+      failFast: false
+      inputs:
+        parameters:
           - name: app-name
-            value: "{{inputs.parameters.app-name}}"
-    - - name: monitor-deployment
-        template: monitor-deployment
-        continueOn:
-          failed: true
-        arguments:
-          parameters:
-          - name: app-name
-            value: "{{inputs.parameters.app-name}}"
           - name: monitor-timeout-seconds
-            value: "{{inputs.parameters.monitor-timeout-seconds}}"
-    - - name: post-monitor-handler
-        template: post-monitor-handler
-        arguments:
-          parameters:
+      steps:
+        - - name: sync-app
+            template: sync-app
+            arguments:
+              parameters:
+                - name: app-name
+                  value: '{{inputs.parameters.app-name}}'
+        - - name: monitor-deployment
+            template: monitor-deployment
+            continueOn:
+              failed: true
+            arguments:
+              parameters:
+                - name: app-name
+                  value: '{{inputs.parameters.app-name}}'
+                - name: monitor-timeout-seconds
+                  value: '{{inputs.parameters.monitor-timeout-seconds}}'
+        - - name: post-monitor-handler
+            template: post-monitor-handler
+            arguments:
+              parameters:
+                - name: app-name
+                  value: '{{inputs.parameters.app-name}}'
+                - name: monitor-timeout-seconds
+                  value: '{{inputs.parameters.monitor-timeout-seconds}}'
+                - name: deployment-status
+                  value: '{{steps.monitor-deployment.outputs.parameters.deployment-status}}'
+                - name: deployment-message
+                  value: '{{steps.monitor-deployment.outputs.parameters.deployment-message}}'
+    - name: sync-app
+      inputs:
+        parameters:
           - name: app-name
-            value: "{{inputs.parameters.app-name}}"
+      script:
+        image: argoproj/argocd:v2.3.0
+        command:
+          - sh
+        env:
+          - name: ARGOCD_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: external
+                key: ARGOCD_USERNAME
+          - name: ARGOCD_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: external
+                key: ARGOCD_PASSWORD
+        source: |
+          echo "Logging in to Argo CD..."
+          argocd login argocd-server.argocd.svc.cluster.local --insecure --username $ARGOCD_USERNAME --password $ARGOCD_PASSWORD
+          echo "Syncing application {{inputs.parameters.app-name}}..."
+          argocd app sync {{inputs.parameters.app-name}}
+    - name: monitor-deployment
+      inputs:
+        parameters:
+          - name: app-name
           - name: monitor-timeout-seconds
-            value: "{{inputs.parameters.monitor-timeout-seconds}}"
+      outputs:
+        parameters:
           - name: deployment-status
-            value: "{{steps.monitor-deployment.outputs.parameters.deployment-status}}"
+            valueFrom:
+              path: /tmp/deployment-status
           - name: deployment-message
-            value: "{{steps.monitor-deployment.outputs.parameters.deployment-message}}"
+            valueFrom:
+              path: /tmp/deployment-message
+      script:
+        image: dddddddddddd:2025.03.04-02
+        command:
+          - sh
+        env:
+          - name: ARGOCD_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: external
+                key: ARGOCD_USERNAME
+          - name: ARGOCD_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: external
+                key: ARGOCD_PASSWORD
+        source: |
+          argocd login argocd-server.argocd.svc.cluster.local --insecure --username $ARGOCD_USERNAME --password $ARGOCD_PASSWORD
 
+          i=1
+          while [ $i -le {{inputs.parameters.monitor-timeout-seconds}} ]
+          do
+            status=$(argocd app get {{inputs.parameters.app-name}} -o json | jq -r .status.health.status)
+            echo $status
+            echo "Remaining seconds: $(( {{inputs.parameters.monitor-timeout-seconds}} - i ))"
 
-  - name: sync-app
-    inputs:
-      parameters:
-      - name: app-name
-    script:
-      image: argoproj/argocd:v2.3.0
-      command: [sh]
-      env:
-      - name: ARGOCD_USERNAME
-        valueFrom:
-          secretKeyRef:
-            name: external
-            key: ARGOCD_USERNAME
-      - name: ARGOCD_PASSWORD
-        valueFrom:
-          secretKeyRef:
-            name: external
-            key: ARGOCD_PASSWORD
-      source: |
-        echo "Logging in to Argo CD..."
-        argocd login argocd-server.argocd.svc.cluster.local --insecure --username $ARGOCD_USERNAME --password $ARGOCD_PASSWORD
-        echo "Syncing application {{inputs.parameters.app-name}}..."
-        argocd app sync {{inputs.parameters.app-name}}
+            if [ "$status" = "Degraded" ]; then
+              echo "{{inputs.parameters.app-name}} application is Degraded"
+              echo "Degraded" > /tmp/deployment-status
+              echo "Deployment of application '{{inputs.parameters.app-name}}' failed. Application is Degraded" > /tmp/deployment-message
+              exit 1
+            fi
 
-  - name: monitor-deployment
-    inputs:
-      parameters:
-      - name: app-name
-      - name: monitor-timeout-seconds
-    outputs:
-      parameters:
-      - name: deployment-status
-        valueFrom:
-          path: /tmp/deployment-status
-      - name: deployment-message
-        valueFrom:
-          path: /tmp/deployment-message
-    script:
-      # image: prakahe/argo-cluster-control:3
-      image: rg.nl-ams.scw.cloud/b2c-prak/argo-workflow-tools:2025.03.03-05
-      command: [sh]
-      env:
-      - name: ARGOCD_USERNAME
-        valueFrom:
-          secretKeyRef:
-            name: external
-            key: ARGOCD_USERNAME
-      - name: ARGOCD_PASSWORD
-        valueFrom:
-          secretKeyRef:
-            name: external
-            key: ARGOCD_PASSWORD
-      source: |
-        argocd login argocd-server.argocd.svc.cluster.local --insecure --username $ARGOCD_USERNAME --password $ARGOCD_PASSWORD
+            if [ "$status" = "Healthy" ]; then
+              echo "{{inputs.parameters.app-name}} application is Healthy"
+              echo "Healthy" > /tmp/deployment-status
+              echo "Successfully deployed '{{inputs.parameters.app-name}}'" > /tmp/deployment-message
+              exit 0
+            fi
 
-        i=1
-        while [ $i -le {{inputs.parameters.monitor-timeout-seconds}} ]
-        do
-          status=$(argocd app get {{inputs.parameters.app-name}} -o json | jq -r .status.health.status)
-          echo $status
-          echo "Remaining seconds: $(( {{inputs.parameters.monitor-timeout-seconds}} - i ))"
+            i=$((i + 1))
+            sleep 1
+          done
 
-          if [ "$status" = "Degraded" ]; then
-            echo "{{inputs.parameters.app-name}} application is Degraded"
-            echo "Degraded" > /tmp/deployment-status
-            echo "Deployment of application '{{inputs.parameters.app-name}}' failed. Application is Degraded" > /tmp/deployment-message
-            exit 1
-          fi
-
-          if [ "$status" = "Healthy" ]; then
-            echo "{{inputs.parameters.app-name}} application is Healthy"
-            echo "Healthy" > /tmp/deployment-status
-            echo "Successfully deployed '{{inputs.parameters.app-name}}'" > /tmp/deployment-message
-            exit 0
-          fi
-
-          i=$((i + 1))
-          sleep 1
-        done
-
-        echo "Timed out after {{inputs.parameters.monitor-timeout-seconds}} seconds"
-        echo "Timeout" > /tmp/deployment-status
-        echo "Deployment of application '{{inputs.parameters.app-name}}' failed. Monitor timed out after {{inputs.parameters.monitor-timeout-seconds}} seconds" > /tmp/deployment-message
-        exit 1
-
-  - name: post-monitor-handler
-    inputs:
-      parameters:
-      - name: app-name
-      - name: monitor-timeout-seconds
-      - name: deployment-status
-      - name: deployment-message
-    steps:
-    - - name: handle-success
-        when: "{{inputs.parameters.deployment-status}} == Healthy"
-        template: handle-success
-        arguments:
-          parameters:
+          echo "Timed out after {{inputs.parameters.monitor-timeout-seconds}} seconds"
+          echo "Timeout" > /tmp/deployment-status
+          echo "Deployment of application '{{inputs.parameters.app-name}}' failed. Monitor timed out after {{inputs.parameters.monitor-timeout-seconds}} seconds" > /tmp/deployment-message
+          exit 1
+    - name: post-monitor-handler
+      inputs:
+        parameters:
+          - name: app-name
+          - name: monitor-timeout-seconds
+          - name: deployment-status
           - name: deployment-message
-            value: "{{inputs.parameters.deployment-message}}"
-      - name: handle-failed-timeout
-        when: "{{inputs.parameters.deployment-status}} == Timeout"
-        template: handle-failed
-        arguments:
-          parameters:
+      steps:
+        - - name: handle-success
+            when: '{{inputs.parameters.deployment-status}} == Healthy'
+            template: handle-success
+            arguments:
+              parameters:
+                - name: deployment-message
+                  value: '{{inputs.parameters.deployment-message}}'
+          - name: handle-failed-timeout
+            when: '{{inputs.parameters.deployment-status}} == Timeout'
+            template: handle-failed
+            arguments:
+              parameters:
+                - name: deployment-message
+                  value: Deployment of application '{{inputs.parameters.app-name}}' `Failed`. Monitor timed out after {{inputs.parameters.monitor-timeout-seconds}} seconds
+          - name: handle-failed-degraded
+            when: '{{inputs.parameters.deployment-status}} == Degraded'
+            template: handle-failed
+            arguments:
+              parameters:
+                - name: deployment-message
+                  value: Deployment of application '{{inputs.parameters.app-name}}' `Failed`. Application is Degraded
+    - name: handle-success
+      inputs:
+        parameters:
           - name: deployment-message
-            value: "Deployment of application '{{inputs.parameters.app-name}}' `Failed`. Monitor timed out after {{inputs.parameters.monitor-timeout-seconds}} seconds"
-      - name: handle-failed-degraded
-        when: "{{inputs.parameters.deployment-status}} == Degraded"
-        template: handle-failed
-        arguments:
-          parameters:
+      steps:
+        - - name: alert-slack
+            templateRef:
+              name: alert-slack
+              template: alert-slack-step
+            arguments:
+              parameters:
+                - name: message
+                  value: '{{inputs.parameters.deployment-message}}'
+    - name: handle-failed
+      inputs:
+        parameters:
           - name: deployment-message
-            value: "Deployment of application '{{inputs.parameters.app-name}}' `Failed`. Application is Degraded"
-
-  - name: handle-success
-    inputs:
-      parameters:
-      - name: deployment-message
-    steps:
-    - - name: alert-slack
-        templateRef:
-          name: alert-slack
-          template: alert-slack-step
-        arguments:
-          parameters:
-          - name: message
-            value: "{{inputs.parameters.deployment-message}}"
-
-  - name: handle-failed
-    inputs:
-      parameters:
-      - name: deployment-message
-    steps:
-    - - name: alert
-        templateRef:
-          name: alert
-          template: alert-error
-        arguments:
-          parameters:
-          - name: message
-            value: "{{inputs.parameters.deployment-message}}"
-      - name: fail-workflow
-        templateRef:
-          name: fail-workflow
-          template: fail-workflow
-
-  # exit-handler is ONLY run if the 'deploy-app' workflowTemplate is submitted. 
-  # It is not run if the 'deploy-app' template is referenced by another workflow.
-  - name: exit-handler
-    steps:
-    # - - name: alert-deploy-succeeded
-    #     when: "{{workflow.status}} == Succeeded"
-    #     templateRef:
-    #       name: alert-slack
-    #       template: alert-slack
-    #     arguments:
-    #       parameters:
-    #       - name: message
-    #         value: "Deployment of application {{workflow.parameters.app-name}} succeeded"
-    - - name: alert-deploy-failed
-        when: "{{workflow.status}} != Succeeded"
-        templateRef:
-          name: alert-sentry
-          template: alert-sentry
-        arguments:
-          parameters:
-          - name: message
-            value: "Deployment of application '{{workflow.parameters.app-name}}' `failed`"
+      steps:
+        - - name: alert
+            templateRef:
+              name: alert
+              template: alert-error
+            arguments:
+              parameters:
+                - name: message
+                  value: '{{inputs.parameters.deployment-message}}'
+          - name: fail-workflow
+            templateRef:
+              name: fail-workflow
+              template: fail-workflow
+    - name: exit-handler
+      steps:
+        - - name: alert-deploy-failed
+            when: '{{workflow.status}} != Succeeded'
+            templateRef:
+              name: alert-sentry
+              template: alert-sentry
+            arguments:
+              parameters:
+                - name: message
+                  value: Deployment of application '{{workflow.parameters.app-name}}' `failed`
