@@ -87,7 +87,7 @@ spec:
             valueFrom:
               path: /tmp/deployment-message
       script:
-        image: rg.nl-ams.scw.cloud/b2c-prak/argo-workflow-tools:2025.03.04-13
+        image: rg.nl-ams.scw.cloud/b2c-prak/argo-workflow-tools:2025.03.04-14
         command:
           - sh
         env:
