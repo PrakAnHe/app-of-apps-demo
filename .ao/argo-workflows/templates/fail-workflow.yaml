@@ -7,9 +7,10 @@ metadata:
 spec:
   entrypoint: fail-workflow
   templates:
-  - name: fail-workflow
-    script:
-      image: rg.nl-ams.scw.cloud/b2c-prak/argo-workflow-tools:2025.03.03-04
-      command: [sh]
-      source: |
-        exit 1
+    - name: fail-workflow
+      script:
+        image: rg.nl-ams.scw.cloud/b2c-prak/argo-workflow-tools:2025.03.04-06
+        command:
+          - sh
+        source: |
+          exit 1

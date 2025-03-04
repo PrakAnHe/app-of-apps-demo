@@ -8,42 +8,43 @@ spec:
   entrypoint: alert-sentry
   arguments:
     parameters:
-    - name: message
-  templates:
-  - name: alert-sentry
-    inputs:
-      parameters:
       - name: message
-    outputs:
-      parameters:
-      - name: event-id
-        valueFrom:
-          path: /tmp/event-id
-      - name: event-url
-        valueFrom:
-          path: /tmp/event-url
-    script:
-      image: rg.nl-ams.scw.cloud/b2c-prak/argo-workflow-tools:2025.03.03-04
-      command: [sh]
-      env:
-      - name: SENTRY_DSN
-        valueFrom:
-          secretKeyRef:
-            name: external
-            key: SENTRY_WORKFLOWS_DSN
-      - name: SENTRY_ORGANIZATION_SLUG
-        valueFrom:
-          secretKeyRef:
-            name: external
-            key: SENTRY_ORGANIZATION_SLUG
-      source: |
-        output=$(sentry-cli send-event --raw -m '{{workflow.mainEntrypoint}} : {{inputs.parameters.message}}' -e workflow-name:{{workflow.name}} -e workflow-status:{{workflow.status}})
+  templates:
+    - name: alert-sentry
+      inputs:
+        parameters:
+          - name: message
+      outputs:
+        parameters:
+          - name: event-id
+            valueFrom:
+              path: /tmp/event-id
+          - name: event-url
+            valueFrom:
+              path: /tmp/event-url
+      script:
+        image: rg.nl-ams.scw.cloud/b2c-prak/argo-workflow-tools:2025.03.04-06
+        command:
+          - sh
+        env:
+          - name: SENTRY_DSN
+            valueFrom:
+              secretKeyRef:
+                name: external
+                key: SENTRY_WORKFLOWS_DSN
+          - name: SENTRY_ORGANIZATION_SLUG
+            valueFrom:
+              secretKeyRef:
+                name: external
+                key: SENTRY_ORGANIZATION_SLUG
+        source: |
+          output=$(sentry-cli send-event --raw -m '{{workflow.mainEntrypoint}} : {{inputs.parameters.message}}' -e workflow-name:{{workflow.name}} -e workflow-status:{{workflow.status}})
 
-        if ! echo "$output" | grep -q "Event dispatched"; then
-          exit 1
-        fi
+          if ! echo "$output" | grep -q "Event dispatched"; then
+            exit 1
+          fi
 
-        event_id=$(echo "$output" | grep -oP '(?<=Event id: )[\w-]+')
+          event_id=$(echo "$output" | grep -oP '(?<=Event id: )[\w-]+')
 
-        echo $event_id > /tmp/event-id
-        echo https://sentry.io/organizations/$SENTRY_ORGANIZATION_SLUG/issues/?query=$event_id > /tmp/event-url
+          echo $event_id > /tmp/event-id
+          echo https://sentry.io/organizations/$SENTRY_ORGANIZATION_SLUG/issues/?query=$event_id > /tmp/event-url
