@@ -4,8 +4,8 @@ on:
   push:
     branches:
     - main
-    # paths:
-    # - '.ao/argo-workflows/Dockerfiles'
+    paths:
+    - '.ao/argo-workflows/Dockerfiles/**'
 
 jobs:
   tag:
