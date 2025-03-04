@@ -9,7 +9,7 @@ spec:
   templates:
     - name: fail-workflow
       script:
-        image: rg.nl-ams.scw.cloud/b2c-prak/argo-workflow-tools:2025.03.04-14
+        image: rg.nl-ams.scw.cloud/b2c-prak/argo-workflow-tools:2025.03.04-15
         command:
           - sh
         source: |
