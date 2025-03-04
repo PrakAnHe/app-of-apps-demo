@@ -23,7 +23,7 @@ spec:
             valueFrom:
               path: /tmp/event-url
       script:
-        image: rg.nl-ams.scw.cloud/b2c-prak/argo-workflow-tools:2025.03.04-15
+        image: rg.nl-ams.scw.cloud/b2c-prak/argo-workflow-tools:2025.03.04-16
         command:
           - sh
         env:
