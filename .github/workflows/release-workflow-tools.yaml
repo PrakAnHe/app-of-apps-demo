@@ -1,7 +1,11 @@
 name: Release-Workflow-Tools
 
 on:
-  workflow_dispatch:
+  push:
+    branches:
+    - main
+    paths:
+    - '.ao/argo-workflows/Dockerfiles'
 
 jobs:
   tag:
