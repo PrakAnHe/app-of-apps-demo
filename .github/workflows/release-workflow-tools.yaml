@@ -98,6 +98,6 @@ jobs:
         id: slack
         uses: slackapi/slack-github-action@v1.24.0
         with:
-          payload: "{\"version\":\"${{ needs.tag.outputs.tag }}\", \"app\":\"${{ github.event.repository.name }}\", \"url\":\"${{ steps.release.outputs.url }}\"}"
+          payload: "{\"text\":\"`rg.nl-ams.scw.cloud/b2c-prak/argo-workflow-tools` bumped to `${{ needs.tag.outputs.tag }}` in argo-workflow templates.\"}"
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_RELEASE_WEBHOOK }}
